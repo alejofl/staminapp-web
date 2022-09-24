@@ -1,5 +1,6 @@
 <template>
   <nav>
+<!--    fre9fer9fge-->
     <v-toolbar color="secondary" rounded>
       <v-img max-height="150" max-width="250" src="@/assets/logo.svg"></v-img>
       <v-spacer></v-spacer>
