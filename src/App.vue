@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <NavBar />
+    <ExercisesCard/>
     <v-content>
       <router-view />
     </v-content>
@@ -9,8 +10,9 @@
 
 <script>
 import NavBar from "@/components/NavBar";
+import ExercisesCard from "@/components/ExercisesCard";
 export default {
-  components: { NavBar },
+  components: { ExercisesCard, NavBar },
   name: "App",
   data() {
     return {}

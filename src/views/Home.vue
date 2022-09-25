@@ -1,7 +1,7 @@
 <template>
   <div class="home">
 <!--    <img alt="Vue logo" src="../assets/logo.png" />-->
-    <h1 class="primary">Texto de prueba</h1>
+<!--    <h1 class="primary">Texto de prueba</h1> />-->
   </div>
 </template>
 
