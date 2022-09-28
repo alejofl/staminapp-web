@@ -1,8 +1,9 @@
 <template>
   <v-app>
+    <NavBar/>
 <!--    <RecentCard/>-->
     <v-content>
-      <router-view />
+      <router-view/>
     </v-content>
 <!--    <HomeCarousel />-->
   </v-app>

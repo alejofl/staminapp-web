@@ -1,8 +1,18 @@
 <template>
-  <div class="home">
-    <NavBar/>
-    <HomeCarousel/>
-  </div>
+<!--  <div class="home">-->
+    <v-container fluid class="ma-0 pa-0">
+      <HomeCarousel/>
+<!--      <v-row no-gutters class="fill-height">-->
+<!--        <v-col no-gutters cols="12">-->
+<!--          -->
+<!--        </v-col>-->
+<!--      </v-row>-->
+    </v-container>
+<!--  </div>-->
+<!--  <div class="fill-height">-->
+<!--    <HomeCarousel/>-->
+<!--  </div>-->
+
 </template>
 
 <script>
