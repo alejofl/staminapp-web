@@ -1,7 +1,7 @@
 <template>
   <!--<v-card elevation="2" color="#E1E6EC" v-show="show" width="368px" height="96px" max-height="100%" class="exercise-card">-->
   <v-flex>
-    <v-card class="profile-card">
+    <v-card class="profile-card" elevation="5">
       <v-container>
         <v-row justify="center" align="center">
           <v-col align="center">
@@ -12,96 +12,54 @@
         </v-row>
         <v-row >
           <v-col md="12">
-            <v-card class="input-card" color=#E1E6EC>
-              <v-card-title class="card-name" color="#636363">
-                Nombre Completo
-                <v-spacer></v-spacer>
-                <v-icon color="secondary">
-                  person
-                </v-icon>
-              </v-card-title>
-              <v-card-text class="card-info secondary--text">
-                Lorem ipsum dolor sit amet, consectetur
-              </v-card-text>
-            </v-card>
+            <v-text-field
+            label="Nombre Completo"
+            v-model="name"
+            append-icon="person">
+            </v-text-field>
           </v-col>
         </v-row>
         <v-row >
           <v-col md="12">
-            <v-card class="input-card" color=#E1E6EC>
-              <v-card-title class="card-name" color="#636363">
-                E-Mail
-                <v-spacer></v-spacer>
-                <v-icon color="secondary">
-                mail
-              </v-icon>
-              </v-card-title>
-              <v-card-text class="card-info secondary--text">
-                Lorem ipsum dolor sit amet, consectetur
-              </v-card-text>
-            </v-card>
+            <v-text-field
+              label="E-Mail"
+              v-model="mail"
+              append-icon="mail">
+            </v-text-field>
           </v-col>
         </v-row>
         <v-row >
           <v-col md="12">
-            <v-card class="input-card" color=#E1E6EC>
-              <v-card-title class="card-name" color="#636363">
-                Género
-                <v-spacer></v-spacer>
-                <v-icon color="secondary">
-                  expand_more
-                </v-icon>
-              </v-card-title>
-              <v-card-text class="card-info secondary--text">
-                Lorem ipsum dolor sit amet, consectetur
-              </v-card-text>
-            </v-card>
+            <v-text-field
+              label="Género"
+              v-model="gender"
+              append-icon="expand_more">
+            </v-text-field>
           </v-col>
         </v-row>
         <v-row >
           <v-col  md="12">
-            <v-card class="input-card" color=#E1E6EC>
-              <v-card-title class="card-name" color="#636363">
-                Fecha de Nacimiento
-                <v-spacer></v-spacer>
-                <v-icon color="secondary">
-                  calendar_today
-                </v-icon>
-              </v-card-title>
-              <v-card-text class="card-info secondary--text">
-                Lorem ipsum dolor sit amet, consectetur
-              </v-card-text>
-            </v-card>
+            <v-text-field
+              label="Fecha de Nacimiento DD/MM/YYYY"
+              v-model="birthdate"
+              append-icon="calendar_today">
+            </v-text-field>
           </v-col>
         </v-row>
         <v-row>
           <v-col md="6">
-            <v-card class="input-card" color=#E1E6EC>
-              <v-card-title class="card-name" color="#636363">
-                Peso
-                <v-spacer></v-spacer>
-                <v-icon color="secondary">
-                  monitor_weight
-                </v-icon>
-              </v-card-title>
-              <v-card-text class="card-info secondary--text">
-                Lorem ipsum dolor sit amet, consectetur
-              </v-card-text>
-            </v-card>
+            <v-text-field
+              label="Peso"
+              v-model="weight"
+              append-icon="monitor_weight">
+            </v-text-field>
           </v-col>
           <v-col md="6">
-            <v-card class="input-card" color=#E1E6EC>
-              <v-card-title class="card-name" color="#636363">
-                Altura
-                <v-spacer></v-spacer>
-                <v-icon color="secondary">
-                  straighten
-                </v-icon>
-              </v-card-title>
-              <v-card-text class="card-info secondary--text">
-                Lorem ipsum dolor sit amet, consectetur
-              </v-card-text>
-            </v-card>
+            <v-text-field
+              label="Altura"
+              v-model="height"
+              append-icon="straighten">
+            </v-text-field>
           </v-col>
         </v-row>
         <v-row align-content="center">
@@ -119,6 +77,12 @@ export default {
   name: "ProfileCard",
   data() {
     return {
+      name: '',
+      mail: '',
+      gender:'',
+      birthdate:'',
+      weight:'',
+      height:'',
     }
   },
   methods: {
@@ -133,11 +97,15 @@ export default {
 }
 
 .input-card{
+  height: 40px;
   elevation: 0;
 }
 
 .card-name{
   font-family: 'Cera Pro';
+  font-size: 10px;
+  padding-left: 5px;
+  padding-top: 3px;
 }
 
 .card-info{
@@ -148,5 +116,6 @@ export default {
   line-height: 14px;
   display: flex;
   align-items: flex-end;
+  padding-left: 5px;
 }
 </style>
