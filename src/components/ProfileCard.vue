@@ -1,6 +1,6 @@
 <template>
   <!--<v-card elevation="2" color="#E1E6EC" v-show="show" width="368px" height="96px" max-height="100%" class="exercise-card">-->
-  <v-flex>
+  <v-flex align-self-center>
     <v-card class="profile-card" elevation="5">
       <v-container>
         <v-row justify="center" align="center">
@@ -30,11 +30,11 @@
         </v-row>
         <v-row >
           <v-col md="12">
-            <v-text-field
+            <v-select
               label="Género"
-              v-model="gender"
+              v-model="gender":items="gender_options"
               append-icon="expand_more">
-            </v-text-field>
+            </v-select>
           </v-col>
         </v-row>
         <v-row >
@@ -64,7 +64,7 @@
         </v-row>
         <v-row align-content="center">
           <v-col align-self="center" md="12">
-            <v-btn color="error" width="304px">CERRAR SESIÓN</v-btn>
+            <v-btn color="error" width="304px" @click="logged_in=false">CERRAR SESIÓN</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -83,6 +83,8 @@ export default {
       birthdate:'',
       weight:'',
       height:'',
+      gender_options:['Masculino','Femenino','Otro'],
+      logged_in:true,
     }
   },
   methods: {
@@ -93,7 +95,7 @@ export default {
 <style>
 .profile-card{
   width:328px;
-  height: 100%;
+  height: 85%;
 }
 
 .input-card{
