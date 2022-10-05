@@ -1,7 +1,7 @@
 <template>
-  <v-carousel :show-arrows="false" height="100vh">
+  <v-carousel cycle interval="4000" hide-delimiter-background delimiter-icon="fitness_center" :show-arrows="false" height="100vh">
     <v-carousel-item v-for="item in images" :key="src">
-      <v-img dark :src="item.src"></v-img>
+      <v-img :src="item.src" gradient="0deg, rgba(253,153,0,.5), rgba(253,153,0,.5)"/>
     </v-carousel-item>
   </v-carousel>
 </template>
@@ -23,5 +23,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .homeGradient {
+    background-image: linear-gradient(0deg, rgba(253,153,0,.5), rgba(253,153,0,.5));
+  }
 </style>

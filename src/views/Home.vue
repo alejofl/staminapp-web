@@ -1,5 +1,5 @@
 <template>
-      <HomeCarousel/>
+  <HomeCarousel class="myCarousel"/>
 </template>
 
 <script>
@@ -13,4 +13,9 @@ export default {
 </script>
 
 <style>
+.myCarousel {
+  position: absolute;
+  width: 100%;
+  top: 0px;
+}
 </style>

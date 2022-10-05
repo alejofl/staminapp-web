@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <NavBar></NavBar>
+    <NavBar class="myNavBar"></NavBar>
     <v-content>
       <router-view/>
     </v-content>
@@ -21,4 +21,12 @@ export default {
 </script>
 
 <style>
+.myNavBar {
+  /*
+    Without the position: absolute, scrolling in home page is inevitable.
+  */
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
 </style>

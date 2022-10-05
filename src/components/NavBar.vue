@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav class="myNavBar">
     <v-toolbar class="px-16" color="secondary">
       <v-img max-height="150" max-width="250" src="@/assets/logo.svg"></v-img>
       <v-spacer></v-spacer>
@@ -36,6 +36,10 @@ export default {
 </script>
 
 <style>
+.myNavBar {
+  z-index: 9;
+}
+
 .vertical-spacer {
   margin-left: 16px;
   margin-right: 16px;
