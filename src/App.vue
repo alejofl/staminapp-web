@@ -1,11 +1,9 @@
 <template>
   <v-app>
-    <NavBar/>
-<!--    <RecentCard/>-->
+    <NavBar></NavBar>
     <v-content>
       <router-view/>
     </v-content>
-<!--    <HomeCarousel />-->
   </v-app>
 </template>
 
@@ -21,3 +19,6 @@ export default {
   },
 };
 </script>
+
+<style>
+</style>
