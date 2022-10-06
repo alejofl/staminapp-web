@@ -5,19 +5,21 @@
       <v-spacer></v-spacer>
       <v-container>
         <v-row class="justify-end" v-if="loggedIn">
-          <v-btn dark rounded text>Mi Biblioteca</v-btn>
-          <v-btn class="selected primary--text" dark rounded text>Explorar</v-btn>
-          <v-btn dark rounded text>Estadísticas</v-btn>
+          <v-btn dark rounded text to="/library" active-class="selected primary--text">Mi Biblioteca</v-btn>
+          <v-btn dark rounded text to='/explore' active-class="selected primary--text">Explorar</v-btn>
+          <v-btn dark rounded text to='/statistics' active-class="selected primary--text">Estadísticas</v-btn>
           <v-btn dark rounded text><v-icon>search</v-icon></v-btn>
           <div class="vertical-spacer"></div>
-          <v-btn dark rounded text><v-icon>account_circle</v-icon></v-btn>
+          <v-btn dark rounded text to='/profile' active-class="selected primary--text">
+            <v-icon class="inherit" >account_circle</v-icon>
+          </v-btn>
         </v-row>
         <v-row class="justify-end" v-else>
-          <v-btn dark rounded text>Explorar</v-btn>
+          <v-btn dark rounded text to='/explore' active-class="selected primary--text">Explorar</v-btn>
           <v-btn dark rounded text><v-icon>search</v-icon></v-btn>
           <div class="vertical-spacer"></div>
-          <v-btn dark rounded text>Registrarse</v-btn>
-          <v-btn class="selected primary--text" dark rounded text>Ingresar</v-btn>
+          <v-btn dark rounded text to='/sign-up' active-class="selected primary--text">Registrarse</v-btn>
+          <v-btn dark rounded text to='/sign-in' active-class="selected primary--text">Ingresar</v-btn>
         </v-row>
       </v-container>
     </v-toolbar>
@@ -29,7 +31,12 @@ export default {
   name: "NavBar",
   data() {
     return {
-      loggedIn: true
+      loggedIn: false
+    }
+  },
+  methods: {
+    currentRouteName() {
+      return this.$route.name='/explore' ? true : false;
     }
   }
 };
@@ -48,5 +55,9 @@ export default {
 
 .selected {
   border: 1px solid #FD9900;
+}
+
+.routerLink {
+  text-decoration: none;
 }
 </style>
