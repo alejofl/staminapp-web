@@ -1,43 +1,22 @@
 <template>
-<!--  <v-card>-->
-<!--    <v-card-actions>-->
-<!--      <v-menu absolute>-->
-<!--        <v-card class="portrait"-->
-<!--                img="https://cdn.vuetifyjs.com/images/cards/girl.jpg"-->
-<!--                height="300"-->
-<!--                width="600"-->
-<!--                v-bind="attrs"-->
-<!--                v-on="on"></v-card>-->
-<!--      </v-menu>-->
-<!--    </v-card-actions>-->
-<!--  </v-card>-->
-<!--  <v-menu absolute ">-->
-<!--     <template v-slot:activator="{ on, attrs }">-->
-<!--       <v-row dense>-->
-<!--         <v-col>-->
-<!--           <v-card class="portrait" img="https://cdn.vuetifyjs.com/images/cards/girl.jpg" height="300" width="300" v-bind="attrs" v-on="on"></v-card>-->
-<!--         </v-col>-->
-<!--         <v-col>-->
-<!--           <v-card class="portrait"  height="300" width="300" v-bind="attrs" v-on="on">hola</v-card>-->
-<!--         </v-col>-->
-<!--       </v-row>-->
-<!--    </template>-->
-<!--  </v-menu>-->
-  <v-card>
-    <v-card-actions>
-      <v-btn absolute>
-          hola aleh
-      </v-btn>
-    </v-card-actions>
-
-    <v-avatar
-      class="ma-3"
-      size="125"
-      tile
-    >
-      <v-img max-height="150" max-width="250" src="@/assets/logo.svg"></v-img>
-    </v-avatar>
-  </v-card>
+  <v-col>
+    <v-card class="secondary white--text" max-width="500" max-height="125" rounded @click="">
+      <div class="d-flex">
+        <v-img src="@/assets/recent_card.jpeg" max-height="125" max-width="125" aspect-ratio="1"></v-img>
+        <div class="flex-grow-1">
+          <div class="d-flex flex-no-wrap justify-space-between align-center pt-2">
+            <v-rating class="pl-4" empty-icon="star_outline" color="white" full-icon="star" half-icon="star_half" half-increments hover length="5" value="3.2" readonly dense size="20"/>
+            <div></div>
+            <v-chip class="mr-2" color="#3ad6de" outlined>Principiante</v-chip>
+          </div>
+          <v-card-title class="text-h5">Pumped Chaos</v-card-title>
+          <v-card-subtitle>Dwayne Johnson</v-card-subtitle>
+        </div>
+        <div>
+        </div>
+      </div>
+    </v-card>
+  </v-col>
 </template>
 
 <script>
