@@ -1,88 +1,82 @@
 <template>
   <div>
-    <div>
-      <v-card class="registerCard" rounded="xl" v-if="steps === 0">
-        <v-container class="pr-8 pl-8 pt-8 pb-8">
-          <v-row justify="center" align="center" dense>
-            <h1 class="welcome">¡BIENVENIDO!</h1>
+    <v-card class="registerCard" rounded="xl" v-if="steps === 0">
+      <v-container class="ma-0 px-6 py-8">
+        <v-container class="ma-0 pa-0">
+          <h1 class="welcome" justify="center" align="center">¡BIENVENIDO!</h1>
+        </v-container>
+        <v-container class="my-12">
+          <v-row align-content="center" class="mx-2 mb-4">
+            <v-text-field
+              filled
+              label="Nombre completo"
+              v-model="name"
+              background-color="#E1E6EC"
+              append-icon="person"
+              color="secondary"
+              hide-details>
+            </v-text-field>
           </v-row>
-          <v-row align-content="center">
-            <v-col class="pt-4 pb-0">
-              <v-text-field
-                dense
-                filled
-                label="Nombre Completo"
-                v-model="name"
-                background-color="#E1E6EC"
-                append-icon="person"
-                color="secondary">
-              </v-text-field>
-            </v-col>
+          <v-row align-content="center" class="mx-2 my-4">
+            <v-text-field
+              filled
+              label="E-Mail"
+              v-model="email"
+              background-color="#E1E6EC"
+              append-icon="email"
+              color="secondary"
+              hide-details>
+            </v-text-field>
           </v-row>
-          <v-row align-content="center">
-            <v-col class="pt-0 pb-0">
-              <v-text-field
-                filled
-                label="E-Mail"
-                v-model="email"
-                background-color="#E1E6EC"
-                append-icon="email"
-                color="secondary">
-              </v-text-field>
-            </v-col>
+          <v-row align-content="center" class="mx-2 my-4">
+            <v-text-field
+              filled
+              label="Contraseña"
+              v-model="password"
+              background-color="#E1E6EC"
+              append-icon="key"
+              color="secondary"
+              type="password"
+              hide-details>
+            </v-text-field>
           </v-row>
-          <v-row align-content="center">
-            <v-col class="pt-0 pb-0">
-              <v-text-field
-                filled
-                label="Contraseña"
-                v-model="password"
-                background-color="#E1E6EC"
-                append-icon="key"
-                color="secondary"
-                type="password">
-              </v-text-field>
-            </v-col>
-          </v-row>
-          <v-row align-content="center">
-            <v-col class="pt-0 pb-0">
-              <v-text-field
-                filled
-                label="Repetir contraseña"
-                v-model="password2"
-                background-color="#E1E6EC"
-                append-icon="key"
-                color="secondary"
-                type="password">
-              </v-text-field>
-            </v-col>
-          </v-row>
-          <v-row justify="center" align-content="center">
-              <v-btn color="primary" width="272px" height="40" @click="steps=1">SIGUIENTE</v-btn>
-          </v-row>
-          <v-row justify="center" align-content="center">
-            <v-col>
-              <div width="5px">
-                <v-divider></v-divider>
-              </div>
-            </v-col>
-          </v-row>
-          <v-row justify="center" align="center" dense>
-              <h3 class="signIn"><a class="text-decoration-none" href="/sign-in">Iniciar sesión</a></h3>
+          <v-row align-content="center" class="mx-2 mt-4">
+            <v-text-field
+              filled
+              label="Repetir contraseña"
+              v-model="password2"
+              background-color="#E1E6EC"
+              append-icon="key"
+              color="secondary"
+              type="password"
+              hide-details>
+            </v-text-field>
           </v-row>
         </v-container>
-      </v-card>
-    </div>
-
-    <div>
-      <v-card class="registerCard" rounded="xl" v-if="steps === 1">
-        <v-container class="pr-8 pl-8 pt-8 pb-8">
-          <v-row justify="center" align="center" dense>
-              <h1 class="welcome pb-0 mb-0">TERMINEMOS DE</h1>
-              <h1 class="welcome pt-0 mt-0">CREAR TU PERFIL</h1>
+        <v-container class="mt-6">
+          <v-row justify="center" align-content="center" class="mb-6">
+            <v-btn color="primary" width="272px" height="40" @click="steps = 1">SIGUIENTE</v-btn>
           </v-row>
-          <v-row justify="center" align="center" class="pt-4 pb-0">
-            <v-col align="center">
+          <v-row justify="center" align-content="center">
+            <v-divider></v-divider>
+          </v-row>
+          <v-row justify="center" align="center" dense class="mt-6">
+            <router-link to="/sign-in" class="text-decoration-none signIn">Iniciar sesión</router-link>
+          </v-row>
+        </v-container>
+      </v-container>
+    </v-card>
+
+
+    <v-card class="registerCard" rounded="xl" v-if="steps === 1">
+      <v-container class="ma-0 px-6 py-8">
+        <v-container class="ma-0 pa-0">
+          <h1 class="welcome" justify="center" align="center">TERMINEMOS DE</h1>
+          <h1 class="welcome" justify="center" align="center">CREAR TU PERFIL</h1>
+        </v-container>
+        <v-container class="mt-12 mb-4 pa-0">
+          <v-row justify="center" align="center" no-gutters>
+            <v-col align="center" no-gutters>
               <v-hover v-slot="{ hover }">
                 <v-btn class="mx-2" @click="handle_image" plain fab large >
                   <input ref="uploader" class="d-none" type="file" @change="uploadImage">
@@ -98,62 +92,66 @@
               </v-hover>
             </v-col>
           </v-row>
-          <v-row >
-            <v-col md="12" class="pt-4 pb-0">
-              <v-select
-                label="Género"
-                v-model="gender":items="gender_options"
-                append-icon="expand_more"
-                color="secondary"
-                filled
-                background-color="#E1E6EC"
-                >
-              </v-select>
-            </v-col>
+        </v-container>
+        <v-container class="mb-12">
+          <v-row align-content="center" class="mx-2 mb-4">
+            <v-select
+              label="Género"
+              v-model="gender":items="gender_options"
+              append-icon="expand_more"
+              color="secondary"
+              filled
+              background-color="#E1E6EC"
+              hide-details
+            >
+            </v-select>
           </v-row>
-          <v-row >
-            <v-col md="12" class="pt-0 pb-0">
-              <v-text-field
-                label="Fecha de Nacimiento DD/MM/YYYY"
-                v-model="birthdate"
-                append-icon="calendar_today"
-                color="secondary"
-                filled
-                background-color="#E1E6EC">
-              </v-text-field>
-            </v-col>
+          <v-row align-content="center" class="mx-2 my-4">
+            <v-text-field
+              filled
+              label="Fecha de Nacimiento DD/MM/YYYY"
+              v-model="birthdate"
+              background-color="#E1E6EC"
+              append-icon="calendar_today"
+              color="secondary"
+              hide-details>
+            </v-text-field>
           </v-row>
-          <v-row>
-            <v-col md="6" class="pt-0 pb-0">
+          <v-row align-content="center" class="mx-2 mt-4">
+            <v-col md="6" class="py-0 pl-0">
               <v-text-field
+                filled
                 label="Peso"
                 v-model="weight"
+                background-color="#E1E6EC"
                 append-icon="monitor_weight"
                 color="secondary"
-                filled
-                background-color="#E1E6EC">
+                hide-details>
               </v-text-field>
             </v-col>
-            <v-col md="6" class="pt-0 pb-0">
+            <v-col md="6" class="py-0 pr-0">
               <v-text-field
+                filled
                 label="Altura"
                 v-model="height"
+                background-color="#E1E6EC"
                 append-icon="straighten"
                 color="secondary"
-                filled
-                background-color="#E1E6EC">
+                hide-details>
               </v-text-field>
             </v-col>
           </v-row>
-          <v-row justify="center" align-content="center">
-            <v-btn color="primary" width="272px" height="40" to="/sign-in">REGISTRARSE</v-btn>
+        </v-container>
+        <v-container class="mt-6">
+          <v-row justify="center" align-content="center" class="mb-6">
+            <v-btn color="primary" width="272px" height="40" @click="steps = 1">REGISTRARSE</v-btn>
           </v-row>
-          <v-row justify="center" align="center" dense class="mt-5">
-            <router-link to="/sign-in" class="text-decoration-none skipThisStep">Saltar este paso</router-link>
+          <v-row justify="center" align="center" dense class="mt-6">
+            <router-link to="/sign-in" class="text-decoration-none signIn">Saltar este paso</router-link>
           </v-row>
         </v-container>
-      </v-card>
-    </div>
+      </v-container>
+    </v-card>
   </div>
 </template>
 
@@ -208,7 +206,7 @@ export default {
 .signIn {
   font-family: "Cera Pro";
   font-weight: 800;
-  color: #FD9900;
+  color: #001833;
 }
 .overlay-class{
   border-radius: 50%;
