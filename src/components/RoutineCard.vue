@@ -1,7 +1,7 @@
 <template>
-  <v-card class="mx-auto" rounded max-width="400" @click="">
+  <v-card rounded @click="">
     <v-responsive aspect-ratio="1">
-      <v-img class="white--text align-end" height="100%" src="https://static3.abc.es/media/bienestar/2020/12/03/gym-box-kCDD--1024x512@abc.jpg">
+      <v-img class="white--text align-end" height="100%" src="https://as01.epimg.net/deporteyvida/imagenes/2018/03/14/portada/1521050434_557929_1521050572_noticia_normal_recorte1.jpg">
         <div class="fill-height bottom-gradient">
           <v-card-title large class="pb-0 text-h5">
             Pumped Chaos
