@@ -1,5 +1,5 @@
 <template>
-  <HomeCarousel class="myCarousel"></HomeCarousel>
+  <HomeCarousel class="myCarousel"/>
 </template>
 
 <script>
