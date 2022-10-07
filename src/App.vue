@@ -4,6 +4,7 @@
     <v-content>
       <router-view/>
     </v-content>
+    <Footer></Footer>
   </v-app>
 </template>
 
@@ -11,8 +12,10 @@
 import NavBar from "@/components/NavBar";
 import RecentCard from "@/components/RecentCard";
 import HomeCarousel from "@/components/HomeCarousel";
+import Footer from "@/components/Footer";
+
 export default {
-  components: { HomeCarousel, RecentCard, NavBar },
+  components: { Footer, HomeCarousel, RecentCard, NavBar },
   name: "App",
   data() {
     return {}
