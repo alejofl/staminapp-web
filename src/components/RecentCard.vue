@@ -1,44 +1,23 @@
 <template>
-  <v-btn elevation="2" width="360" height="96">
-    <v-card width="360" height="96" class="secondary">
-      <v-container fluid class="ma-0 pa-0">
-        <v-row no-gutters>
-          <v-col no-gutters cols="3">
-            <v-img src="@/assets/recent_card.jpeg" height="96"></v-img>
-          </v-col>
-          <v-col no-gutters cols="9">
-            <v-container fluid class="ma-0 pa-0">
-              <v-row no-gutters>
-                <v-col no-gutters cols="6">
-                  <!--                  <div>-->
-                  <v-rating
-                    background-color="white"
-                    color="primary"
-                    empty-icon="star_purple500"
-                    full-icon="star"
-                    readonly
-                    size="16"
-                    value="3"
-                  ></v-rating>
-                  <!--                  </div>-->
-                </v-col>
-                <v-col no-gutters cols="6">
-                  <v-chip color="primary">Hola</v-chip>
-                </v-col>
-              </v-row>
-              <v-row no-gutters>
-                <v-col no-gutters cols="12" class="white--text">
-                  Pumped Chaos
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-col>
-        </v-row>
-      </v-container>
+  <v-col>
+    <v-card class="secondary white--text" max-width="500" max-height="125" rounded @click="">
+      <div class="d-flex">
+        <v-img src="@/assets/recent_card.jpeg" max-height="125" max-width="125" aspect-ratio="1"></v-img>
+        <div class="flex-grow-1">
+          <div class="d-flex flex-no-wrap justify-space-between align-center pt-2">
+            <v-rating class="pl-4" empty-icon="star_outline" color="white" full-icon="star" half-icon="star_half" half-increments hover length="5" value="3.2" readonly dense size="20"/>
+            <div></div>
+            <v-chip class="mr-2" color="#3ad6de" outlined>Principiante</v-chip>
+          </div>
+          <v-card-title class="text-h5">Pumped Chaos</v-card-title>
+          <v-card-subtitle>Dwayne Johnson</v-card-subtitle>
+        </div>
+        <div>
+        </div>
+      </div>
     </v-card>
-  </v-btn>
+  </v-col>
 </template>
-
 
 <script>
 export default {
