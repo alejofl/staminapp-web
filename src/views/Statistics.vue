@@ -1,17 +1,32 @@
 <template>
-  <div class="myContainer">
-  </div>
+  <v-container class="myStatistics">
+    <v-row>
+      <v-col md="6">
+        <IMCCard></IMCCard>
+      </v-col>
+      <v-col md="6">
+        <ActivityCard></ActivityCard>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import IMCCard from "@/components/IMCCard";
+import ActivityCard from "@/components/ActivityCard";
 export default {
-  name: "Statistics"
+  name: "Statistics",
+  components: { IMCCard, ActivityCard }
+
 };
 </script>
 
 <style scoped>
-.myContainer {
-  margin-top: 64px;
+.myStatistics {
+  position: absolute;
+  width: 100%;
+  top: 64px;
+  max-width: 100%;
   background-color: #F5FAFF;
 }
 </style>

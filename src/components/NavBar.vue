@@ -33,7 +33,7 @@ export default {
   name: "NavBar",
   data() {
     return {
-      loggedIn: false
+      loggedIn: true
     }
   },
   methods: {
