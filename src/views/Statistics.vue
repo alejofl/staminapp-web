@@ -1,8 +1,11 @@
 <template>
   <v-container class="myStatistics">
     <v-row>
-      <v-col>
+      <v-col md="6">
         <IMCCard></IMCCard>
+      </v-col>
+      <v-col md="6">
+        <ActivityCard></ActivityCard>
       </v-col>
     </v-row>
   </v-container>
@@ -11,9 +14,10 @@
 
 <script>
 import IMCCard from "@/components/IMCCard";
+import ActivityCard from "@/components/ActivityCard";
 export default {
   name: "Statistics",
-  components: { IMCCard }
+  components: { IMCCard, ActivityCard }
 
 };
 </script>
@@ -23,5 +27,6 @@ export default {
   position: absolute;
   width: 100%;
   top: 64px;
+  max-width: 100%;
 }
 </style>
