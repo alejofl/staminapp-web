@@ -1,5 +1,5 @@
 <template>
-  <v-footer app class="secondary white--text py-6">
+  <v-footer padless class="secondary white--text py-6">
     <div class="flex-grow-1">
       <p class="ma-0">
         © 2022. Todos los derechos reservados.

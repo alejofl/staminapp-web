@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <NavBar class="myNavBar"></NavBar>
-    <v-content>
+    <v-main>
       <router-view/>
-    </v-content>
-    <Footer></Footer>
+    </v-main>
+    <Footer v-if="!($route.fullPath === '/')"></Footer>
   </v-app>
 </template>
 
