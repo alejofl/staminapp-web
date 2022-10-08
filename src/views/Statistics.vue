@@ -9,7 +9,6 @@
       </v-col>
     </v-row>
   </v-container>
-
 </template>
 
 <script>
@@ -28,5 +27,6 @@ export default {
   width: 100%;
   top: 64px;
   max-width: 100%;
+  background-color: #F5FAFF;
 }
 </style>

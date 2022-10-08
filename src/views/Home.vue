@@ -16,6 +16,6 @@ export default {
 .myCarousel {
   position: absolute;
   width: 100%;
-  top: 0px;
+  top: 0;
 }
 </style>
