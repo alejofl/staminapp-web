@@ -4,7 +4,10 @@
     <v-main>
       <router-view/>
     </v-main>
-    <Footer v-if="!($route.fullPath === '/')"></Footer>
+    <Footer
+      v-if="!($route.fullPath === '/' ||
+            ['sign-up', 'sign-in'].some((e) => $route.fullPath.includes(e)))">
+    </Footer>
   </v-app>
 </template>
 
