@@ -11,8 +11,9 @@
 import NavBar from "@/components/NavBar";
 import RecentCard from "@/components/RecentCard";
 import HomeCarousel from "@/components/HomeCarousel";
+import Profile from "@/views/Profile";
 export default {
-  components: { HomeCarousel, RecentCard, NavBar },
+  components: { Profile, HomeCarousel, RecentCard, NavBar },
   name: "App",
   data() {
     return {}

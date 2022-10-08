@@ -6,7 +6,7 @@
       transition="dialog-bottom-transition"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-flex>-->
+        <v-flex>
           <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl" v-bind="attrs" v-on="on" v-show="show_card">
             <v-card-title class="secondary--text font-weight-bold">
               <div>{{saved_exercise_name}}</div>
