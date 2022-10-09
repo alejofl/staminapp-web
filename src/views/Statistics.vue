@@ -1,17 +1,30 @@
 <template>
-  <RoutineDetailCard style="margin-top: 100px; margin-left: 100px"></RoutineDetailCard>
+  <v-container class="myStatistics">
+    <v-row>
+      <v-col md="6">
+        <IMCCard></IMCCard>
+      </v-col>
+      <v-col md="6">
+        <ActivityCard></ActivityCard>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import RoutineDetailCard from "@/components/RoutineDetailCard";
-
+import IMCCard from "@/components/IMCCard";
+import ActivityCard from "@/components/ActivityCard";
 export default {
   name: "Statistics",
-  components: { RoutineDetailCard }
-
+  components: { IMCCard, ActivityCard }
 };
 </script>
 
 <style scoped>
-
+.myStatistics {
+  margin-top: 64px;
+  height: 100%;
+  max-width: 100%;
+  background-color: #F5FAFF;
+}
 </style>

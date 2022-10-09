@@ -44,9 +44,7 @@ export default {
 
 <style scoped>
 .myContainer {
-  position: absolute;
-  width: 100%;
-  top: 64px;
+  margin-top: 64px;
   background-color: #F5FAFF;
 }
 .cera-pro {
