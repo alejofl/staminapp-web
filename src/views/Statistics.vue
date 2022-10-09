@@ -23,9 +23,8 @@ export default {
 
 <style scoped>
 .myStatistics {
-  position: absolute;
-  width: 100%;
-  top: 64px;
+  margin-top: 64px;
+  height: 100%;
   max-width: 100%;
   background-color: #F5FAFF;
 }
