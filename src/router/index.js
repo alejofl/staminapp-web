@@ -7,6 +7,7 @@ import Profile from "../views/Profile.vue";
 import Library from "../views/Library.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
+import Routine from "@/views/Routine";
 
 Vue.use(VueRouter);
 
@@ -45,6 +46,11 @@ const routes = [
     path: "/sign-up",
     name: "sign-up",
     component: SignUp,
+  },
+  {
+    path: "/routine/:id",
+    name: "routine",
+    component: Routine,
   },
 ];
 
