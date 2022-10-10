@@ -29,12 +29,18 @@
 </template>
 
 <script>
+import { mapState } from "pinia"
+import { useSecurityStore } from "@/store/SecurityStore";
 export default {
   name: "NavBar",
   data() {
     return {
-      loggedIn: true
     }
+  },
+  computed: {
+    ...mapState(useSecurityStore, {
+      loggedIn: state => state.isLoggedIn,
+    })
   },
   methods: {
     currentRouteName() {
