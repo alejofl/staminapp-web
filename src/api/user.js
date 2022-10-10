@@ -1,6 +1,6 @@
 import { Api } from "./api.js";
 
-export { UserApi, Credentials }
+export { UserApi, Credentials, UserData, MetaData }
 
 class UserApi {
   static getUrl(slug) {
@@ -22,11 +22,35 @@ class UserApi {
   static async postResendEmailVerification(email, controller) {
     return Api.post(UserApi.getUrl('resend_verification'), false, { "email": email }, controller);
   }
+
+  static async postCreateUser(userData, controller) {
+    return Api.post(UserApi.getUrl(''), false, userData, controller);
+  }
 }
 
 class Credentials {
   constructor(username, password) {
     this.username = username;
     this.password = password;
+  }
+}
+
+class UserData {
+  constructor(username, password, firstName, lastName, gender, birthdate, email, phone, avatarUrl, metadata) {
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.gender = gender;
+    this.birthdate = birthdate;
+    this.phone = phone;
+    this.avatarUrl = avatarUrl;
+    this.metadata = metadata;
+  }
+}
+
+class MetaData {
+  constructor(weight, height) {
+    this.weight = weight;
+    this.height = height;
   }
 }

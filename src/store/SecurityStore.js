@@ -53,8 +53,13 @@ export const useSecurityStore = defineStore("security", {
       const result = await UserApi.get();
       this.setUser(result);
     },
+
     async resendEmailVerification(email) {
       await UserApi.postResendEmailVerification(email);
+    },
+
+    async createUser(userData) {
+      await UserApi.postCreateUser(userData);
     }
   },
 });
