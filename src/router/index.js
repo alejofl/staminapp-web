@@ -7,6 +7,7 @@ import Profile from "../views/Profile.vue";
 import Library from "../views/Library.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
+import EmailVerification from "@/views/EmailVerification";
 
 Vue.use(VueRouter);
 
@@ -46,6 +47,11 @@ const routes = [
     name: "sign-up",
     component: SignUp,
   },
+  {
+    path: "/verification",
+    name: "email-verification",
+    component: EmailVerification,
+  }
 ];
 
 const router = new VueRouter({
