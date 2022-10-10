@@ -22,6 +22,14 @@ class UserApi {
   static async postResendEmailVerification(email, controller) {
     return Api.post(UserApi.getUrl('resend_verification'), false, { "email": email }, controller);
   }
+
+  static async get_user_info(id, controller) {
+    return Api.get(UserApi.getUrl(id), false, controller)
+  }
+
+  static async verify_user(user, controller) {
+    return Api.post(UserApi.getUrl('verify_email'), false, user, controller)
+  }
 }
 
 class Credentials {
