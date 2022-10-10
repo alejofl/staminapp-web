@@ -4,7 +4,7 @@
       <v-card class="registerFailedCard" v-if="failedRegister">
         <v-container>
           <p class="registerFailedText mb-0" justify="center" align="center">
-            <v-icon color="white">warning</v-icon> Los datos ingresados son incorrectos
+            <v-icon color="white">warning</v-icon> Alguno de los datos ingresados es incorrecto
           </p>
         </v-container>
       </v-card>
@@ -62,7 +62,7 @@
         </v-container>
         <v-container class="mt-6">
           <v-row justify="center" align-content="center" class="mb-6">
-            <v-btn color="primary" width="272px" height="40" @click="steps = 1">SIGUIENTE</v-btn>
+            <v-btn color="primary" width="272px" height="40" @click="validatePassword()">SIGUIENTE</v-btn>
           </v-row>
           <v-row justify="center" align-content="center">
             <v-divider></v-divider>
@@ -168,6 +168,8 @@ import { mapActions } from "pinia";
 import { useSecurityStore } from "@/store/SecurityStore";
 import { UserData, MetaData } from "@/api/user";
 
+import { required, minLength, sameAs } from 'vuelidate/lib/validators';
+
 export default {
   name: "RegisterCard",
   data() {
@@ -202,6 +204,17 @@ export default {
     handle_image(){
       this.$refs.uploader.click();
     },
+    validatePassword() {
+      this.$v.$touch()
+      if(this.$v.$invalid) {
+        console.log("Password incorrecta")
+
+      } else {
+        console.log("Password correcta")
+        this.steps = 1
+      }
+
+    },
     ...mapActions(useSecurityStore, {
       $createUser: 'createUser',
     }),
@@ -212,9 +225,7 @@ export default {
         // birthdate es un integer
         // el avatarUrl solamente acepta strings de tamaño máximo 255
         // metadata es un objeto que debemos crear y si no le pasas nada entonces es null
-        if(this.password !== this.password2) {
 
-        }
         if (this.gender === 'Masculino') {
           this.gender = 'male'
         } else if (this.gender === 'Femenino') {
@@ -223,13 +234,23 @@ export default {
           this.gender = 'other'
         }
         const userData = new UserData(this.email, this.password, this.name, '', this.gender,
-          12, this.email, '12', '', new MetaData(this.weight, this.height))
+          this.birthdate, this.email, '12', '', new MetaData(this.weight, this.height))
         await this.$createUser(userData)
         this.$router.push({ name : 'sign-in' })
       } catch (e) {
         console.log(e)
+        if(e.code === 1) {
+          this.failedRegister = true;
+          this.steps = 0;
+        }
       }
     },
+  },
+  validations: {
+    name: { required },
+    email: { required },
+    password: { required, minLength : minLength(6) },
+    password2: { required, sameAsPassword : sameAs('password') }
   }
 };
 </script>

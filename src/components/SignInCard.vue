@@ -106,12 +106,12 @@ export default {
         await this.$login(credentials, true)
         this.$router.push({name: 'library'})
       } catch (e) {
-        if(e.code == 4) {
+        if(e.code === 4) {
           this.failedLogIn = true
           this.failedEmailVerification = false
           this.serverError = false
           this.register = false
-        } else if (e.code == 8) {
+        } else if (e.code === 8) {
           this.failedLogIn = false
           this.failedEmailVerification = true
           this.serverError = false
