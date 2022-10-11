@@ -25,6 +25,7 @@ class UserApi {
 
   static async postCreateUser(userData, controller) {
     return Api.post(UserApi.getUrl(''), false, userData, controller);
+  }
 
   static async get_user_info(id, controller) {
     return Api.get(UserApi.getUrl(id), false, controller)
@@ -47,8 +48,12 @@ class UserData {
     this.username = username;
     this.email = email;
     this.password = password;
-    this.gender = gender;
-    this.birthdate = birthdate;
+    if (gender !== '') {
+      this.gender = gender;
+    }
+    if (birthdate !== '') {
+      this.birthdate = parseInt(birthdate, 10);
+    }
     this.phone = phone;
     this.avatarUrl = avatarUrl;
     this.metadata = metadata;
