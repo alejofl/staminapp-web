@@ -71,6 +71,7 @@ export default {
         await UserApi.verify_user(this.user)
         this.verified = true
       } catch (e) {
+        console.log(e)
         if (e.code === 8) {
           this.expired = true
         } else {

@@ -86,7 +86,7 @@ export default {
     return {
       email: '',
       password:'',
-      register: false,
+      register: 'registered' in this.$route.query,
       failedEmailVerification: false,
       failedLogIn: false,
       serverError: false,
