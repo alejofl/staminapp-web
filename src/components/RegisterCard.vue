@@ -171,7 +171,6 @@
 import { mapActions } from "pinia";
 import { useSecurityStore } from "@/store/SecurityStore";
 import { UserData, MetaData } from "@/api/user";
-
 import { required, minLength, sameAs } from 'vuelidate/lib/validators';
 
 export default {
@@ -256,11 +255,6 @@ export default {
     async createUser() {
       try {
         this.loading = true;
-        // El username, password, firstname, lastname, email, phone son strings
-        // gender es un enum con male and female
-        // birthdate es un integer
-        // el avatarUrl solamente acepta strings de tamaño máximo 255
-        // metadata es un objeto que debemos crear y si no le pasas nada entonces es null
         if (this.gender === 'Masculino') {
           this.gender = 'male'
         } else if (this.gender === 'Femenino') {
@@ -274,10 +268,10 @@ export default {
         this.loading = false;
         this.$router.push({ name : 'sign-in' });
       } catch (e) {
-        if(e.code === 1) {
-          this.failedRegister = true;
-          this.steps = 0;
-        }
+        console.log(e);
+        this.loading = false;
+        this.failedRegister = true;
+        this.steps = 0;
       }
     },
   }
