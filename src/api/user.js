@@ -48,8 +48,12 @@ class UserData {
     this.username = username;
     this.email = email;
     this.password = password;
-    this.gender = gender;
-    this.birthdate = birthdate;
+    if (gender !== '') {
+      this.gender = gender;
+    }
+    if (birthdate !== '') {
+      this.birthdate = parseInt(birthdate, 10);
+    }
     this.phone = phone;
     this.avatarUrl = avatarUrl;
     this.metadata = metadata;
