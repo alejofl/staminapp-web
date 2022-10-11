@@ -25,6 +25,7 @@ class UserApi {
 
   static async postCreateUser(userData, controller) {
     return Api.post(UserApi.getUrl(''), false, userData, controller);
+  }
 
   static async get_user_info(id, controller) {
     return Api.get(UserApi.getUrl(id), false, controller)
