@@ -3,15 +3,31 @@
     <v-container>
       <v-card-title class="secondary--text font-weight-bold">
         <div v-if="!edit_cycle">{{card_title}}</div>
-        <v-text-field
-          v-else
-          filled
-          label="Título del ciclo"
-          v-model="card_title"
-          background-color="#E1E6EC"
-          color="secondary"
-          hide-details>
-        </v-text-field>
+        <div v-else class="full-width">
+          <v-row class="justify-space-between ">
+            <v-col md="10">
+              <v-text-field
+                filled
+                label="Título del ciclo"
+                v-model="card_title"
+                background-color="#E1E6EC"
+                color="secondary"
+                hide-details>
+              </v-text-field>
+            </v-col>
+            <v-col md="2">
+              <v-text-field
+                filled
+                cols="3"
+                label="Repeticiones"
+                v-model="repetitions"
+                background-color="#E1E6EC"
+                color="secondary"
+                hide-details>
+              </v-text-field>
+            </v-col>
+          </v-row>
+        </div>
         <v-chip
           class="ma-2 secondary"
           label
@@ -42,35 +58,6 @@
       </v-card-text>
     </v-container>
   </v-card>
-<!--  -->
-<!--  <v-card class="cycles-card" color=#E1E6EC v-else outlined>-->
-<!--    <v-container>-->
-<!--      <v-card-title class="secondary&#45;&#45;text font-weight-bold">-->
-<!--        <v-chip-->
-<!--          class="ma-2 font-weight-bold"-->
-<!--          label-->
-<!--          color="#E1E6EC"-->
-<!--        >X{{repetitions}}-->
-<!--        </v-chip>-->
-<!--        <v-spacer></v-spacer>-->
-<!--        <div >{{exercises_qty}} ejercicios</div>-->
-<!--      </v-card-title>-->
-<!--      <v-card-text class="secondary&#45;&#45;text grow">-->
-<!--        <v-list color="#E1E6EC">-->
-<!--          <v-list-item>-->
-<!--            <v-icon>check</v-icon>-->
-<!--            Ejercicio 1-->
-<!--            <v-spacer></v-spacer>-->
-<!--            <v-chip-->
-<!--            color="secondary"-->
-<!--            text-color="#E1E6EC"-->
-<!--            >EDITAR EJERCICIO</v-chip>-->
-<!--          </v-list-item>-->
-<!--          <v-divider></v-divider>-->
-<!--        </v-list>-->
-<!--      </v-card-text>-->
-<!--    </v-container>-->
-<!--  </v-card>-->
 </template>
 
 <script>
@@ -93,4 +80,7 @@ export default {
 </script>
 
 <style>
+.full-width {
+  width: 100%;
+}
 </style>
