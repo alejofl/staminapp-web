@@ -14,7 +14,7 @@
           </p>
         </v-container>
       </v-card>
-      <v-container class="ma-0 px-6 py-4">
+      <v-container class="ma-0 px-6 py-4" @keyup.enter="validate()">
         <v-container class="ma-0 pa-0">
           <h1 class="welcome" justify="center" align="center">¡BIENVENIDO!</h1>
         </v-container>
@@ -85,7 +85,7 @@
     </v-card>
 
 
-    <v-card class="registerCard" rounded="xl" v-if="steps === 1">
+    <v-card class="registerCard" rounded="xl" v-if="steps === 1" @keyup.enter="createUser()">
       <v-container class="ma-0 px-6 py-8">
         <v-container class="ma-0 pa-0">
           <h1 class="welcome" justify="center" align="center">TERMINEMOS DE</h1>
