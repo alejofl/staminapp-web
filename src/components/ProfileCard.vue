@@ -91,6 +91,8 @@
 <script>
 export default {
   name: "ProfileCard",
+  props:{name:String,mail:String,gender:String,birthdate:String,weight:String,height:String,gender_options:Array,
+  base64Data:String},
   data() {
     return {
       name: '',

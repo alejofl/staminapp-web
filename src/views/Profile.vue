@@ -97,6 +97,10 @@ export default {
   },
   methods:{
     ...mapActions(useProfileStore,{$addExercise: 'addExercise'}),
+    ...mapActions(useProfileStore,{$updateProfilePhoto: 'updateProfilePhoto'}),
+    ...mapActions(useProfileStore,{$updateProfileInfo: 'updateProfileInfo'}),
+    ...mapActions(useProfileStore,{$getProfilePhoto: 'getProfilePhoto'}),
+    ...mapActions(useProfileStore,{$getProfileInfo: 'getProfilePhoto'}),
     /*
     add_exercise(){
       this.saved_exercise_description =this.unsaved_exercise_description
@@ -122,6 +126,9 @@ export default {
       catch (e) {
         console.log(e.code);
       }
+    },
+    async updateProfilePhoto(){
+
     }
   }
 };
