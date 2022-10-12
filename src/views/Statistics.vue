@@ -17,7 +17,6 @@ import ActivityCard from "@/components/ActivityCard";
 export default {
   name: "Statistics",
   components: { IMCCard, ActivityCard }
-
 };
 </script>
 
