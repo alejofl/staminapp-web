@@ -54,6 +54,7 @@ const routes = [
     name: "routine",
     component: Routine,
   },
+  {
     path: "/verification",
     name: "email-verification",
     component: EmailVerification,

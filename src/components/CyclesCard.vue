@@ -231,7 +231,7 @@ export default {
   name: "ExercisesCard",
   data() {
     return {
-      edit_cycle: true,
+      edit_cycle: false,
       card_title: "Ejercicio sin nombre",
       repetitions: 0,
       exercises: [
