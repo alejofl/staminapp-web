@@ -18,7 +18,7 @@
         </v-flex>
       </template>
       <v-flex align-self-center>
-        <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl" v-bind="attrs" v-on="on" v-show="show_card">
+        <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl" v-show="show_card">
           <v-container>
           <v-card-title class="secondary--text font-weight-bold">
             <div v-show="!show_editable_exercise_name">{{saved_exercise_name}}</div>

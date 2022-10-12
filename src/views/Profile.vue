@@ -45,7 +45,7 @@
         </v-btn>
       </template>
       <v-flex align-self-center>
-        <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl" v-bind="attrs" v-on="on">
+        <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl">
           <v-container>
             <v-card-title class="secondary--text font-weight-bold">
               <v-text-field v-model="unsaved_exercise_name" color="secondary"></v-text-field>
@@ -55,7 +55,7 @@
             </v-card-text>
             <v-row justify="center" align="center">
               <v-col md="12" align="center">
-                <v-btn width="100%" color="green" @click="add_exercise()
+                <v-btn width="100%" color="green" @click="addExercise()
                 ;dialog=false">
                   GUARDAR EJERCICIO</v-btn>
               </v-col>
@@ -76,6 +76,9 @@
 <script>
 import ProfileCard from "@/components/ProfileCard";
 import ExercisesCard from "@/components/ExercisesCard";
+import {Exercise} from "@/api/exercise.js"
+import {useProfileStore } from "@/store/ProfileStore.js";
+import { mapActions } from "pinia";
 export default {
   name: "Profile",
   components: { ExercisesCard, ProfileCard },
@@ -93,10 +96,32 @@ export default {
     }
   },
   methods:{
+    ...mapActions(useProfileStore,{$addExercise: 'addExercise'}),
+    /*
     add_exercise(){
       this.saved_exercise_description =this.unsaved_exercise_description
       this.saved_exercise_name = this.unsaved_exercise_name
       this.Exercises.push({saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description,})
+    }*/
+    async addExercise(){
+      try {
+        this.saved_exercise_description = this.unsaved_exercise_description
+        this.saved_exercise_name = this.unsaved_exercise_name
+        this.Exercises.push({
+          saved_exercise_name: this.saved_exercise_name,
+          saved_exercise_description: this.saved_exercise_description,
+          unsaved_exercise_name: this.unsaved_exercise_name,
+          unsaved_exercise_description: this.unsaved_exercise_description,
+        })
+        let toReturn = new Exercise(null,null,null);
+        const exercise = new Exercise(this.saved_exercise_name, this.saved_exercise_description, 'exercise');
+        console.log(exercise);
+        toReturn = await this.$addExercise(exercise);
+        console.log(toReturn);
+      }
+      catch (e) {
+        console.log(e.code);
+      }
     }
   }
 };
