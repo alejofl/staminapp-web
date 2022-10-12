@@ -41,7 +41,7 @@
             </v-row>
             <v-row justify="center" align="center">
               <v-col md="12" align="center">
-                <v-btn color="error" @click="show_card=false;dialog=false" width="100%">ELIMINAR EJERCICIO</v-btn>
+                <v-btn color="error" @click="show_card=false;dialog=false;onDeleteCard" width="100%">ELIMINAR EJERCICIO</v-btn>
               </v-col>
             </v-row>
           </v-container>
@@ -53,7 +53,8 @@
 
 <script>
 export default {
-  props:{saved_exercise_name: String,saved_exercise_description: String,unsaved_exercise_name:String,unsaved_exercise_description:String},
+  props:{saved_exercise_name: String,saved_exercise_description: String,
+    unsaved_exercise_name:String,unsaved_exercise_description:String},
   name: "ExercisesCard",
   data() {
     return {
@@ -65,6 +66,13 @@ export default {
     }
   },
   methods: {
+
+    onDeleteCard(event){
+      /*Cuando se clickea el boton de borrar card, le aviso a la view de profile
+      * que se está queriendo borrar, entonces le paso a la view el id dicha card*/
+      this.$emit('delete_card_pressed',delete_card_id);
+    },
+
   },
 };
 </script>

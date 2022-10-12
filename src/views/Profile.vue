@@ -2,10 +2,10 @@
   <v-flex>
     <v-container class="profile-style">
       <v-row>
-        <v-col md="3" lg="3">
+        <v-col sm="3" md="3" lg="3">
           <ProfileCard></ProfileCard>
         </v-col>
-        <v-col md="9" lg="9">
+        <v-col sm="9" md="9" lg="9">
           <v-container class="exercises-container-style">
             <v-row class="mb-0">
               <h1 class="cera-pro pa-6">MIS EJERCICIOS</h1>
@@ -23,7 +23,8 @@
         >
           <ExercisesCard :key="n"
                          :saved_exercise_name="n.saved_exercise_name" :saved_exercise_description="n.saved_exercise_description"
-          :unsaved_exercise_description="n.unsaved_exercise_description" :unsaved_exercise_name="n.unsaved_exercise_name"></ExercisesCard>
+          :unsaved_exercise_description="n.unsaved_exercise_description" :unsaved_exercise_name="n.unsaved_exercise_name"
+          @delete_card_pressed="deleteExercise"></ExercisesCard>
         </v-col>
         </template>
       </v-row>
@@ -55,8 +56,7 @@
             </v-card-text>
             <v-row justify="center" align="center">
               <v-col md="12" align="center">
-                <v-btn width="100%" color="green" @click="addExercise()
-                ;dialog=false">
+                <v-btn width="100%" color="green" @click="addExercise();dialog=false">
                   GUARDAR EJERCICIO</v-btn>
               </v-col>
             </v-row>
@@ -101,6 +101,7 @@ export default {
     ...mapActions(useProfileStore,{$updateProfileInfo: 'updateProfileInfo'}),
     ...mapActions(useProfileStore,{$getProfilePhoto: 'getProfilePhoto'}),
     ...mapActions(useProfileStore,{$getProfileInfo: 'getProfilePhoto'}),
+    ...mapActions(useProfileStore,{$deleteExercise: 'deleteExercise'}),
     /*
     add_exercise(){
       this.saved_exercise_description =this.unsaved_exercise_description
@@ -129,7 +130,21 @@ export default {
     },
     async updateProfilePhoto(){
 
+    },
+
+    async deleteExercise(to_delete_id){
+      /*Aquí debo sacar del array el ejercicio con el id que me pasaron y
+      * avisarle a la API con el comando delete de la misma*/
+      console.log("llegué");
     }
+  },
+  beforeMount() {
+    /*Antes de que cargue la pagina, debemos pedirle a la API la info del perfil, así aparece de una*/
+  },
+
+  beforeRouteLeave(){
+    /*Antes de que el usuario se vaya de la página sería un buen momento para subir toda la data a la APi
+    * si bien lo mejor sería subir solo lo que se cambió, quizás lleva mucho trabajo*/
   }
 };
 </script>
