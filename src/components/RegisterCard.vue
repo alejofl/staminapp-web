@@ -177,7 +177,7 @@
 import { mapActions } from "pinia";
 import { useSecurityStore } from "@/store/SecurityStore";
 import { UserData, MetaData } from "@/api/user";
-import { required, minLength, sameAs } from 'vuelidate/lib/validators';
+import { required, sameAs } from 'vuelidate/lib/validators';
 
 export default {
   name: "RegisterCard",
