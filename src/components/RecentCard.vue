@@ -1,6 +1,6 @@
 <template>
-  <v-col>
-    <v-card class="secondary white--text" max-width="500" max-height="125" rounded @click="">
+  <v-col class="pa-0">
+    <v-card class="secondary white--text" max-height="125" rounded @click="">
       <div class="d-flex">
         <v-img src="@/assets/recent_card.jpeg" max-height="125" max-width="125" aspect-ratio="1"></v-img>
         <div class="flex-grow-1">

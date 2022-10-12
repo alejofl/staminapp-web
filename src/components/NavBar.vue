@@ -1,7 +1,9 @@
 <template>
   <nav class="myNavBar">
     <v-toolbar class="px-16" color="secondary">
-      <v-img max-height="150" max-width="250" src="@/assets/logo.svg"></v-img>
+      <router-link to="/">
+        <v-img max-height="150" max-width="250" src="@/assets/logo.svg"></v-img>
+      </router-link>
       <v-spacer></v-spacer>
       <v-container>
         <v-row class="justify-end" v-if="loggedIn">
@@ -27,12 +29,18 @@
 </template>
 
 <script>
+import { mapState } from "pinia"
+import { useSecurityStore } from "@/store/SecurityStore";
 export default {
   name: "NavBar",
   data() {
     return {
-      loggedIn: false
     }
+  },
+  computed: {
+    ...mapState(useSecurityStore, {
+      loggedIn: state => state.isLoggedIn,
+    })
   },
   methods: {
     currentRouteName() {

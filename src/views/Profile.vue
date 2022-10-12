@@ -71,7 +71,6 @@
     </v-dialog>
     </v-row>
   </v-flex>
-
 </template>
 
 <script>

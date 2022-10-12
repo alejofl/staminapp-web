@@ -1,9 +1,13 @@
 <template>
   <v-app>
     <NavBar class="myNavBar"></NavBar>
-    <v-content>
+    <v-main>
       <router-view/>
-    </v-content>
+    </v-main>
+    <Footer
+      v-if="!($route.fullPath === '/' ||
+            ['sign-up', 'sign-in'].some((e) => $route.fullPath.includes(e)))">
+    </Footer>
   </v-app>
 </template>
 
@@ -11,9 +15,10 @@
 import NavBar from "@/components/NavBar";
 import RecentCard from "@/components/RecentCard";
 import HomeCarousel from "@/components/HomeCarousel";
-import Profile from "@/views/Profile";
+import Footer from "@/components/Footer";
+
 export default {
-  components: { Profile, HomeCarousel, RecentCard, NavBar },
+  components: { Footer, HomeCarousel, RecentCard, NavBar },
   name: "App",
   data() {
     return {}
