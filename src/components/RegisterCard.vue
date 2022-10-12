@@ -138,7 +138,7 @@
             <v-col md="6" class="py-0 pl-0">
               <v-text-field
                 filled
-                label="Peso"
+                label="Peso (kg)"
                 v-model="weight"
                 background-color="#E1E6EC"
                 append-icon="monitor_weight"
@@ -149,7 +149,7 @@
             <v-col md="6" class="py-0 pr-0">
               <v-text-field
                 filled
-                label="Altura"
+                label="Altura (cm)"
                 v-model="height"
                 background-color="#E1E6EC"
                 append-icon="straighten"
@@ -277,7 +277,9 @@ export default {
         this.loading = false;
         this.$router.push({name : 'sign-in', query: {registered: null}});
       } catch (e) {
-        console.log(e);
+        this.emailFormatIsIncorrect = false;
+        this.emailAlreadyExists = false;
+        this.genericError = false;
         if (e.code === 1) {
           this.emailFormatIsIncorrect = true;
         } else if (e.code === 2) {
