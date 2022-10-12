@@ -1,21 +1,20 @@
 <template>
-  <div class="home">
-<!--    <img alt="Vue logo" src="../assets/logo.png" />-->
-    <h1 class="primary">Texto de prueba</h1>
-    <CyclesCard></CyclesCard>
-  </div>
+  <HomeCarousel class="myCarousel"/>
 </template>
 
 <script>
 // @ is an alias to /src
-import CyclesCard from "@/components/CyclesCard";
-
+import HomeCarousel from "@/components/HomeCarousel";
 export default {
   name: "HomeView",
-  components: { CyclesCard }
+  components: { HomeCarousel },
 };
 </script>
 
 <style>
-
+.myCarousel {
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
 </style>

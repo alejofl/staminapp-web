@@ -1,12 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-// import Explore from "../views/Explore.vue";
-// import Statistics from "../views/Statistics.vue";
-// import Profile from "../views/Profile.vue";
-// import Library from "../views/Library.vue";
-// import SignIn from "../views/SignIn.vue";
-// import SignUp from "../views/SignUp.vue";
+import Explore from "../views/Explore.vue";
+import Statistics from "../views/Statistics.vue";
+import Profile from "../views/Profile.vue";
+import Library from "../views/Library.vue";
+import SignIn from "../views/SignIn.vue";
+import SignUp from "../views/SignUp.vue";
+import EmailVerification from "@/views/EmailVerification";
+import ExternalUserView from "@/views/ExternalUserView";
 
 Vue.use(VueRouter);
 
@@ -16,36 +18,46 @@ const routes = [
     name: "home",
     component: Home,
   },
-  // {
-  //   path: "/explore",
-  //   name: "explore",
-  //   component: Explore,
-  // },
-  // {
-  //   path: "/statistics",
-  //   name: "statistics",
-  //   component: Statistics,
-  // },
-  // {
-  //   path: "/profile",
-  //   name: "profile",
-  //   component: Profile,
-  // },
-  // {
-  //   path: "/library",
-  //   name: "library",
-  //   component: Library,
-  // },
-  // {
-  //   path: "/sign-in",
-  //   name: "sign-in",
-  //   component: SignIn,
-  // },
-  // {
-  //   path: "/sign-up",
-  //   name: "sign-up",
-  //   component: SignUp,
-  // },
+  {
+    path: "/explore",
+    name: "explore",
+    component: Explore,
+  },
+  {
+    path: "/statistics",
+    name: "statistics",
+    component: Statistics,
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: Profile,
+  },
+  {
+    path: "/library",
+    name: "library",
+    component: Library,
+  },
+  {
+    path: "/sign-in",
+    name: "sign-in",
+    component: SignIn,
+  },
+  {
+    path: "/sign-up",
+    name: "sign-up",
+    component: SignUp,
+  },
+  {
+    path: "/verification",
+    name: "email-verification",
+    component: EmailVerification,
+  },
+  {
+    path: "/external-user",
+    name: "external-user",
+    component: ExternalUserView,
+  }
 ];
 
 const router = new VueRouter({
