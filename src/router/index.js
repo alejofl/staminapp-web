@@ -8,6 +8,8 @@ import Library from "../views/Library.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
 import Routine from "@/views/Routine";
+import EmailVerification from "@/views/EmailVerification";
+import ExternalUserView from "@/views/ExternalUserView";
 
 Vue.use(VueRouter);
 
@@ -52,6 +54,15 @@ const routes = [
     name: "routine",
     component: Routine,
   },
+    path: "/verification",
+    name: "email-verification",
+    component: EmailVerification,
+  },
+  {
+    path: "/external-user",
+    name: "external-user",
+    component: ExternalUserView,
+  }
 ];
 
 const router = new VueRouter({

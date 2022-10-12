@@ -80,7 +80,7 @@
         </v-row>
         <v-row align-content="center">
           <v-col align-self="center" md="12">
-            <v-btn color="error" width="304px" @click="logged_in=false">CERRAR SESIÓN</v-btn>
+            <v-btn color="error" width="100%" @click="logged_in=false">CERRAR SESIÓN</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -127,7 +127,7 @@ export default {
 
 <style>
 .profile-card{
-  width:328px;
+  /*width:328px;*/
   height: 85%;
 }
 .overlay-class{
