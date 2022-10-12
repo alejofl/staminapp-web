@@ -53,14 +53,11 @@
 
 <script>
 export default {
+  props:{saved_exercise_name: String,saved_exercise_description: String,unsaved_exercise_name:String,unsaved_exercise_description:String},
   name: "ExercisesCard",
   data() {
     return {
       show_card:true,
-      saved_exercise_name:'Ejercicio sin nombre',
-      saved_exercise_description:"Inserte descripción...",
-      unsaved_exercise_name:'Ejercicio sin nombre',
-      unsaved_exercise_description:"Inserte descripción...",
       show_editable_exercise_name:false,
       show_editable_exercise_description:false,
       is_editing:false,
@@ -76,6 +73,6 @@ export default {
 .exercise-card{
   display: flex;
   flex-direction: column;
-  width: 368px;
+  /*width: 368px;*/
 }
 </style>
