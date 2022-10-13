@@ -64,8 +64,10 @@ class UserData {
 
 class MetaData {
   constructor(weight, height, profilePicture) {
-    this.weight = weight;
-    this.height = height;
+    this.weight = [];
+    this.weight.push(weight);
+    this.height = [];
+    this.height.push(height);
     this.profilePicture = profilePicture;
   }
 }
