@@ -81,7 +81,7 @@
         <v-row align-content="center">
           <v-col align-self="center" md="12">
             <!--Ver qué hacer cuando se cierra sesión, volver a la pantalla de inicio y hacer un sign out a la API-->
-            <v-btn color="error" width="100%" @click="logged_in=false;onLogOut()">CERRAR SESIÓN</v-btn>
+            <v-btn color="error" width="100%" @click="onLogOut()">CERRAR SESIÓN</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -105,7 +105,6 @@ export default {
 }},
   data() {
     return {
-      logged_in:true,
     }
   },
   methods: {
@@ -127,7 +126,9 @@ export default {
       this.$refs.uploader.click();
     },
     async onLogOut(){
+      this.$router.push({name:'home'});
       await this.$logout();
+      console.log("debería estar en home")
     }
   }
 };

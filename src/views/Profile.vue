@@ -3,7 +3,7 @@
     <v-container class="profile-style">
       <v-row>
         <v-col sm="3" md="3" lg="3">
-          <ProfileCard :base64-data="profile_avatarUrl" :name="profile_fullname" :mail="profile_mail" :birthdate="profile_birthdate"
+          <ProfileCard :base64-data="profile_picture" :name="profile_fullname" :mail="profile_mail" :birthdate="profile_birthdate"
           :gender="profile_gender" :weight="profile_weight" :height="profile_height"></ProfileCard>
         </v-col>
         <v-col sm="9" md="9" lg="9">
@@ -94,7 +94,7 @@ export default {
       unsaved_exercise_description:"Inserte descripción...",
       saved_exercise_name:"Hola",
       saved_exercise_description:"COMO",
-      profile_avatarUrl:'',
+      profile_picture:'',
       profile_fullname:'',
       profile_mail:'',
       profile_gender:'',
@@ -121,13 +121,13 @@ export default {
     async addExercise(){
       this.saved_exercise_description =this.unsaved_exercise_description
       this.saved_exercise_name = this.unsaved_exercise_name
-      this.Exercises.push({saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description,})
-
       try {
         // const exercise = new Exercise("Uno", "Uno", "exercise", null);
         const exercise = new Exercise(this.saved_exercise_name, this.saved_exercise_description, "exercise", null);
         console.log(exercise)
-        await this.$create(exercise)
+        const exerciseInfo = await this.$create(exercise)
+        console.log(exerciseInfo)
+        this.Exercises.push({saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description,})
         console.log("SEXOOOOOOOOOO")
       }
       catch (e) {
@@ -166,9 +166,6 @@ export default {
     //     console.log(e.code);
     //   }
     // },
-    async updateProfilePhoto(){
-
-    },
 
     async deleteExercise(to_delete_id){
       /*Aquí debo sacar del array el ejercicio con el id que me pasaron y
@@ -181,15 +178,13 @@ export default {
     /*Antes de que cargue la pagina, debemos pedirle a la API la info del perfil, así aparece de una*/
     try{
       const profileInfo = await UserApi.getCurrent()
-      this.profile_avatarUrl = profileInfo.avatarUrl
-      this.profile_fullname = profileInfo.firstName + ' ' + profileInfo.lastName
+      this.profile_picture = profileInfo.metadata.profilePicture
+      this.profile_fullname = profileInfo.firstName
       this.profile_mail = profileInfo.username
       this.profile_gender = profileInfo.gender
       this.profile_birthdate = profileInfo.birthdate
-      /* Ponerse de acuerdo con nehuen con metadata
-      this.profile_weight
-      this.profile_height
-      */
+      this.profile_weight = profileInfo.metadata.weight
+      this.profile_height = profileInfo.metadata.height
       console.log(profileInfo)
     }
     catch (e) {
@@ -197,10 +192,10 @@ export default {
     }
   },
 
-  beforeRouteLeave(){
+  /*beforeRouteLeave(){
     /*Antes de que el usuario se vaya de la página sería un buen momento para subir toda la data a la APi
     * si bien lo mejor sería subir solo lo que se cambió, quizás lleva mucho trabajo*/
-  }
+  /*}*/
 };
 </script>
 
