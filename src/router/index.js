@@ -50,6 +50,11 @@ const routes = [
     component: SignUp,
   },
   {
+    path: "/routine/new",
+    name: "new-routine",
+    component: Routine,
+  },
+  {
     path: "/routine/:id",
     name: "routine",
     component: Routine,

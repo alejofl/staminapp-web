@@ -26,8 +26,8 @@ export default {
   components: { RoutineDetailCard, CyclesCard },
   data() {
     return {
-      edit: false,
-      is_new_routine: false,
+      edit: this.$route.name === 'new-routine',
+      is_new_routine: this.$route.name === 'new-routine',
       routine_id: this.$route.params.id,
       cycles: [{}, {}, {}]
     }
