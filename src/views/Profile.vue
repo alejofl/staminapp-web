@@ -3,7 +3,8 @@
     <v-container class="profile-style">
       <v-row>
         <v-col sm="3" md="3" lg="3">
-          <ProfileCard></ProfileCard>
+          <ProfileCard :base64-data="profile_avatarUrl" :name="profile_fullname" :mail="profile_mail" :birthdate="profile_birthdate"
+          :gender="profile_gender" :weight="profile_weight" :height="profile_height"></ProfileCard>
         </v-col>
         <v-col sm="9" md="9" lg="9">
           <v-container class="exercises-container-style">
@@ -79,6 +80,8 @@ import ExercisesCard from "@/components/ExercisesCard";
 import { mapState, mapActions } from "pinia";
 import { useExercisesStore } from "@/store/ExercisesStore";
 import { Exercise } from "@/api/exercises";
+import { UserApi } from "@/api/user";
+
 export default {
   name: "Profile",
   components: { ExercisesCard, ProfileCard },
@@ -91,6 +94,13 @@ export default {
       unsaved_exercise_description:"Inserte descripción...",
       saved_exercise_name:"Hola",
       saved_exercise_description:"COMO",
+      profile_avatarUrl:'',
+      profile_fullname:'',
+      profile_mail:'',
+      profile_gender:'',
+      profile_birthdate:'',
+      profile_weight:'',
+      profile_height:'',
       is_editing:false,
       Exercises:[]
     }
@@ -101,11 +111,12 @@ export default {
     // ...mapActions(useProfileStore,{$updateProfilePhoto: 'updateProfilePhoto'}),
     // ...mapActions(useProfileStore,{$updateProfileInfo: 'updateProfileInfo'}),
     // ...mapActions(useProfileStore,{$getProfilePhoto: 'getProfilePhoto'}),
-    // ...mapActions(useProfileStore,{$getProfileInfo: 'getProfilePhoto'}),
+    // ...mapActions(useProfileStore,{$getProfileInfo : 'getProfileInfo''}),
     // ...mapActions(useProfileStore,{$deleteExercise: 'deleteExercise'}),
 
     ...mapActions(useExercisesStore, {
       $create: 'create',
+      $getProfileInfo : 'getProfileInfo',
     }),
     async addExercise(){
       this.saved_exercise_description =this.unsaved_exercise_description
@@ -163,10 +174,27 @@ export default {
       /*Aquí debo sacar del array el ejercicio con el id que me pasaron y
       * avisarle a la API con el comando delete de la misma*/
       console.log("llegué");
-    }
+    },
+
   },
-  beforeMount() {
+  async beforeMount(){
     /*Antes de que cargue la pagina, debemos pedirle a la API la info del perfil, así aparece de una*/
+    try{
+      const profileInfo = await UserApi.getCurrent()
+      this.profile_avatarUrl = profileInfo.avatarUrl
+      this.profile_fullname = profileInfo.firstName + ' ' + profileInfo.lastName
+      this.profile_mail = profileInfo.username
+      this.profile_gender = profileInfo.gender
+      this.profile_birthdate = profileInfo.birthdate
+      /* Ponerse de acuerdo con nehuen con metadata
+      this.profile_weight
+      this.profile_height
+      */
+      console.log(profileInfo)
+    }
+    catch (e) {
+      console.log(e.code)
+    }
   },
 
   beforeRouteLeave(){

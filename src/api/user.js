@@ -15,7 +15,7 @@ class UserApi {
     await Api.post(UserApi.getUrl('logout'), true, controller);
   }
 
-  static async get(controller) {
+  static async getCurrent(controller) {
     return Api.get(UserApi.getUrl('current'), true, controller);
   }
 
@@ -34,6 +34,7 @@ class UserApi {
   static async verify_user(user, controller) {
     return Api.post(UserApi.getUrl('verify_email'), false, user, controller)
   }
+
 }
 
 class Credentials {

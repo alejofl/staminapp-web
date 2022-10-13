@@ -1,4 +1,5 @@
 import { Api } from "./api.js";
+import { UserApi } from "@/api/user";
 
 export { ExercisesApi }
 export { Exercise }

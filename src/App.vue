@@ -16,6 +16,7 @@ import NavBar from "@/components/NavBar";
 import RecentCard from "@/components/RecentCard";
 import HomeCarousel from "@/components/HomeCarousel";
 import Footer from "@/components/Footer";
+import { useSecurityStore } from "@/store/SecurityStore";
 
 export default {
   components: { Footer, HomeCarousel, RecentCard, NavBar },
@@ -23,6 +24,10 @@ export default {
   data() {
     return {}
   },
+  async created() {
+    const securityStore = useSecurityStore();
+    await securityStore.initialize();
+  }
 };
 </script>
 

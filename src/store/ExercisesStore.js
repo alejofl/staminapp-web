@@ -9,6 +9,11 @@ export const useExercisesStore = defineStore("exercise", {
     async create(exercise) {
       const result = await ExercisesApi.postExercise(exercise);
       return result;
+    },
+
+    async getProfileInfo(){
+      const result = await ExercisesApi.getProfileInfo();
+      return result;
     }
   },
 });

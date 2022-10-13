@@ -81,7 +81,7 @@
         <v-row align-content="center">
           <v-col align-self="center" md="12">
             <!--Ver qué hacer cuando se cierra sesión, volver a la pantalla de inicio y hacer un sign out a la API-->
-            <v-btn color="error" width="100%" @click="logged_in=false">CERRAR SESIÓN</v-btn>
+            <v-btn color="error" width="100%" @click="logged_in=false;onLogOut()">CERRAR SESIÓN</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -90,6 +90,9 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "pinia";
+import { useSecurityStore } from "@/store/SecurityStore";
+
 export default {
   name: "ProfileCard",
   props:{name:String,mail:String,gender:String,birthdate:String,weight:String,height:String,gender_options:{
@@ -106,6 +109,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(useSecurityStore,{$logout : 'logout'}),
     uploadImage(event) {
       const file = event.target.files[0];
       const fileReader = new FileReader();
@@ -121,6 +125,9 @@ export default {
     },
     handle_image(){
       this.$refs.uploader.click();
+    },
+    async onLogOut(){
+      await this.$logout();
     }
   }
 };
