@@ -7,7 +7,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-flex>
-          <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl" v-bind="attrs" v-on="on" v-show="show_card">
+          <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl" v-bind="attrs" v-on="on">
             <v-card-title class="secondary--text font-weight-bold">
               <div>{{saved_exercise_name}}</div>
             </v-card-title>
@@ -18,7 +18,7 @@
         </v-flex>
       </template>
       <v-flex align-self-center>
-        <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl" v-show="show_card">
+        <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl">
           <v-container>
           <v-card-title class="secondary--text font-weight-bold">
             <div v-show="!show_editable_exercise_name">{{saved_exercise_name}}</div>
@@ -41,7 +41,7 @@
             </v-row>
             <v-row justify="center" align="center">
               <v-col md="12" align="center">
-                <v-btn color="error" @click="show_card=false;dialog=false;onDeletePressed()" width="100%" ref="delete-button">ELIMINAR EJERCICIO</v-btn>
+                <v-btn color="error" @click="dialog=false;onDeletePressed()" width="100%" ref="delete-button">ELIMINAR EJERCICIO</v-btn>
               </v-col>
             </v-row>
           </v-container>
@@ -58,7 +58,6 @@ export default {
   name: "ExercisesCard",
   data() {
     return {
-      show_card:true,
       show_editable_exercise_name:false,
       show_editable_exercise_description:false,
       is_editing:false,

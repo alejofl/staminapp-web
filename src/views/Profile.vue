@@ -14,16 +14,16 @@
 
       <v-row class="mt-0"
       >
-        <template v-for="(id,value) in Exercises" :key="value">
+        <template v-for="n in Exercises">
         <v-col
           class="pa-8"
           sm="12"
           md="4"
           lg="4"
         ><ExercisesCard
-           :exercise_id="id"  :saved_exercise_name="value.saved_exercise_name" :saved_exercise_description="value.saved_exercise_description"
-          :unsaved_exercise_description="value.unsaved_exercise_description" :unsaved_exercise_name="value.unsaved_exercise_name"
-          @delete_pressed="deleteExercise(id)"></ExercisesCard>
+           :exercise_id="n.id"  :saved_exercise_name="n.saved_exercise_name" :saved_exercise_description="n.saved_exercise_description"
+          :unsaved_exercise_description="n.unsaved_exercise_description" :unsaved_exercise_name="n.unsaved_exercise_name"
+          @delete_pressed="deleteExercise(n.id)"></ExercisesCard>
         </v-col>
         </template>
       </v-row>
@@ -100,21 +100,15 @@ export default {
       profile_weight:'',
       profile_height:'',
       is_editing:false,
-      Exercises: new Map()
+      Exercises: []
     }
   },
   methods:{
 
-    // ...mapActions(useProfileStore,{$addExercise: 'addExercise'}),
-    // ...mapActions(useProfileStore,{$updateProfilePhoto: 'updateProfilePhoto'}),
-    // ...mapActions(useProfileStore,{$updateProfileInfo: 'updateProfileInfo'}),
-    // ...mapActions(useProfileStore,{$getProfilePhoto: 'getProfilePhoto'}),
-    // ...mapActions(useProfileStore,{$getProfileInfo : 'getProfileInfo''}),
-    // ...mapActions(useProfileStore,{$deleteExercise: 'deleteExercise'}),
-
     ...mapActions(useExercisesStore, {
       $create: 'create',
       $delete_exercise: 'delete_exercise',
+      //$updateProfileInfo: 'update_profile_photo',
     }),
     async addExercise(){
       this.saved_exercise_description =this.unsaved_exercise_description
@@ -125,7 +119,7 @@ export default {
         console.log(exercise)
         const exerciseInfo = await this.$create(exercise)
         console.log(exerciseInfo)
-        this.Exercises.set(exerciseInfo.id,{saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description,})
+        this.Exercises.push({id:exerciseInfo.id,saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description})
         console.log("SEXOOOOOOOOOO")
         console.log(this.Exercises)
       }
@@ -133,38 +127,6 @@ export default {
         console.log(e.code);
       }
     },
-    // ...mapActions(useProfileStore,{$addExercise: 'addExercise'}),
-    // ...mapActions(useProfileStore,{$updateProfilePhoto: 'updateProfilePhoto'}),
-    // ...mapActions(useProfileStore,{$updateProfileInfo: 'updateProfileInfo'}),
-    // ...mapActions(useProfileStore,{$getProfilePhoto: 'getProfilePhoto'}),
-    // ...mapActions(useProfileStore,{$getProfileInfo: 'getProfilePhoto'}),
-
-    /*
-    add_exercise(){
-      this.saved_exercise_description =this.unsaved_exercise_description
-      this.saved_exercise_name = this.unsaved_exercise_name
-      this.Exercises.push({saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description,})
-    }*/
-    // async addExercise(){
-    //   try {
-    //     this.saved_exercise_description = this.unsaved_exercise_description
-    //     this.saved_exercise_name = this.unsaved_exercise_name
-    //     this.Exercises.push({
-    //       saved_exercise_name: this.saved_exercise_name,
-    //       saved_exercise_description: this.saved_exercise_description,
-    //       unsaved_exercise_name: this.unsaved_exercise_name,
-    //       unsaved_exercise_description: this.unsaved_exercise_description,
-    //     })
-    //     let toReturn = new Exercises(null,null,null);
-    //     const exercise = new Exercises(this.saved_exercise_name, this.saved_exercise_description, 'exercise');
-    //     console.log(exercise);
-    //     toReturn = await this.$addExercise(exercise);
-    //     console.log(toReturn);
-    //   }
-    //   catch (e) {
-    //     console.log(e.code);
-    //   }
-    // },
 
     async deleteExercise(to_delete_id){
       /*Aquí debo sacar del array el ejercicio con el id que me pasaron y
@@ -172,7 +134,14 @@ export default {
       try{
         console.log(this.Exercises)
         await this.$delete_exercise(to_delete_id)
-        this.Exercises.delete(to_delete_id)
+        let i = 0
+        for(let found = false ; !found && i < this.Exercises.length ; i++){
+          console.log(this.Exercises[i].id)
+          if(this.Exercises[i].id === to_delete_id){
+            found = true
+          }
+        }
+        this.Exercises.splice(i-1,1)
         console.log(this.Exercises)
       }
       catch (e) {
