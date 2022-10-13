@@ -229,9 +229,18 @@
 <script>
 export default {
   name: "ExercisesCard",
+  props: {
+    edit_cycle: {
+      type: Boolean,
+      default: false
+    },
+    data: {
+      type: {}
+    }
+  },
   data() {
     return {
-      edit_cycle: false,
+      // edit_cycle: this.edit,
       card_title: "Ejercicio sin nombre",
       repetitions: 0,
       exercises: [
@@ -274,7 +283,5 @@ export default {
 }
 .myTitle {
   color: #001833;
-}
-.custom_toggle {
 }
 </style>
