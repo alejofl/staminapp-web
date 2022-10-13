@@ -7,7 +7,6 @@ import Profile from "../views/Profile.vue";
 import Library from "../views/Library.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
-import Routine from "@/views/Routine";
 import EmailVerification from "@/views/EmailVerification";
 import ExternalUserView from "@/views/ExternalUserView";
 
@@ -50,10 +49,6 @@ const routes = [
     component: SignUp,
   },
   {
-    path: "/routine/:id",
-    name: "routine",
-    component: Routine,
-  },
     path: "/verification",
     name: "email-verification",
     component: EmailVerification,
