@@ -2,6 +2,7 @@ export { Api }
 
 class Api {
   static token;
+  static default_size = Number.MAX_SAFE_INTEGER;
 
   static get baseUrl() {
     return "http://127.0.0.1:8090/api";
@@ -12,15 +13,12 @@ class Api {
   }
 
   static async fetch(url, secure, init = {}, controller) {
-
     if (secure && Api.token) {
       if (!init.headers)
         init.headers = {};
 
       init.headers['Authorization'] = `bearer ${Api.token}`;
     }
-
-    console.log(Api.token);
 
     controller = controller || new AbortController();
     init.signal = controller.signal;
@@ -46,8 +44,8 @@ class Api {
     }
   }
 
-  static async get(url, secure, controller) {
-    return await Api.fetch(url, secure, {}, controller);
+  static async get(url, secure, sized, controller) {
+    return await Api.fetch(`${url}${sized ? `?size=${Api.default_size}` : ''}`, secure, {}, controller);
   }
 
   static async post(url, secure, data, controller) {

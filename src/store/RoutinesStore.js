@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
 import { RoutinesApi } from "@/api/routines";
+import { DefaultRoutine } from "@/assets/default_data";
 
 export const useRoutinesStore = defineStore("routines", {
-  state: () => ({ }),
+  state: () => ({
+    routine_data: JSON.parse(JSON.stringify(DefaultRoutine))
+  }),
   getters: {
   },
   actions: {
@@ -24,6 +27,10 @@ export const useRoutinesStore = defineStore("routines", {
 
     async delete(id) {
       return await RoutinesApi.deleteRoutine(id);
+    },
+
+    async createCycle(routineId, cycle) {
+      return await RoutinesApi.postCycle(routineId, cycle);
     }
   },
 });
