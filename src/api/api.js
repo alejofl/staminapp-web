@@ -20,6 +20,8 @@ class Api {
       init.headers['Authorization'] = `bearer ${Api.token}`;
     }
 
+    console.log(Api.token);
+
     controller = controller || new AbortController();
     init.signal = controller.signal;
     const timer = setTimeout(() => controller.abort(), Api.timeout);

@@ -14,6 +14,7 @@
 <script>
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import { useSecurityStore } from "@/store/SecurityStore";
 
 export default {
   components: { Footer, NavBar },
@@ -21,6 +22,10 @@ export default {
   data() {
     return {}
   },
+  async created() {
+    const securityStore = useSecurityStore();
+    await securityStore.initialize();
+  }
 };
 </script>
 
