@@ -16,6 +16,10 @@ class ExercisesApi {
   static async deleteExercise(exerciseId, controller) {
     return await Api.delete(ExercisesApi.getUrl(exerciseId), true, controller);
   }
+
+  static async updateExercise(exerciseId,exercise,controller){
+    return await Api.put(ExercisesApi.getUrl(exerciseId),true,exercise,controller);
+  }
 }
 
 class Exercise {

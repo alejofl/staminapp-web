@@ -60,6 +60,10 @@ export const useSecurityStore = defineStore("security", {
 
     async createUser(userData) {
       await UserApi.postCreateUser(userData);
+    },
+
+    async updateProfileInfo(userData){
+      await UserApi.updateProfileInfo(userData);
     }
   },
 });

@@ -35,7 +35,8 @@
                 ;is_editing ? saved_exercise_name=unsaved_exercise_name:0
                 ;is_editing=!is_editing
                 ;show_editable_exercise_name=!show_editable_exercise_name
-                 ;show_editable_exercise_description=!show_editable_exercise_description">
+                ;show_editable_exercise_description=!show_editable_exercise_description
+                ;is_editing ? 0:onSavePressed()">
                   {{ is_editing ? 'GUARDAR EJERCICIO' : 'EDITAR EJERCICIO' }}</v-btn>
               </v-col>
             </v-row>
@@ -67,9 +68,12 @@ export default {
   methods: {
 
     onDeletePressed(){
-      console.log("entro al clicked del eliminar")
       this.$parent.deleteExercise(this.exercise_id)
     },
+
+    onSavePressed(){
+      this.$parent.updateExercise2(this.exercise_id,this.saved_exercise_name,this.saved_exercise_description)
+    }
 
   },
 };

@@ -1,6 +1,6 @@
 import { Api } from "./api.js";
 
-export { UserApi, Credentials, UserData, MetaData }
+export { UserApi, Credentials, UserData, MetaData, updatedUserData }
 
 class UserApi {
   static getUrl(slug) {
@@ -33,6 +33,10 @@ class UserApi {
 
   static async verify_user(user, controller) {
     return Api.post(UserApi.getUrl('verify_email'), false, user, controller)
+  }
+
+  static async updateProfileInfo(updatedUserData,controller){
+    return Api.put(UserApi.getUrl('current'),true,updatedUserData,controller)
   }
 
 }
@@ -68,5 +72,17 @@ class MetaData {
     this.weight = weight;
     this.height = height;
     this.profilePicture = profilePicture;
+  }
+}
+
+class updatedUserData{
+  constructor(firstName,lastName,gender,birthdate,phone,avatarUrl,metadata){
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.gender = gender;
+    this.birthdate = birthdate;
+    this.phone = phone;
+    this.avatarUrl = avatarUrl;
+    this.metadata = metadata;
   }
 }
