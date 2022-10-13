@@ -30,7 +30,7 @@ export default {
   components: { RoutineCard },
   data: () => {
     return {
-      tags: ['Tren Superior', "Tren Inferior", "Zona Media", "Aeróbico", "Integral", "Principiante", "Intermedio", "Avanzado"],
+      tags: ["Principiante", "Intermedio", "Avanzado"],
       selected_tags: []
     }
   }

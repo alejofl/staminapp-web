@@ -13,13 +13,11 @@
 
 <script>
 import NavBar from "@/components/NavBar";
-import RecentCard from "@/components/RecentCard";
-import HomeCarousel from "@/components/HomeCarousel";
 import Footer from "@/components/Footer";
 import { useSecurityStore } from "@/store/SecurityStore";
 
 export default {
-  components: { Footer, HomeCarousel, RecentCard, NavBar },
+  components: { Footer, NavBar },
   name: "App",
   data() {
     return {}
