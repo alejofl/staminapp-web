@@ -30,11 +30,13 @@ class RoutinesApi {
 }
 
 class Routine {
+  isPublic;
+
   constructor(name, detail, difficulty, metadata) {
     this.name = name;
     this.detail = detail;
-    this.isPublic = true;
     this.difficulty = difficulty;
+    this.isPublic = true;
     this.category = null;
     this.metadata = metadata;
   }

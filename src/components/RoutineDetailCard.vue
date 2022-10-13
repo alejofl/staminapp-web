@@ -1,71 +1,5 @@
 <template>
-  <v-card class="" max-width="600px" rounded>
-    <div class="d-flex">
-      <v-container>
-        <v-row no-gutters>
-          <v-col no-gutters md="4" class="align-center justify-center">
-            <v-hover v-slot="{ hover }" v-if="edit">
-              <v-card @click="handle_image" height="100%" width="100%">
-                <input ref="uploader" class="d-none" type="file" @change="uploadImage">
-                <v-fade-transition>
-                  <v-overlay class="overlay-class square-overlay" absolute opacity="0.5" v-if="hover">
-                    <v-icon>photo_camera</v-icon>
-                  </v-overlay>
-                </v-fade-transition>
-                <v-img :src="routine_data.picture" height="100%" width="100%"></v-img>
-              </v-card>
-            </v-hover>
-            <v-card height="100%" width="100%" v-else>
-              <v-img :src="routine_data.picture" height="100%" width="100%"></v-img>
-            </v-card>
-          </v-col>
-          <v-col md="8">
-            <v-container class="py-0">
-              <v-row no-gutters class="justify-end align-center">
-                <v-icon size="48" color="error" :disabled="edit" v-if="!favourite" @click="favourite = !favourite">favorite_border</v-icon>
-                <v-icon size="48" color="error" :disabled="edit" v-else @click="favourite = !favourite">favorite</v-icon>
-              </v-row>
-              <v-row no-gutters class="pl-3 py-2">
-                <v-select label="Tag" v-model="routine_data.tag" :items="tags" append-icon="expand_more" color="secondary" filled background-color="#E1E6EC" hide-details v-if="edit">
-                  {{ routine_data.tag }}
-                </v-select>
-                <v-chip color="secondary" v-else outlined>{{ routine_data.tag }}</v-chip>
-              </v-row>
-              <v-row no-gutters>
-                <v-rating class="pl-3" empty-icon="star_outline" color="primary" full-icon="star" half-icon="star_half" half-increments hover length="5" :value="routine_data.rating" :readonly="edit" dense size="28"/>
-              </v-row>
-              <v-row no-gutters>
-                <v-text-field v-if="edit" class="py-2 pl-3" filled label="Título" v-model="routine_data.title" background-color="#E1E6EC" color="secondary" hide-details>
-                  {{ routine_data.title }}
-                </v-text-field>
-                <v-card-title v-else class="text-h4 py-2">{{ routine_data.title }}</v-card-title>
-              </v-row>
-              <v-row no-gutters>
-                <v-card-subtitle class="py-0">{{ routine_data.author }}</v-card-subtitle>
-              </v-row>
-            </v-container>
-          </v-col>
-        </v-row>
-        <v-row no-gutters class="py-6">
-          <v-textarea v-if="edit" filled label="Descripción" v-model="routine_data.detail" background-color="#E1E6EC" color="secondary" hide-details auto-grow>
-            {{ routine_data.detail }}
-          </v-textarea>
-          <p v-else>{{ routine_data.detail }}</p>
-        </v-row>
-        <v-row no-gutters>
-          <v-container class="pa-0">
-            <v-row no-gutters class="pb-4">
-              <v-btn v-if="edit" color="success" width="100%" @click="edit = false; emit_edit_toggle();">GUARDAR CAMBIOS</v-btn>
-              <v-btn v-else color="secondary" width="100%" @click="edit = true; emit_edit_toggle();">EDITAR RUTINA</v-btn>
-            </v-row>
-            <v-row no-gutters>
-              <v-btn color="primary" :disabled="edit" width="100%">COMPARTIR RUTINA</v-btn>
-            </v-row>
-          </v-container>
-        </v-row>
-      </v-container>
-    </div>
-  </v-card>
+
 </template>
 
 <script>
@@ -114,6 +48,16 @@ export default {
     },
     emit_edit_toggle(event) {
       this.$emit('edit_toggle', this.edit)
+    },
+    saveChanges() {
+      try {
+
+      } catch (e) {
+
+      }
+
+      this.edit = false;
+      this.emit_edit_toggle();
     }
   },
   beforeMount() {
