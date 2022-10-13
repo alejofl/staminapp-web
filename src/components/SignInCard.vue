@@ -66,7 +66,10 @@
           <v-row justify="center" align-content="center">
             <v-divider></v-divider>
           </v-row>
-          <v-row justify="center" align="center" dense class="mt-6">
+          <v-row justify="center" align="center" dense class="mt-6 mb-0">
+            ¿No tenés cuenta?
+          </v-row>
+          <v-row justify="center" align="center" dense class="my-0">
             <router-link to="/sign-up" class="text-decoration-none signUp">Registrate</router-link>
           </v-row>
         </v-container>
