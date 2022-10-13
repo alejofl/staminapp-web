@@ -10,5 +10,10 @@ export const useExercisesStore = defineStore("exercise", {
       const result = await ExercisesApi.postExercise(exercise);
       return result;
     },
+
+    async delete_exercise(exerciseId){
+      const result = await ExercisesApi.deleteExercise(exerciseId)
+      return result
+    }
   },
 });

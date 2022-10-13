@@ -13,6 +13,9 @@ class ExercisesApi {
     return await Api.post(ExercisesApi.getUrl(), true, exercise, controller);
   }
 
+  static async deleteExercise(exerciseId, controller) {
+    return await Api.delete(ExercisesApi.getUrl(exerciseId), true, controller);
+  }
 }
 
 class Exercise {

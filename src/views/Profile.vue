@@ -14,18 +14,16 @@
 
       <v-row class="mt-0"
       >
-        <template v-for="n in Exercises">
+        <template v-for="(id,value) in Exercises" :key="value">
         <v-col
           class="pa-8"
-          :key="n"
           sm="12"
           md="4"
           lg="4"
-        >
-          <ExercisesCard :key="n"
-                         :saved_exercise_name="n.saved_exercise_name" :saved_exercise_description="n.saved_exercise_description"
-          :unsaved_exercise_description="n.unsaved_exercise_description" :unsaved_exercise_name="n.unsaved_exercise_name"
-          @delete_card_pressed="deleteExercise"></ExercisesCard>
+        ><ExercisesCard
+           :exercise_id="id"  :saved_exercise_name="value.saved_exercise_name" :saved_exercise_description="value.saved_exercise_description"
+          :unsaved_exercise_description="value.unsaved_exercise_description" :unsaved_exercise_name="value.unsaved_exercise_name"
+          @delete_pressed="deleteExercise(id)"></ExercisesCard>
         </v-col>
         </template>
       </v-row>
@@ -98,11 +96,11 @@ export default {
       profile_fullname:'',
       profile_mail:'',
       profile_gender:'',
-      profile_birthdate:'',
+      profile_birthdate:0,
       profile_weight:'',
       profile_height:'',
       is_editing:false,
-      Exercises:[]
+      Exercises: new Map()
     }
   },
   methods:{
@@ -116,19 +114,20 @@ export default {
 
     ...mapActions(useExercisesStore, {
       $create: 'create',
-      $getProfileInfo : 'getProfileInfo',
+      $delete_exercise: 'delete_exercise',
     }),
     async addExercise(){
       this.saved_exercise_description =this.unsaved_exercise_description
       this.saved_exercise_name = this.unsaved_exercise_name
       try {
         // const exercise = new Exercise("Uno", "Uno", "exercise", null);
-        const exercise = new Exercise(this.saved_exercise_name, this.saved_exercise_description, "exercise", null);
+        const exercise = new Exercise(this.saved_exercise_name, this.saved_exercise_description, 'exercise', null);
         console.log(exercise)
         const exerciseInfo = await this.$create(exercise)
         console.log(exerciseInfo)
-        this.Exercises.push({saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description,})
+        this.Exercises.set(exerciseInfo.id,{saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description,})
         console.log("SEXOOOOOOOOOO")
+        console.log(this.Exercises)
       }
       catch (e) {
         console.log(e.code);
@@ -170,7 +169,16 @@ export default {
     async deleteExercise(to_delete_id){
       /*Aquí debo sacar del array el ejercicio con el id que me pasaron y
       * avisarle a la API con el comando delete de la misma*/
-      console.log("llegué");
+      try{
+        console.log(this.Exercises)
+        await this.$delete_exercise(to_delete_id)
+        this.Exercises.delete(to_delete_id)
+        console.log(this.Exercises)
+      }
+      catch (e) {
+        console.log(e.code)
+      }
+
     },
 
   },
@@ -181,6 +189,7 @@ export default {
       this.profile_picture = profileInfo.metadata.profilePicture
       this.profile_fullname = profileInfo.firstName
       this.profile_mail = profileInfo.username
+      /*Revisar el tema del genero*/
       this.profile_gender = profileInfo.gender
       this.profile_birthdate = profileInfo.birthdate
       this.profile_weight = profileInfo.metadata.weight
