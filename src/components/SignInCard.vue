@@ -43,8 +43,7 @@
               background-color="#E1E6EC"
               append-icon="email"
               color="secondary"
-              :error-messages="getErrors('email', $v.email)"
-              @blur="$v.email.$touch()">
+              hide-details>
             </v-text-field>
           </v-row>
           <v-row align-content="center" class="mx-2 mt-4">
@@ -56,14 +55,13 @@
               append-icon="key"
               color="secondary"
               type="password"
-              :error-messages="getErrors('password', $v.password)"
-              @blur="$v.password.$touch()">
+              hide-details>
             </v-text-field>
           </v-row>
         </v-container>
         <v-container class="mt-6">
           <v-row justify="center" align-content="center" class="mb-6">
-            <v-btn color="primary" width="272px" height="40" @click="validate()" >INICIAR SESIÓN</v-btn>
+            <v-btn color="primary" width="272px" height="40" @click="login()" >INICIAR SESIÓN</v-btn>
           </v-row>
           <v-row justify="center" align-content="center">
             <v-divider></v-divider>
@@ -81,7 +79,6 @@
 import { mapState, mapActions } from "pinia";
 import { useSecurityStore } from "@/store/SecurityStore";
 import { Credentials } from "@/api/user";
-import { required, sameAs } from 'vuelidate/lib/validators';
 
 export default {
   name: "SignInCard",
@@ -95,37 +92,10 @@ export default {
       serverError: false,
     }
   },
-  validations () {
-    return {
-      email: { required },
-      password: { required },
-    }
+  computed: {
+
   },
   methods: {
-    validate() {
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        return;
-      }
-      this.login();
-    },
-    getErrors(name, model) {
-      const errors = [];
-      if (!model.$dirty) {
-        return errors;
-      }
-      switch (name) {
-        case "email":
-          !model.required && errors.push("El e-mail es obligatorio");
-          break;
-        case "password":
-          !model.required && errors.push("La contraseña es obligatoria");
-          break;
-        default:
-          break;
-      }
-      return errors;
-    },
     ...mapActions(useSecurityStore, {
       $login: 'login',
       $resendEmailVerification: 'resendEmailVerification',
