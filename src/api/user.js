@@ -45,18 +45,20 @@ class Credentials {
 }
 
 class UserData {
-  constructor(username, password, firstName, lastName, gender, birthdate, email, phone, avatarUrl, metadata) {
-    this.username = username;
-    this.email = email;
+  constructor(password, name, gender, birthdate, email, metadata) {
+    this.username = email;
     this.password = password;
+    this.firstName = name;
+    this.lastName = '';
     if (gender !== '') {
       this.gender = gender;
     }
     if (birthdate !== '') {
       this.birthdate = parseInt(birthdate, 10);
     }
-    this.phone = phone;
-    this.avatarUrl = avatarUrl;
+    this.email = email;
+    this.phone = '';
+    this.avatarUrl = '';
     this.metadata = metadata;
   }
 }
