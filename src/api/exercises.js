@@ -1,0 +1,24 @@
+import { Api } from "./api.js";
+
+export { ExercisesApi }
+export { Exercise }
+
+class ExercisesApi {
+  static getUrl(slug) {
+    return `${Api.baseUrl}/exercises${ slug ? `/${slug}` : ""}`;
+  }
+  // El controller es algo del timeout
+  static async postExercise(exercise, controller) {
+    return await Api.post(ExercisesApi.getUrl(), true, exercise, controller);
+  }
+
+}
+
+class Exercise {
+  constructor(name, detail, type, metadata) {
+    this.name = name;
+    this.detail = detail;
+    this.type = type;
+    this.metadata = null;
+  }
+}

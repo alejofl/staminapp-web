@@ -76,9 +76,9 @@
 <script>
 import ProfileCard from "@/components/ProfileCard";
 import ExercisesCard from "@/components/ExercisesCard";
-import {Exercise} from "@/api/exercise.js"
-import {useProfileStore } from "@/store/ProfileStore.js";
-import { mapActions } from "pinia";
+import { mapState, mapActions } from "pinia";
+import { useExercisesStore } from "@/store/ExercisesStore";
+import { Exercise } from "@/api/exercises";
 export default {
   name: "Profile",
   components: { ExercisesCard, ProfileCard },
@@ -96,38 +96,65 @@ export default {
     }
   },
   methods:{
-    ...mapActions(useProfileStore,{$addExercise: 'addExercise'}),
-    ...mapActions(useProfileStore,{$updateProfilePhoto: 'updateProfilePhoto'}),
-    ...mapActions(useProfileStore,{$updateProfileInfo: 'updateProfileInfo'}),
-    ...mapActions(useProfileStore,{$getProfilePhoto: 'getProfilePhoto'}),
-    ...mapActions(useProfileStore,{$getProfileInfo: 'getProfilePhoto'}),
-    ...mapActions(useProfileStore,{$deleteExercise: 'deleteExercise'}),
+
+    // ...mapActions(useProfileStore,{$addExercise: 'addExercise'}),
+    // ...mapActions(useProfileStore,{$updateProfilePhoto: 'updateProfilePhoto'}),
+    // ...mapActions(useProfileStore,{$updateProfileInfo: 'updateProfileInfo'}),
+    // ...mapActions(useProfileStore,{$getProfilePhoto: 'getProfilePhoto'}),
+    // ...mapActions(useProfileStore,{$getProfileInfo: 'getProfilePhoto'}),
+    // ...mapActions(useProfileStore,{$deleteExercise: 'deleteExercise'}),
+
+    ...mapActions(useExercisesStore, {
+      $create: 'create',
+    }),
+    async addExercise(){
+      this.saved_exercise_description =this.unsaved_exercise_description
+      this.saved_exercise_name = this.unsaved_exercise_name
+      this.Exercises.push({saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description,})
+
+      try {
+        // const exercise = new Exercise("Uno", "Uno", "exercise", null);
+        const exercise = new Exercise(this.saved_exercise_name, this.saved_exercise_description, "exercise", null);
+        console.log(exercise)
+        await this.$create(exercise)
+        console.log("SEXOOOOOOOOOO")
+      }
+      catch (e) {
+        console.log(e.code);
+      }
+    },
+    // ...mapActions(useProfileStore,{$addExercise: 'addExercise'}),
+    // ...mapActions(useProfileStore,{$updateProfilePhoto: 'updateProfilePhoto'}),
+    // ...mapActions(useProfileStore,{$updateProfileInfo: 'updateProfileInfo'}),
+    // ...mapActions(useProfileStore,{$getProfilePhoto: 'getProfilePhoto'}),
+    // ...mapActions(useProfileStore,{$getProfileInfo: 'getProfilePhoto'}),
+
     /*
     add_exercise(){
       this.saved_exercise_description =this.unsaved_exercise_description
       this.saved_exercise_name = this.unsaved_exercise_name
       this.Exercises.push({saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description,})
     }*/
-    async addExercise(){
-      try {
-        this.saved_exercise_description = this.unsaved_exercise_description
-        this.saved_exercise_name = this.unsaved_exercise_name
-        this.Exercises.push({
-          saved_exercise_name: this.saved_exercise_name,
-          saved_exercise_description: this.saved_exercise_description,
-          unsaved_exercise_name: this.unsaved_exercise_name,
-          unsaved_exercise_description: this.unsaved_exercise_description,
-        })
-        let toReturn = new Exercise(null,null,null);
-        const exercise = new Exercise(this.saved_exercise_name, this.saved_exercise_description, 'exercise');
-        console.log(exercise);
-        toReturn = await this.$addExercise(exercise);
-        console.log(toReturn);
-      }
-      catch (e) {
-        console.log(e.code);
-      }
-    },
+    // async addExercise(){
+    //   try {
+    //     this.saved_exercise_description = this.unsaved_exercise_description
+    //     this.saved_exercise_name = this.unsaved_exercise_name
+    //     this.Exercises.push({
+    //       saved_exercise_name: this.saved_exercise_name,
+    //       saved_exercise_description: this.saved_exercise_description,
+    //       unsaved_exercise_name: this.unsaved_exercise_name,
+    //       unsaved_exercise_description: this.unsaved_exercise_description,
+    //     })
+    //     let toReturn = new Exercises(null,null,null);
+    //     const exercise = new Exercises(this.saved_exercise_name, this.saved_exercise_description, 'exercise');
+    //     console.log(exercise);
+    //     toReturn = await this.$addExercise(exercise);
+    //     console.log(toReturn);
+    //   }
+    //   catch (e) {
+    //     console.log(e.code);
+    //   }
+    // },
     async updateProfilePhoto(){
 
     },
