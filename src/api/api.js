@@ -12,15 +12,12 @@ class Api {
   }
 
   static async fetch(url, secure, init = {}, controller) {
-
     if (secure && Api.token) {
       if (!init.headers)
         init.headers = {};
 
       init.headers['Authorization'] = `bearer ${Api.token}`;
     }
-
-    console.log(Api.token);
 
     controller = controller || new AbortController();
     init.signal = controller.signal;
