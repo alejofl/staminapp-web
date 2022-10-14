@@ -9,7 +9,7 @@ import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
 import Routine from "@/views/Routine";
 import EmailVerification from "@/views/EmailVerification";
-import ExternalUserView from "@/views/ExternalUserView";
+import ExternalUserView from "@/views/User";
 
 Vue.use(VueRouter);
 
@@ -65,8 +65,8 @@ const routes = [
     component: EmailVerification,
   },
   {
-    path: "/external-user",
-    name: "external-user",
+    path: "/user/:id",
+    name: "user",
     component: ExternalUserView,
   }
 ];

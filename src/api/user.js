@@ -27,8 +27,8 @@ class UserApi {
     return Api.post(UserApi.getUrl(''), false, userData, controller);
   }
 
-  static async get_user_info(id, controller) {
-    return Api.get(UserApi.getUrl(id), false, true, controller)
+  static async getUserInfo(id, controller) {
+    return Api.get(UserApi.getUrl(id), true, false, controller)
   }
 
   static async verify_user(user, controller) {
@@ -74,11 +74,12 @@ class UserData {
     this.metadata = metadata;
   }
 }
-
 class MetaData {
   constructor(weight, height, profilePicture) {
-    this.weight = weight;
-    this.height = height;
+    this.weight = [];
+    this.weight.push(weight);
+    this.height = [];
+    this.height.push(height);
     this.profilePicture = profilePicture;
   }
 }

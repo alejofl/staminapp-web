@@ -9,11 +9,30 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
     <link href="cera-pro.css" rel="stylesheet">
+    <link href="index.css" rel="stylesheet">
+    <script src="offline.js"></script>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <div class="custom-container">
+        <div class="custom-centered">
+          <div class="graphics"></div>
+          <h1>¡Uh! Hubo un problema.</h1>
+          <h2>JavaScript está desactivado.</h2>
+          <p>Lamentablemente StaminApp no funciona correctamente sin JavaScript activado. Por favor, activalo para continuar.</p>
+          <img src="img/logo.svg" alt="StaminApp" width="200px">
+        </div>
+      </div>
     </noscript>
+    <div id="disconnected" class="custom-container">
+      <div class="custom-centered">
+        <div class="graphics"></div>
+        <h1>¡Uh! Hubo un problema.</h1>
+        <h2>No tenés conexión.</h2>
+        <p>Lamentablemente StaminApp no funciona de manera offline. Por favor, verificá tu conexión.</p>
+        <img src="img/logo.svg" alt="StaminApp" width="200px">
+      </div>
+    </div>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>

@@ -77,7 +77,10 @@
           <v-row justify="center" align-content="center">
             <v-divider></v-divider>
           </v-row>
-          <v-row justify="center" align="center" dense class="mt-6">
+          <v-row justify="center" align="center" dense class="mt-6 mb-0">
+            ¿Ya tenés cuenta?
+          </v-row>
+          <v-row justify="center" align="center" dense class="my-0">
             <router-link to="/sign-in" class="text-decoration-none signIn">Iniciar sesión</router-link>
           </v-row>
         </v-container>
@@ -162,13 +165,15 @@
         <v-container class="mt-6">
           <v-row justify="center" align-content="center" class="mb-6">
             <v-btn color="primary" width="272px" height="40" :loading="loadingRegister"
-                   @click="createUser(true); loaderRegister='loading'">
+                   @click="createUser(1); loaderRegister='loading'">
               REGISTRARSE
             </v-btn>
           </v-row>
-          <v-row justify="center" align="center" dense class="mt-6"
-                 @click="createUser(false);">
-            Saltar este paso
+          <v-row justify="center" align="center" dense class="mt-6">
+            <v-btn depressed elevation="0" color="white" width="272px" height="40" :loading="loadingAvoidStep"
+                   @click="createUser(2); loaderAvoidStep='loading'">
+              Saltar este paso
+            </v-btn>
           </v-row>
         </v-container>
       </v-container>
@@ -181,7 +186,7 @@
 import { mapActions } from "pinia";
 import { useSecurityStore } from "@/store/SecurityStore";
 import { UserData, MetaData } from "@/api/user";
-import { required, sameAs } from 'vuelidate/lib/validators';
+import { required, sameAs, maxLength } from 'vuelidate/lib/validators';
 
 export default {
   name: "RegisterCard",
@@ -192,8 +197,6 @@ export default {
       email: '',
       password:'',
       password2:'',
-      failedRegister: false,
-      steps: 0,
       gender: '',
       birthdate:'',
       weight:[],
@@ -201,11 +204,17 @@ export default {
       gender_options:['Masculino','Femenino','Otro'],
       base64Data: "data:image/jpeg;base64,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\n",
 
-      // Loading flags for final step for registration
+      // Control Steps in registration
+      steps: 0,
+
+      // Loading flags for final step in registration
       loaderRegister: null,
       loadingRegister: false,
+      loaderAvoidStep: null,
+      loadingAvoidStep: false,
 
       // Flags for error messages
+      failedRegister: false,
       emailAlreadyExists: false,
       emailFormatIsIncorrect: false,
       genericError: false,
@@ -213,9 +222,9 @@ export default {
   },
   validations () {
     return {
-      name: { required },
-      email: { required },
-      password: { required },
+      name: { required, maxLength: maxLength(50) },
+      email: { required, maxLength: maxLength(100) },
+      password: { required, maxLength: maxLength(50) },
       password2: { required, sameAsPassword : sameAs('password') }
     }
   },
@@ -236,12 +245,15 @@ export default {
       switch (name) {
         case "name":
           !model.required && errors.push("El nombre completo es obligatorio");
+          !model.maxLength && errors.push("El nombre debe tener como máximo 50 caracteres")
           break;
         case "email":
           !model.required && errors.push("El e-mail es obligatorio");
+          !model.maxLength && errors.push("El email debe tener como máximo 100 caracteres")
           break;
         case "password":
           !model.required && errors.push("La contraseña es obligatoria");
+          !model.maxLength && errors.push("La contraseña debe tener como máximo 50 caracteres")
           break;
         case "password2":
           !model.required && errors.push("Repetir contraseña es obligatoria");
@@ -271,8 +283,10 @@ export default {
     }),
     async createUser(button) {
       try {
-        if (button) {
+        if (button === 1) {
           this.loadingRegister = true;
+        } else if (button === 2) {
+          this.loadingAvoidStep = true;
         }
         if (this.gender === 'Masculino') {
           this.gender = 'male'
@@ -283,12 +297,16 @@ export default {
         }
         const userMetaData = new MetaData(this.weight, this.height, this.base64Data);
         const userData = new UserData(this.password, this.name, this.gender, this.birthdate, this.email, userMetaData);
+        console.log(userData);
         await this.$createUser(userData);
-        if (button) {
+        if (button === 1) {
           this.loadingRegister = false;
+        } else if (button === 2) {
+          this.loadingAvoidStep = false;
         }
         this.$router.push({name : 'sign-in', query: {registered: null}});
       } catch (e) {
+        console.log(e.code);
         this.emailFormatIsIncorrect = false;
         this.emailAlreadyExists = false;
         this.genericError = false;
@@ -299,7 +317,8 @@ export default {
         } else {
           this.genericError = true;
         }
-        this.loading = false;
+        this.loadingRegister = false;
+        this.loadingAvoidStep = false;
         this.failedRegister = true;
         this.steps = 0;
       }
