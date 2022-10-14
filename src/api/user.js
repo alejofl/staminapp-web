@@ -36,13 +36,10 @@ class UserApi {
   }
 
   static async updateProfileInfo(updatedUserData, controller) {
-    console.log("Entre al user api");
-    console.log(updatedUserData);
     return Api.put(UserApi.getUrl('current'),true, updatedUserData, controller)
   }
 
   static async getProfileInfo(controller){
-    console.log("llego al getprofile del user.js")
     return Api.get(UserApi.getUrl('current'), true, true, controller);
   }
 }
@@ -76,10 +73,8 @@ class UserData {
 }
 class MetaData {
   constructor(weight, height, profilePicture) {
-    this.weight = [];
-    this.weight.push(weight);
-    this.height = [];
-    this.height.push(height);
+    this.weight = weight;
+    this.height = height;
     this.profilePicture = profilePicture;
   }
 }

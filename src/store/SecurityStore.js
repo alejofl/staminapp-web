@@ -8,7 +8,7 @@ export const useSecurityStore = defineStore("security", {
   state: () => ({
     token: null,
     user: null,
-    currentUser: { name: '', mail: '', gender: '', birthdate: '', weight: '', height: '', base64Data: '' },
+    currentUser: { name: '', mail: '', gender: '', birthdate: 0, weight: '', height:'', base64Data: '' },
   }),
   getters: {
     isLoggedIn() {
@@ -79,19 +79,14 @@ export const useSecurityStore = defineStore("security", {
     },
 
     async getProfileInfo(){
-      console.log("Entro al getProfile en Security Store")
       const result = await UserApi.getProfileInfo();
-      console.log("result es igual a ")
-      console.log(result)
       this.currentUser.name = result.firstName;
       this.currentUser.mail = result.email;
       this.currentUser.gender = result.gender;
       this.currentUser.birthdate = result.birthdate;
-      // this.currentUser.weight = result.weight[0];
-      // this.currentUser.height = result.height[0];
-      //this.currentUser.base64Data = result.metadata.profilePicture;
-      console.log("current user es igual a")
-      console.log(this.currentUser)
+      this.currentUser.weight = result.metadata.weight;
+      this.currentUser.height = result.metadata.height;
+      this.currentUser.base64Data = result.metadata.profilePicture;
       return result
     }
   },
