@@ -21,31 +21,38 @@ export const useSecurityStore = defineStore("security", {
         this.setToken(token);
       }
     },
+
     setUser(user) {
       this.user = user;
     },
+
     setToken(token) {
       this.token = token;
       Api.token = token;
     },
+
     updateToken(token, rememberMe) {
       if (rememberMe)
         localStorage.setItem(SECURITY_TOKEN_KEY, token);
       // Después setea el token
       this.setToken(token);
     },
+
     removeToken() {
       localStorage.removeItem(SECURITY_TOKEN_KEY);
       this.setToken(null);
     },
+
     async login(credentials, rememberMe) {
       const result = await UserApi.login(credentials);
       this.updateToken(result.token, rememberMe);
     },
+
     async logout() {
       await UserApi.logout();
       this.removeToken();
     },
+
     async getCurrentUser() {
       if (this.user)
         return this.user;
@@ -60,6 +67,10 @@ export const useSecurityStore = defineStore("security", {
 
     async createUser(userData) {
       await UserApi.postCreateUser(userData);
+    },
+
+    async getUserInfo(id) {
+      return await UserApi.getUserInfo(id);
     }
   },
 });

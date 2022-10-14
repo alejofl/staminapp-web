@@ -35,11 +35,6 @@ class RoutinesApi {
   static async getRoutinesForOtherUser(otherUserID, controller) {
     return await Api.get(RoutinesApi.getUrl(`?userId=${otherUserID}`), true, true, controller);
   }
-
-  static async getRoutinesForDifficulty(difficulty, controller) {
-    return await Api.get(RoutinesApi.getUrl(`?difficulty=${difficulty}`), true, true, controller);
-  }
-
 }
 
 class Routine {

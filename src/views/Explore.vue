@@ -42,9 +42,7 @@ export default {
         const result = await this.$getAll();
         this.routines = result.content;
         this.current_routines = this.routines;
-        console.log("Success");
       } catch(e) {
-        console.log("Error");
         console.log(e);
       }
     },
@@ -54,14 +52,10 @@ export default {
         return;
       }
       let current_tags = [];
-      console.log(this.selected_tags);
       for(let i of this.selected_tags) {
         current_tags.push(Difficulty.for_explore[i]);
       }
-      console.log(current_tags);
-      console.log(this.routines);
-      const result = this.routines.filter(r => current_tags.includes(r.difficulty));
-      this.current_routines = result;
+      this.current_routines = this.routines.filter(r => current_tags.includes(r.difficulty));
     }
   },
   beforeMount() {
@@ -74,6 +68,7 @@ export default {
 .myContainer {
   margin-top: 64px;
   background-color: #F5FAFF;
+  height: 100%;
 }
 .myChip{
   background: #E1E6EC !important;

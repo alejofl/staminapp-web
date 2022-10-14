@@ -56,10 +56,6 @@ export const useRoutinesStore = defineStore("routines", {
 
     async getRoutinesForOtherUser(otherUserID) {
       return await RoutinesApi.getRoutinesForOtherUser(otherUserID);
-    },
-
-    async getRoutinesForDifficulty(difficulty) {
-      return await RoutinesApi.getRoutinesForDifficulty(difficulty);
     }
   },
 });
