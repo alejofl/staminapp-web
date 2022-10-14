@@ -297,7 +297,6 @@ export default {
         }
         const userMetaData = new MetaData(this.weight, this.height, this.base64Data);
         const userData = new UserData(this.password, this.name, this.gender, this.birthdate, this.email, userMetaData);
-        console.log(userData);
         await this.$createUser(userData);
         if (button === 1) {
           this.loadingRegister = false;

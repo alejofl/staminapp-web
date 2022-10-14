@@ -52,7 +52,6 @@
 import { mapActions, mapState } from "pinia";
 import { useExercisesStore } from "@/store/ExercisesStore";
 import { Exercise } from "@/api/exercises";
-import { useSecurityStore } from "@/store/SecurityStore";
 
 export default {
   props: {idx: Number},
@@ -90,16 +89,11 @@ export default {
     },
     async updateExercise(exerciseID, exerciseName, exerciseDetail) {
       try{
-        console.log("Entre a updateExercise")
         const exercise = new Exercise(exerciseName, exerciseDetail,'exercise', null);
         await this.$updateExercise(exerciseID, exercise);
-        console.log("Success");
       }
       catch (e) {
-        console.log("Error");
         console.log(e.code);
-        console.log(e.name);
-        console.log(e);
       }
     },
     async deleteExercise(exerciseID){
@@ -107,19 +101,14 @@ export default {
         await this.$delete_exercise(exerciseID)
         let i = 0
         for(let found = false ; !found && i < this.$exercises.length ; i++){
-          console.log(this.$exercises[i].id)
           if(this.$exercises[i].id === exerciseID){
             found = true
           }
         }
         this.$exercises.splice(i-1,1);
-        console.log(this.$exercises);
-        console.log("Success");
       }
       catch (e) {
         console.log(e.code);
-        console.log(e);
-        console.log("Error");
       }
     }
 
@@ -135,6 +124,5 @@ export default {
 .exercise-card{
   display: flex;
   flex-direction: column;
-  /*width: 368px;*/
 }
 </style>
