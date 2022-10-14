@@ -1,6 +1,6 @@
 import { Api } from "./api.js";
 
-export { UserApi, Credentials, UserData, MetaData, updatedUserData }
+export { UserApi, Credentials, UserData, MetaData, UpdatedUserData }
 
 class UserApi {
   static getUrl(slug) {
@@ -77,7 +77,7 @@ class MetaData {
   }
 }
 
-class updatedUserData{
+class UpdatedUserData{
   constructor(firstName, lastName, gender, birthdate, phone, avatarUrl, metadata){
     this.firstName = firstName;
     this.lastName = lastName;

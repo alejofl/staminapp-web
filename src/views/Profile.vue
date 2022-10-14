@@ -3,8 +3,9 @@
     <v-container class="profile-style">
       <v-row>
         <v-col sm="3" md="3" lg="3">
-          <ProfileCard :base64-data="profile_picture" :name="profile_fullname" :mail="profile_mail" :birthdate="profile_birthdate"
-          :gender="profile_gender" :weight="profile_weight" :height="profile_height"></ProfileCard>
+<!--          <ProfileCard :base64-data="profile_picture" :name="profile_fullname" :mail="profile_mail" :birthdate="profile_birthdate"-->
+<!--          :gender="profile_gender" :weight="profile_weight" :height="profile_height"></ProfileCard>-->
+          <ProfileCard></ProfileCard>
         </v-col>
 
         <v-col sm="9" md="9" lg="9">
@@ -72,8 +73,9 @@ import ExercisesCard from "@/components/ExercisesCard";
 import { mapState, mapActions } from "pinia";
 import { useExercisesStore } from "@/store/ExercisesStore";
 import { Exercise } from "@/api/exercises";
-import { UserApi } from "@/api/user";
+import { UserApi, UpdatedUserData, MetaData } from "@/api/user";
 import { useSecurityStore } from "@/store/SecurityStore";
+import { unsavedName } from "@/components/ProfileCard"
 
 export default {
   name: "Profile",
@@ -101,7 +103,10 @@ export default {
   computed: {
     ...mapState(useExercisesStore, {
       $exercises: state => state.exercises,
-    })
+    }),
+    ...mapState(useSecurityStore, {
+      $currentUser: state => state.currentUser,
+    }),
   },
   methods:{
     ...mapActions(useExercisesStore, {
@@ -131,24 +136,45 @@ export default {
     },
     async updateInfo() {
       try{
-        const profileInfo = await UserApi.getCurrent()
-        this.profile_picture = profileInfo.metadata.profilePicture
-        this.profile_fullname = profileInfo.firstName
-        this.profile_mail = profileInfo.username
-        /*Revisar el tema del genero*/
-        this.profile_gender = profileInfo.gender
-        this.profile_birthdate = profileInfo.birthdate
-        this.profile_weight = profileInfo.metadata.weight[0]
-        this.profile_height = profileInfo.metadata.height[0]
+        const profileInfo = await UserApi.getCurrent();
+        this.$currentUser.name = profileInfo.firstName;
+        this.$currentUser.gender = profileInfo.gender;
+        this.$currentUser.birthdate = profileInfo.birthdate;
+        this.$currentUser.weight = profileInfo.weight[0];
+        this.$currentUser.height = profileInfo.height[0];
+        this.$currentUser.base64Data = profileInfo.metadata.profilePicture;
+
+        // this.profile_picture = profileInfo.metadata.profilePicture
+        // this.profile_fullname = profileInfo.firstName
+        // this.profile_mail = profileInfo.username
+        // /*Revisar el tema del genero*/
+        // this.profile_gender = profileInfo.gender
+        // this.profile_birthdate = profileInfo.birthdate
+        // this.profile_weight = profileInfo.metadata.weight[0]
+        // this.profile_height = profileInfo.metadata.height[0]
         console.log(profileInfo)
         const saved_exercises = await this.$getSavedExercises();
-        console.log("Recibi los ejercicios")
         console.log(saved_exercises);
-        console.log("Success en before mount")
+        console.log("Funciona Update Info")
       }
       catch (e) {
         console.log(e.code)
         console.log(e.name)
+      }
+    },
+    async beforeLeaving() {
+      try {
+        console.log("Entre al before destroy");
+        this.$currentUser.name = unsavedName;
+        let metadata = new MetaData(this.$currentUser.weight, this.$currentUser.height, this.$currentUser.base64Data);
+        let dataUpdated = new UpdatedUserData(this.$currentUser.name,"", this.$currentUser.gender, this.$currentUser.birthdate,"","",metadata);
+        await UserApi.updateProfileInfo(dataUpdated);
+
+        console.log("Success");
+        console.log("Funciona Before Leaving")
+      } catch(e) {
+        console.log("Fail");
+        console.log(e.code);
       }
     }
   },
@@ -156,20 +182,10 @@ export default {
     /*Antes de que cargue la pagina, debemos pedirle a la API la info del perfil, así aparece de una*/
     this.updateInfo();
   },
-  async beforeDestroy(){
+  beforeDestroy(){
     /*Antes de que el usuario se vaya de la página sería un buen momento para subir toda la data a la APi
     *si bien lo mejor sería subir solo lo que se cambió, quizás lleva mucho trabajo*/
-
-    try {
-      console.log("Entre al before destroy");
-      let metadata = new MetaData(this.profile_weight,this.profile_height,this.profile_picture);
-      let dataUpdated = new updatedUserData(this.profile_fullname,"",this.profile_gender,this.profile_birthdate,"","",metadata);
-      await UserApi.updateProfileInfo(dataUpdated);
-      console.log("Success");
-    } catch(e) {
-      console.log("Fail");
-      console.log(e.code);
-    }
+    this.beforeLeaving();
   }
 
 };

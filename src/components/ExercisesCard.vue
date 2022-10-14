@@ -52,6 +52,7 @@
 import { mapActions, mapState } from "pinia";
 import { useExercisesStore } from "@/store/ExercisesStore";
 import { Exercise } from "@/api/exercises";
+import { useSecurityStore } from "@/store/SecurityStore";
 
 export default {
   props: {idx: Number},
@@ -62,9 +63,6 @@ export default {
       show_editable_exercise_description:false,
       is_editing:false,
       dialog:false,
-      data:"LA CONCHA DE TU MADRE",
-      dataSaved: "fasdfdasfdsa",
-      dataUnsaved: "",
       unsaved_name: '',
       unsaved_description: '',
     }
@@ -75,7 +73,7 @@ export default {
     }),
     currentExercise: function() {
       return this.$exercises[this.idx];
-    }
+    },
   },
   methods: {
     ...mapActions(useExercisesStore, {

@@ -7,7 +7,8 @@ const SECURITY_TOKEN_KEY = "security-token";
 export const useSecurityStore = defineStore("security", {
   state: () => ({
     token: null,
-    user: null
+    user: null,
+    currentUser: { name: '', mail: '', gender: '', birthdate: '', weight: '', height: '', base64Data: '' },
   }),
   getters: {
     isLoggedIn() {
