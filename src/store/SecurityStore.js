@@ -7,7 +7,8 @@ const SECURITY_TOKEN_KEY = "security-token";
 export const useSecurityStore = defineStore("security", {
   state: () => ({
     token: null,
-    user: null
+    user: null,
+    currentUser: { name: '', mail: '', gender: '', birthdate: '', weight: '', height: '', base64Data: '' },
   }),
   getters: {
     isLoggedIn() {
@@ -60,6 +61,10 @@ export const useSecurityStore = defineStore("security", {
 
     async createUser(userData) {
       await UserApi.postCreateUser(userData);
+    },
+
+    async updateProfileInfo(userData){
+      await UserApi.updateProfileInfo(userData);
     }
   },
 });
