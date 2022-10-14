@@ -1,6 +1,6 @@
 import { Api } from "./api.js";
 
-export { UserApi, Credentials, UserData, MetaData }
+export { UserApi, Credentials, UserData, MetaData, UpdatedUserData }
 
 class UserApi {
   static getUrl(slug) {
@@ -15,8 +15,8 @@ class UserApi {
     await Api.post(UserApi.getUrl('logout'), true, controller);
   }
 
-  static async get(controller) {
-    return Api.get(UserApi.getUrl('current'), true, controller);
+  static async getCurrent(controller) {
+    return Api.get(UserApi.getUrl('current'), true, true, controller);
   }
 
   static async postResendEmailVerification(email, controller) {
@@ -28,12 +28,19 @@ class UserApi {
   }
 
   static async getUserInfo(id, controller) {
-    return Api.get(UserApi.getUrl(id), true, controller)
+    return Api.get(UserApi.getUrl(id), true, false, controller)
   }
 
   static async verify_user(user, controller) {
     return Api.post(UserApi.getUrl('verify_email'), false, user, controller)
   }
+
+  static async updateProfileInfo(updatedUserData, controller) {
+    console.log("Entre al user api");
+    console.log(updatedUserData);
+    return Api.put(UserApi.getUrl('current'),true, updatedUserData, controller)
+  }
+
 }
 
 class Credentials {
@@ -68,5 +75,17 @@ class MetaData {
     this.height = [];
     this.height.push(height);
     this.profilePicture = profilePicture;
+  }
+}
+
+class UpdatedUserData{
+  constructor(firstName, lastName, gender, birthdate, phone, avatarUrl, metadata){
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.gender = gender;
+    this.birthdate = birthdate;
+    this.phone = phone;
+    this.avatarUrl = avatarUrl;
+    this.metadata = metadata;
   }
 }

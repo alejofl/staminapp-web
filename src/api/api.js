@@ -59,6 +59,9 @@ class Api {
   }
 
   static async put(url, secure, data, controller) {
+    console.log(url);
+    console.log(secure);
+    console.log(data);
     return await Api.fetch(url, secure,{
       method: "PUT",
       headers: {
