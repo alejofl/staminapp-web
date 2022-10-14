@@ -45,7 +45,7 @@ class Api {
   }
 
   static async get(url, secure, sized, controller) {
-    return await Api.fetch(`${url}${sized ? `?size=${Api.default_size}` : ''}`, secure, {}, controller);
+    return await Api.fetch(`${url}${sized ? `${(url.includes('?') ? '&' : '?')}size=${Api.default_size}` : ''}`, secure, {}, controller);
   }
 
   static async post(url, secure, data, controller) {

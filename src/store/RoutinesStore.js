@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { Cycle, Routine, RoutinesApi } from "@/api/routines";
 import { DefaultRoutine, Difficulty } from "@/assets/default_data";
 import { CyclesApi, Exercise } from "@/api/cycles";
+import { Api } from "@/api/api";
 
 export const useRoutinesStore = defineStore("routines", {
   state: () => ({
@@ -51,6 +52,14 @@ export const useRoutinesStore = defineStore("routines", {
 
     async createCycle(routineId, cycle) {
       return await RoutinesApi.postCycle(routineId, cycle);
+    },
+
+    async getRoutinesForOtherUser(otherUserID) {
+      return await RoutinesApi.getRoutinesForOtherUser(otherUserID);
+    },
+
+    async getRoutinesForDifficulty(difficulty) {
+      return await RoutinesApi.getRoutinesForDifficulty(difficulty);
     }
   },
 });

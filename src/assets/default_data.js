@@ -43,5 +43,12 @@ const Difficulty = {
     Intermedio: 'intermediate',
     Avanzado: 'advanced',
     Experto: 'expert'
-  }
+  },
+  for_explore: {
+    0: 'rookie',
+    1: 'beginner',
+    2: 'intermediate',
+    3: 'advanced',
+    4: 'expert'
+  },
 }
