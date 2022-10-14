@@ -76,6 +76,10 @@ export const useSecurityStore = defineStore("security", {
     
     async updateProfileInfo(userData){
       await UserApi.updateProfileInfo(userData);
+    },
+
+    async getCurrentUserRoutines() {
+      return await UserApi.getCurrentUserRoutines();
     }
   },
 });

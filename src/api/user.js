@@ -41,6 +41,10 @@ class UserApi {
     return Api.put(UserApi.getUrl('current'),true, updatedUserData, controller)
   }
 
+  static async getCurrentUserRoutines(controller) {
+    return Api.get(UserApi.getUrl('current/routines'), true, true, controller);
+  }
+
 }
 
 class Credentials {
