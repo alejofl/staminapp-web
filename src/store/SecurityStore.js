@@ -65,6 +65,23 @@ export const useSecurityStore = defineStore("security", {
 
     async updateProfileInfo(userData){
       await UserApi.updateProfileInfo(userData);
+    },
+
+    async getProfileInfo(){
+      console.log("Entro al getProfile en Security Store")
+      const result = await UserApi.getProfileInfo();
+      console.log("result es igual a ")
+      console.log(result)
+      this.currentUser.name = result.firstName;
+      this.currentUser.mail = result.email;
+      this.currentUser.gender = result.gender;
+      this.currentUser.birthdate = result.birthdate;
+      // this.currentUser.weight = result.weight[0];
+      // this.currentUser.height = result.height[0];
+      //this.currentUser.base64Data = result.metadata.profilePicture;
+      console.log("current user es igual a")
+      console.log(this.currentUser)
+      return result
     }
   },
 });

@@ -41,7 +41,13 @@ class UserApi {
     return Api.put(UserApi.getUrl('current'),true, updatedUserData, controller)
   }
 
+  static async getProfileInfo(controller){
+    console.log("llego al getprofile del user.js")
+    return Api.get(UserApi.getUrl('current'), true, true, controller);
+  }
 }
+
+
 
 class Credentials {
   constructor(username, password) {
