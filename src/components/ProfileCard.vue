@@ -95,7 +95,7 @@ import { useSecurityStore } from "@/store/SecurityStore";
 
 export default {
   name: "ProfileCard",
-  props:{name:String,mail:String,gender:String,birthdate:Number,weight:String,height:String,gender_options:{
+  props:{name:String,mail:String,gender:String,birthdate:Number,weight:[],height:[],gender_options:{
     type: Array,
     default(){
       return ["Masculino","Femenino","Otro"]

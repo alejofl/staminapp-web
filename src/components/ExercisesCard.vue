@@ -1,42 +1,44 @@
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" max-width="368px" transition="dialog-bottom-transition">
+
       <template v-slot:activator="{ on, attrs }">
         <v-flex>
           <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl" v-bind="attrs" v-on="on">
             <v-card-title class="secondary--text font-weight-bold">
-              <div>{{saved_exercise_name}}</div>
+              <div>{{currentExercise.name}}</div>
             </v-card-title>
             <v-card-text class="secondary--text grow">
-              <div>{{saved_exercise_description}}</div>
+              <div>{{currentExercise.detail}}</div>
             </v-card-text>
           </v-card>
         </v-flex>
       </template>
+
       <v-flex align-self-center>
         <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl">
           <v-container>
           <v-card-title class="secondary--text font-weight-bold">
-            <div v-show="!show_editable_exercise_name">{{saved_exercise_name}}</div>
-            <v-text-field v-show="show_editable_exercise_name" color="secondary"></v-text-field>
+            <div v-show="!show_editable_exercise_name">{{currentExercise.name}}</div>
+            <v-text-field v-model="unsaved_name" v-show="show_editable_exercise_name" color="secondary"></v-text-field>
           </v-card-title>
           <v-card-text class="secondary--text grow">
-            <div v-show="!show_editable_exercise_description">{{saved_exercise_description}}</div>
-            <v-textarea color="secondary" v-show="show_editable_exercise_description"></v-textarea>
+            <div v-show="!show_editable_exercise_description">{{currentExercise.detail}}</div>
+            <v-textarea v-model="unsaved_description" color="secondary" v-show="show_editable_exercise_description"></v-textarea>
           </v-card-text>
             <v-row justify="center" align="center">
               <v-col md="12" align="center">
                 <v-btn width="100%" :color="is_editing ? 'green':'secondary'" @click="
-                  ;is_editing=!is_editing
+                  ;is_editing =! is_editing
                   ;show_editable_exercise_name =! show_editable_exercise_name
-                ;show_editable_exercise_description =! show_editable_exercise_description
-                ;is_editing ? 0:onSavePressed()">
+                  ;show_editable_exercise_description =! show_editable_exercise_description
+                  ;is_editing ? 0:onSavePressed()">
                   {{ is_editing ? 'GUARDAR EJERCICIO' : 'EDITAR EJERCICIO' }}</v-btn>
               </v-col>
             </v-row>
             <v-row justify="center" align="center">
               <v-col md="12" align="center">
-                <v-btn color="error" @click="dialog=false;onDeletePressed()" width="100%" ref="delete-button">ELIMINAR EJERCICIO</v-btn>
+                <v-btn color="error" @click="dialog=false; onDeletePressed()" width="100%" ref="delete-button">ELIMINAR EJERCICIO</v-btn>
               </v-col>
             </v-row>
           </v-container>
@@ -47,10 +49,12 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "pinia";
+import { useExercisesStore } from "@/store/ExercisesStore";
+import { Exercise } from "@/api/exercises";
+
 export default {
-  props:{exercise_id:{type:Number,default:0}},
-  // ,saved_exercise_name: String,saved_exercise_description: String,
-  //   unsaved_exercise_name:String,unsaved_exercise_description:String},
+  props: {idx: Number},
   name: "ExercisesCard",
   data() {
     return {
@@ -58,23 +62,74 @@ export default {
       show_editable_exercise_description:false,
       is_editing:false,
       dialog:false,
-      unsaved_exercise_name: true,
-      unsaved_exercise_description: true,
-      saved_exercise_description: true,
-      saved_exercise_name: true,
+      data:"LA CONCHA DE TU MADRE",
+      dataSaved: "fasdfdasfdsa",
+      dataUnsaved: "",
+      unsaved_name: '',
+      unsaved_description: '',
+    }
+  },
+  computed: {
+    ...mapState(useExercisesStore, {
+      $exercises: state => state.exercises,
+    }),
+    currentExercise: function() {
+      return this.$exercises[this.idx];
     }
   },
   methods: {
-
+    ...mapActions(useExercisesStore, {
+      $updateExercise: 'updateExercise',
+      $delete_exercise: 'delete_exercise',
+    }),
     onDeletePressed(){
-      this.$parent.deleteExercise(this.exercise_id)
+      this.deleteExercise(this.currentExercise.id);
     },
-
     onSavePressed(){
-      this.$parent.updateExercise(this.exercise_id,this.saved_exercise_name,this.saved_exercise_description)
+      this.currentExercise.name = this.unsaved_name;
+      this.currentExercise.detail = this.unsaved_description;
+      this.updateExercise(this.currentExercise.id, this.currentExercise.name, this.currentExercise.detail);
+    },
+    async updateExercise(exerciseID, exerciseName, exerciseDetail) {
+      try{
+        console.log("Entre a updateExercise")
+        const exercise = new Exercise(exerciseName, exerciseDetail,'exercise', null);
+        await this.$updateExercise(exerciseID, exercise);
+        console.log("Success");
+      }
+      catch (e) {
+        console.log("Error");
+        console.log(e.code);
+        console.log(e.name);
+        console.log(e);
+      }
+    },
+    async deleteExercise(exerciseID){
+      try {
+        await this.$delete_exercise(exerciseID)
+        let i = 0
+        for(let found = false ; !found && i < this.$exercises.length ; i++){
+          console.log(this.$exercises[i].id)
+          if(this.$exercises[i].id === exerciseID){
+            found = true
+          }
+        }
+        this.$exercises.splice(i-1,1);
+        console.log(this.$exercises);
+        console.log("Success");
+      }
+      catch (e) {
+        console.log(e.code);
+        console.log(e);
+        console.log("Error");
+      }
     }
 
   },
+  created() {
+    this.unsaved_name = this.currentExercise.name;
+    this.unsaved_description = this.currentExercise.detail;
+  }
 };
 </script>
 

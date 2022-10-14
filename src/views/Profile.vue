@@ -6,24 +6,24 @@
           <ProfileCard :base64-data="profile_picture" :name="profile_fullname" :mail="profile_mail" :birthdate="profile_birthdate"
           :gender="profile_gender" :weight="profile_weight" :height="profile_height"></ProfileCard>
         </v-col>
-        <v-col sm="9" md="9" lg="9">
 
+        <v-col sm="9" md="9" lg="9">
           <v-container class="exercises-container-style">
             <v-row class="mb-0">
               <h1 class="cera-pro pa-6">MIS EJERCICIOS</h1>
             </v-row>
             <v-row class="mt-0">
-              <template v-for="n in Exercises">
+              <template v-for="(n, index) in $exercises">
               <v-col class="pa-8" sm="12" md="4" lg="4">
-                <ExercisesCard
-                  :exercise_id="n.id"  :saved_exercise_name="n.saved_exercise_name" :saved_exercise_description="n.saved_exercise_description"
-                  :unsaved_exercise_description="n.unsaved_exercise_description" :unsaved_exercise_name="n.unsaved_exercise_name">
+                <ExercisesCard :idx="index">
+<!--                               :exercise_id="n.id"-->
+<!--                  :saved_exercise_name="n.saved_exercise_name" :saved_exercise_description="n.saved_exercise_description"-->
+<!--                  :unsaved_exercise_description="n.unsaved_exercise_description" :unsaved_exercise_name="n.unsaved_exercise_name">-->
                 </ExercisesCard>
               </v-col>
               </template>
             </v-row>
           </v-container>
-
         </v-col>
       </v-row>
     </v-container>
@@ -31,10 +31,12 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" max-width="368px" transition="dialog-bottom-transition">
         <template v-slot:activator="{ on, attrs }">
+
           <v-btn fab class="customFAB secondary--text ma-4" color="primary" fixed right bottom @click="dialog=true;
             unsaved_exercise_name=default_exercise_name;unsaved_exercise_description=default_exercise_description">
             <v-icon>add</v-icon> Añadir Ejercicio
           </v-btn>
+
         </template>
           <v-flex align-self-center>
             <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl">
@@ -67,7 +69,7 @@
 <script>
 import ProfileCard from "@/components/ProfileCard";
 import ExercisesCard from "@/components/ExercisesCard";
-import { mapActions } from "pinia";
+import { mapState, mapActions } from "pinia";
 import { useExercisesStore } from "@/store/ExercisesStore";
 import { Exercise } from "@/api/exercises";
 import { UserApi } from "@/api/user";
@@ -96,70 +98,35 @@ export default {
       Exercises: []
     }
   },
+  computed: {
+    ...mapState(useExercisesStore, {
+      $exercises: state => state.exercises,
+    })
+  },
   methods:{
     ...mapActions(useExercisesStore, {
       $create: 'create',
       $delete_exercise: 'delete_exercise',
-      $updateExercise: 'updateExercise'
     }),
     ...mapActions(useSecurityStore,{
       $update_profile_info: 'update_profile_info'
     }),
-
     async addExercise(){
       this.saved_exercise_description =this.unsaved_exercise_description;
       this.saved_exercise_name = this.unsaved_exercise_name;
       try {
-        // const exercise = new Exercise("Uno", "Uno", "exercise", null);
+
         const exercise = new Exercise(this.saved_exercise_name, this.saved_exercise_description, 'exercise', null);
         console.log(exercise);
         const exerciseInfo = await this.$create(exercise);
-        console.log(exerciseInfo);
-        this.Exercises.push({id:exerciseInfo.id,saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description});
-        console.log(this.Exercises);
+        console.log("Success");
       }
       catch (e) {
+        console.log("Error")
         console.log(e.code);
-      }
-    },
-    async updateExercise(to_edit_id, newExerciseName, newExerciseDescription){
-      try{
-        console.log("Entre a update exercise antes del store")
-        const exercise = new Exercise(newExerciseName,newExerciseDescription,'exercise', null);
-        await this.$updateExercise(to_edit_id, exercise);
-        this.Exercises[to_edit_id].saved_exercise_name = newExerciseName;
-        this.Exercises[to_edit_id].saved_exercise_description = newExerciseDescription;
-        console.log(this.Exercises);
-      }
-      catch (e) {
-        console.log("Error");
-        console.log(e.code);
-        console.log(e.name);
         console.log(e);
       }
     },
-    async deleteExercise(to_delete_id){
-      /*Aquí debo sacar del array el ejercicio con el id que me pasaron y
-      * avisarle a la API con el comando delete de la misma*/
-      try{
-        console.log(this.Exercises)
-        await this.$delete_exercise(to_delete_id)
-        let i = 0
-        for(let found = false ; !found && i < this.Exercises.length ; i++){
-          console.log(this.Exercises[i].id)
-          if(this.Exercises[i].id === to_delete_id){
-            found = true
-          }
-        }
-        this.Exercises.splice(i-1,1)
-        console.log(this.Exercises)
-      }
-      catch (e) {
-        console.log(e.code)
-      }
-
-    },
-
   },
   async beforeMount(){
     /*Antes de que cargue la pagina, debemos pedirle a la API la info del perfil, así aparece de una*/
@@ -171,8 +138,8 @@ export default {
       /*Revisar el tema del genero*/
       this.profile_gender = profileInfo.gender
       this.profile_birthdate = profileInfo.birthdate
-      this.profile_weight = profileInfo.metadata.weight
-      this.profile_height = profileInfo.metadata.height
+      this.profile_weight = profileInfo.metadata.weight[0]
+      this.profile_height = profileInfo.metadata.height[0]
       console.log(profileInfo)
     }
     catch (e) {
