@@ -136,14 +136,15 @@ export default {
     },
     async updateInfo() {
       try{
-        const profileInfo = await UserApi.getCurrent();
-        this.$currentUser.name = profileInfo.firstName;
-        this.$currentUser.gender = profileInfo.gender;
-        this.$currentUser.birthdate = profileInfo.birthdate;
-        this.$currentUser.weight = profileInfo.weight[0];
-        this.$currentUser.height = profileInfo.height[0];
-        this.$currentUser.base64Data = profileInfo.metadata.profilePicture;
-
+        // console.log("Entro a getCUrrent")
+        // const profileInfo = await UserApi.getCurrent();
+        // this.$currentUser.name = profileInfo.firstName;
+        // this.$currentUser.gender = profileInfo.gender;
+        // this.$currentUser.birthdate = profileInfo.birthdate;
+        // this.$currentUser.weight = profileInfo.weight[0];
+        // this.$currentUser.height = profileInfo.height[0];
+        // this.$currentUser.base64Data = profileInfo.metadata.profilePicture;
+        // console.log("salgo de getcurrent")
         // this.profile_picture = profileInfo.metadata.profilePicture
         // this.profile_fullname = profileInfo.firstName
         // this.profile_mail = profileInfo.username
@@ -152,7 +153,7 @@ export default {
         // this.profile_birthdate = profileInfo.birthdate
         // this.profile_weight = profileInfo.metadata.weight[0]
         // this.profile_height = profileInfo.metadata.height[0]
-        console.log(profileInfo)
+        // console.log(profileInfo)
         const saved_exercises = await this.$getSavedExercises();
         console.log(saved_exercises);
         console.log("Funciona Update Info")
