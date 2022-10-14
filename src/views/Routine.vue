@@ -117,8 +117,7 @@ export default {
   },
   methods: {
     ...mapActions(useRoutinesStore, {
-      $create: 'create',
-      $create_cycle: 'createCycle'
+      $createRoutine: 'createRoutine',
     }),
     new_cycle() {
       let new_cycle = JSON.parse(JSON.stringify(DefaultCycle));
@@ -173,7 +172,6 @@ export default {
           val = val && ((e.repetitions > 0 && e.repetitions < 1000 && e.repetitions !== null && e.repetitions !== undefined) || (e.duration > 0 && e.duration < 1000 && e.duration !== null && e.duration !== undefined));
         }
       }
-      console.log(val);
       return val;
     },
     async saveChanges() {
@@ -184,7 +182,7 @@ export default {
 
       try {
         if (this.is_new_routine) {
-
+          this.$createRoutine();
           // this.$router.push({ name: 'routine', params: { id: result.id } })
         } else {
           // update
