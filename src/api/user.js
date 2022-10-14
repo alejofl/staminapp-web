@@ -16,7 +16,7 @@ class UserApi {
   }
 
   static async getCurrent(controller) {
-    return Api.get(UserApi.getUrl('current'), true, controller);
+    return Api.get(UserApi.getUrl('current'), true, true, controller);
   }
 
   static async postResendEmailVerification(email, controller) {
@@ -28,7 +28,7 @@ class UserApi {
   }
 
   static async get_user_info(id, controller) {
-    return Api.get(UserApi.getUrl(id), false, controller)
+    return Api.get(UserApi.getUrl(id), false, true, controller)
   }
 
   static async verify_user(user, controller) {

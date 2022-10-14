@@ -21,6 +21,11 @@ class ExercisesApi {
     console.log("Entre al exerciseApi y estoy por updatear")
     return await Api.put(ExercisesApi.getUrl(exerciseId),true, exercise, controller);
   }
+
+  static async getSavedExercises(controller) {
+    console.log("Entre al exercises.js antes de api")
+    return await Api.get(ExercisesApi.getUrl(), true, true, controller);
+  }
 }
 
 class Exercise {

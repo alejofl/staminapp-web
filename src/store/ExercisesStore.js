@@ -25,6 +25,19 @@ export const useExercisesStore = defineStore("exercise", {
       console.log("Entre al store y estoy por updetear")
       const result = await ExercisesApi.updateExercise(exerciseId, exercise);
       return result;
-    }
+    },
+
+    async getSavedExercises() {
+      console.log("Entre a saved exercise store")
+      const result = await ExercisesApi.getSavedExercises();
+      console.log("Sali del exercises Apu en el exercises store")
+      console.log(result);
+      let i = 0;
+      for(i; i < result.totalCount; i++) {
+        this.exercises.push({ id: result.content[i].id, name: result.content[i].name, detail: result.content[i].detail,
+          type: result.content[i].type, metadata: result.content[i].metadata})
+      }
+      return result;
+    },
   }
 });

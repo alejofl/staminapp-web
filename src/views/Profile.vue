@@ -106,7 +106,10 @@ export default {
   methods:{
     ...mapActions(useExercisesStore, {
       $create: 'create',
-      $delete_exercise: 'delete_exercise',
+      // $getSavedExercises: 'getSavedExercises'
+    }),
+    ...mapActions(useExercisesStore, {
+      $getSavedExercises: 'getSavedExercises'
     }),
     ...mapActions(useSecurityStore,{
       $update_profile_info: 'update_profile_info'
@@ -115,7 +118,6 @@ export default {
       this.saved_exercise_description =this.unsaved_exercise_description;
       this.saved_exercise_name = this.unsaved_exercise_name;
       try {
-
         const exercise = new Exercise(this.saved_exercise_name, this.saved_exercise_description, 'exercise', null);
         console.log(exercise);
         const exerciseInfo = await this.$create(exercise);
@@ -127,25 +129,32 @@ export default {
         console.log(e);
       }
     },
+    async updateInfo() {
+      try{
+        const profileInfo = await UserApi.getCurrent()
+        this.profile_picture = profileInfo.metadata.profilePicture
+        this.profile_fullname = profileInfo.firstName
+        this.profile_mail = profileInfo.username
+        /*Revisar el tema del genero*/
+        this.profile_gender = profileInfo.gender
+        this.profile_birthdate = profileInfo.birthdate
+        this.profile_weight = profileInfo.metadata.weight[0]
+        this.profile_height = profileInfo.metadata.height[0]
+        console.log(profileInfo)
+        const saved_exercises = await this.$getSavedExercises();
+        console.log("Recibi los ejercicios")
+        console.log(saved_exercises);
+        console.log("Success en before mount")
+      }
+      catch (e) {
+        console.log(e.code)
+        console.log(e.name)
+      }
+    }
   },
-  async beforeMount(){
+  beforeMount(){
     /*Antes de que cargue la pagina, debemos pedirle a la API la info del perfil, así aparece de una*/
-    try{
-      const profileInfo = await UserApi.getCurrent()
-      this.profile_picture = profileInfo.metadata.profilePicture
-      this.profile_fullname = profileInfo.firstName
-      this.profile_mail = profileInfo.username
-      /*Revisar el tema del genero*/
-      this.profile_gender = profileInfo.gender
-      this.profile_birthdate = profileInfo.birthdate
-      this.profile_weight = profileInfo.metadata.weight[0]
-      this.profile_height = profileInfo.metadata.height[0]
-      console.log(profileInfo)
-    }
-    catch (e) {
-      console.log(e.code)
-      console.log(e.name)
-    }
+    this.updateInfo();
   },
   async beforeDestroy(){
     /*Antes de que el usuario se vaya de la página sería un buen momento para subir toda la data a la APi
