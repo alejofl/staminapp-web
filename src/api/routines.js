@@ -13,7 +13,7 @@ class RoutinesApi {
   }
 
   static async getRoutine(id, controller) {
-    return await Api.get(RoutinesApi.getUrl(id), true, controller);
+    return await Api.get(RoutinesApi.getUrl(id), true, false, controller);
   }
 
   static async getAllRoutines(controller) {
@@ -30,6 +30,10 @@ class RoutinesApi {
 
   static async postCycle(routineId, cycle, controller) {
     return await Api.post(RoutinesApi.getUrl(`${routineId}/cycles`), true, cycle, controller);
+  }
+
+  static async getCycles(routineId, controller) {
+    return await Api.get(RoutinesApi.getUrl(`${routineId}/cycles`), true, true, controller);
   }
 
   static async getRoutinesForOtherUser(otherUserID, controller) {
