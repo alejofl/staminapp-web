@@ -133,6 +133,7 @@ export default {
       $getFavourites: 'getFavourites',
       $markFavourite: 'markFavourite',
       $unmarkFavourite: 'unmarkFavourite',
+      $deleteRoutine: 'delete',
     }),
     ...mapActions(useSecurityStore, {
       $getCurrentUser: 'getCurrentUser',
@@ -255,9 +256,10 @@ export default {
     },
     async deleteRoutine() {
       try {
-
+        await this.$deleteRoutine(this.routine_id);
+        this.$router.push({name: 'library'});
       } catch (e) {
-
+        console.log(e);
       }
     },
     shareRoutine() {
