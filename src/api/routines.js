@@ -49,8 +49,8 @@ class Cycle {
     this.name = name;
     this.detail = "";
     this.type = "exercise";
-    this.order = order;
-    this.repetitions = repetitions;
+    this.order = parseInt(order);
+    this.repetitions = parseInt(repetitions);
     this.metadata = null;
   }
 }

@@ -31,8 +31,8 @@ class CyclesApi {
 
 class Exercise {
   constructor(order, duration, repetitions) {
-    this.order = order;
-    this.duration = duration;
-    this.repetitions = repetitions
+    this.order = parseInt(order);
+    this.duration = parseInt(duration);
+    this.repetitions = parseInt(repetitions);
   }
 }
