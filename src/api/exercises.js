@@ -17,8 +17,9 @@ class ExercisesApi {
     return await Api.delete(ExercisesApi.getUrl(exerciseId), true, controller);
   }
 
-  static async updateExercise(exerciseId,exercise,controller){
-    return await Api.put(ExercisesApi.getUrl(exerciseId),true,exercise,controller);
+  static async updateExercise(exerciseId, exercise, controller) {
+    console.log("Entre al exerciseApi")
+    return await Api.put(ExercisesApi.getUrl(exerciseId),true, exercise, controller);
   }
 }
 

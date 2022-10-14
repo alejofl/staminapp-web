@@ -16,16 +16,10 @@ export const useExercisesStore = defineStore("exercise", {
       return result;
     },
 
-    async refresh_data(exerciseId,exercise){
-      console.log("Adentro de update ex")
-      const result = await ExercisesApi.updateExercise(exerciseId,exercise);
+    async updateExercise(exerciseId, exercise) {
+      console.log("Entre al store")
+      const result = await ExercisesApi.updateExercise(exerciseId, exercise);
       return result;
-    },
-
-    async updateExerciseInfo(exerciseId,exercise){
-      console.log("Adentro de update ex")
-      const result = await ExercisesApi.updateExercise(exerciseId,exercise);
-      return result;
-    },
+    }
   }
 });

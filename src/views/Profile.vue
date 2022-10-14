@@ -7,66 +7,59 @@
           :gender="profile_gender" :weight="profile_weight" :height="profile_height"></ProfileCard>
         </v-col>
         <v-col sm="9" md="9" lg="9">
+
           <v-container class="exercises-container-style">
             <v-row class="mb-0">
               <h1 class="cera-pro pa-6">MIS EJERCICIOS</h1>
             </v-row>
-
-      <v-row class="mt-0"
-      >
-        <template v-for="n in Exercises">
-        <v-col
-          class="pa-8"
-          sm="12"
-          md="4"
-          lg="4"
-        ><ExercisesCard
-           :exercise_id="n.id"  :saved_exercise_name="n.saved_exercise_name" :saved_exercise_description="n.saved_exercise_description"
-          :unsaved_exercise_description="n.unsaved_exercise_description" :unsaved_exercise_name="n.unsaved_exercise_name"></ExercisesCard>
-        </v-col>
-        </template>
-      </v-row>
-
-    </v-container>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
-      max-width="368px"
-      transition="dialog-bottom-transition"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn fab class="customFAB secondary--text ma-4" color="primary" fixed right bottom @click="dialog=true;
-        unsaved_exercise_name=default_exercise_name;unsaved_exercise_description=default_exercise_description">
-          <v-icon>add</v-icon> Añadir Ejercicio
-        </v-btn>
-      </template>
-      <v-flex align-self-center>
-        <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl">
-          <v-container>
-            <v-card-title class="secondary--text font-weight-bold">
-              <v-text-field v-model="unsaved_exercise_name" color="secondary"></v-text-field>
-            </v-card-title>
-            <v-card-text class="secondary--text grow">
-              <v-textarea color="secondary" v-model="unsaved_exercise_description"></v-textarea>
-            </v-card-text>
-            <v-row justify="center" align="center">
-              <v-col md="12" align="center">
-                <v-btn width="100%" color="green" @click="addExercise();dialog=false">
-                  GUARDAR EJERCICIO</v-btn>
+            <v-row class="mt-0">
+              <template v-for="n in Exercises">
+              <v-col class="pa-8" sm="12" md="4" lg="4">
+                <ExercisesCard
+                  :exercise_id="n.id"  :saved_exercise_name="n.saved_exercise_name" :saved_exercise_description="n.saved_exercise_description"
+                  :unsaved_exercise_description="n.unsaved_exercise_description" :unsaved_exercise_name="n.unsaved_exercise_name">
+                </ExercisesCard>
               </v-col>
-            </v-row>
-            <v-row justify="center" align="center">
-              <v-col md="12" align="center">
-                <v-btn color="error" @click="dialog=false" width="100%">ELIMINAR EJERCICIO</v-btn>
-              </v-col>
+              </template>
             </v-row>
           </v-container>
-        </v-card>
-      </v-flex>
-    </v-dialog>
+
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <v-row justify="center">
+      <v-dialog v-model="dialog" max-width="368px" transition="dialog-bottom-transition">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn fab class="customFAB secondary--text ma-4" color="primary" fixed right bottom @click="dialog=true;
+            unsaved_exercise_name=default_exercise_name;unsaved_exercise_description=default_exercise_description">
+            <v-icon>add</v-icon> Añadir Ejercicio
+          </v-btn>
+        </template>
+          <v-flex align-self-center>
+            <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl">
+              <v-container>
+                <v-card-title class="secondary--text font-weight-bold">
+                  <v-text-field v-model="unsaved_exercise_name" color="secondary"></v-text-field>
+                </v-card-title>
+                <v-card-text class="secondary--text grow">
+                  <v-textarea color="secondary" v-model="unsaved_exercise_description"></v-textarea>
+                </v-card-text>
+                <v-row justify="center" align="center">
+                  <v-col md="12" align="center">
+                    <v-btn width="100%" color="green" @click="addExercise();dialog=false">
+                      GUARDAR EJERCICIO</v-btn>
+                  </v-col>
+                </v-row>
+                <v-row justify="center" align="center">
+                  <v-col md="12" align="center">
+                    <v-btn color="error" @click="dialog=false" width="100%">ELIMINAR EJERCICIO</v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-flex>
+      </v-dialog>
     </v-row>
   </v-flex>
 </template>
@@ -74,10 +67,10 @@
 <script>
 import ProfileCard from "@/components/ProfileCard";
 import ExercisesCard from "@/components/ExercisesCard";
-import { mapState, mapActions } from "pinia";
+import { mapActions } from "pinia";
 import { useExercisesStore } from "@/store/ExercisesStore";
 import { Exercise } from "@/api/exercises";
-import { MetaData, updatedUserData, UserApi, UserData } from "@/api/user";
+import { UserApi } from "@/api/user";
 import { useSecurityStore } from "@/store/SecurityStore";
 
 export default {
@@ -104,11 +97,10 @@ export default {
     }
   },
   methods:{
-
     ...mapActions(useExercisesStore, {
-      $refresh_data: 'refresh_data',
       $create: 'create',
       $delete_exercise: 'delete_exercise',
+      $updateExercise: 'updateExercise'
     }),
     ...mapActions(useSecurityStore,{
       $update_profile_info: 'update_profile_info'
@@ -124,32 +116,28 @@ export default {
         const exerciseInfo = await this.$create(exercise);
         console.log(exerciseInfo);
         this.Exercises.push({id:exerciseInfo.id,saved_exercise_name:this.saved_exercise_name,saved_exercise_description:this.saved_exercise_description,unsaved_exercise_name:this.unsaved_exercise_name,unsaved_exercise_description:this.unsaved_exercise_description});
-        console.log("SEXOOOOOOOOOO");
         console.log(this.Exercises);
       }
       catch (e) {
         console.log(e.code);
       }
     },
-
-    async updateExercise2(to_edit_id,newExerciseName,newExerciseDescription){
+    async updateExercise(to_edit_id, newExerciseName, newExerciseDescription){
       try{
-        console.log("Estoy actualizando el ejercicio!!!!");
-        console.log(this.Exercises);
-        console.log("newexercisename = " + newExerciseName);
-        console.log("newExerciseDescription = " + newExerciseDescription);
-        console.log("to_edit_id = " + to_edit_id);
-        const exercise = new Exercise(newExerciseName,newExerciseDescription,"exercise",null);
-        await this.$refresh_data(to_edit_id,exercise);
+        console.log("Entre a update exercise antes del store")
+        const exercise = new Exercise(newExerciseName,newExerciseDescription,'exercise', null);
+        await this.$updateExercise(to_edit_id, exercise);
         this.Exercises[to_edit_id].saved_exercise_name = newExerciseName;
         this.Exercises[to_edit_id].saved_exercise_description = newExerciseDescription;
         console.log(this.Exercises);
       }
       catch (e) {
+        console.log("Error");
         console.log(e.code);
+        console.log(e.name);
+        console.log(e);
       }
     },
-
     async deleteExercise(to_delete_id){
       /*Aquí debo sacar del array el ejercicio con el id que me pasaron y
       * avisarle a la API con el comando delete de la misma*/
@@ -189,15 +177,25 @@ export default {
     }
     catch (e) {
       console.log(e.code)
+      console.log(e.name)
     }
   },
-/*
   async beforeDestroy(){
     /*Antes de que el usuario se vaya de la página sería un buen momento para subir toda la data a la APi
-    * si bien lo mejor sería subir solo lo que se cambió, quizás lleva mucho trabajo*/
-  /*  await UserApi.updateProfileInfo(new updatedUserData(this.profile_fullname,"",this.profile_gender,this.profile_birthdate,"","",
-    new MetaData(this.profile_weight,this.profile_height,this.profile_picture)))
-  }*/
+    *si bien lo mejor sería subir solo lo que se cambió, quizás lleva mucho trabajo*/
+
+    try {
+      console.log("Entre al before destroy");
+      let metadata = new MetaData(this.profile_weight,this.profile_height,this.profile_picture);
+      let dataUpdated = new updatedUserData(this.profile_fullname,"",this.profile_gender,this.profile_birthdate,"","",metadata);
+      await UserApi.updateProfileInfo(dataUpdated);
+      console.log("Success");
+    } catch(e) {
+      console.log("Fail");
+      console.log(e.code);
+    }
+  }
+
 };
 </script>
 

@@ -35,8 +35,10 @@ class UserApi {
     return Api.post(UserApi.getUrl('verify_email'), false, user, controller)
   }
 
-  static async updateProfileInfo(updatedUserData,controller){
-    return Api.put(UserApi.getUrl('current'),true,updatedUserData,controller)
+  static async updateProfileInfo(updatedUserData, controller) {
+    console.log("Entre al user api");
+    console.log(updatedUserData);
+    return Api.put(UserApi.getUrl('current'),true, updatedUserData, controller)
   }
 
 }
@@ -76,7 +78,7 @@ class MetaData {
 }
 
 class updatedUserData{
-  constructor(firstName,lastName,gender,birthdate,phone,avatarUrl,metadata){
+  constructor(firstName, lastName, gender, birthdate, phone, avatarUrl, metadata){
     this.firstName = firstName;
     this.lastName = lastName;
     this.gender = gender;
