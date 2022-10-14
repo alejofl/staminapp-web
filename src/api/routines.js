@@ -1,7 +1,7 @@
 import { Api } from "./api.js";
 
 export { RoutinesApi }
-export { Routine }
+export { Routine, Cycle }
 
 class RoutinesApi {
   static getUrl(slug) {
@@ -17,7 +17,7 @@ class RoutinesApi {
   }
 
   static async getAllRoutines(controller) {
-    return await Api.get(RoutinesApi.getUrl(), true, controller);
+    return await Api.get(RoutinesApi.getUrl(), true, true, controller);
   }
 
   static async updateRoutine(id, routine, controller) {
@@ -27,11 +27,13 @@ class RoutinesApi {
   static async deleteRoutine(id, controller) {
     return await Api.delete(RoutinesApi.getUrl(id), true, controller);
   }
+
+  static async postCycle(routineId, cycle, controller) {
+    return await Api.post(RoutinesApi.getUrl(`${routineId}/cycles`), true, cycle, controller);
+  }
 }
 
 class Routine {
-  isPublic;
-
   constructor(name, detail, difficulty, metadata) {
     this.name = name;
     this.detail = detail;
@@ -39,5 +41,16 @@ class Routine {
     this.isPublic = true;
     this.category = null;
     this.metadata = metadata;
+  }
+}
+
+class Cycle {
+  constructor(name, order, repetitions) {
+    this.name = name;
+    this.detail = "";
+    this.type = "exercise";
+    this.order = parseInt(order);
+    this.repetitions = parseInt(repetitions);
+    this.metadata = null;
   }
 }
