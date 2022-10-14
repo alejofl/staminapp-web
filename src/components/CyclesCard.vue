@@ -1,18 +1,18 @@
 <template>
-  <v-card color=#E1E6EC >
+  <v-card color=#E1E6EC>
     <v-container>
       <v-card-title class="secondary--text font-weight-bold">
         <div v-if="!edit_cycle" class="d-flex align-center full-width">
           <div>
-            {{card_title}}
+            {{ cycle_data.name }}
           </div>
           <v-chip
             class="ma-2 secondary"
             label
           >
-            x{{repetitions}}
+            x{{ cycle_data.repetitions }}
           </v-chip>
-          <div class="ml-auto">{{exercises.length}} ejercicio{{ exercises.length === 1 ? '' : 's' }}</div>
+          <div class="ml-auto">{{ cycle_data.exercises.length }} ejercicio{{ cycle_data.exercises.length === 1 ? '' : 's' }}</div>
         </div>
         <div v-else class="full-width">
           <v-row class="justify-space-between ">
@@ -20,7 +20,7 @@
               <v-text-field
                 filled
                 label="Título del ciclo"
-                v-model="card_title"
+                v-model="cycle_data.name"
                 background-color="#E1E6EC"
                 color="secondary"
                 hide-details>
@@ -31,7 +31,7 @@
                 filled
                 cols="3"
                 label="Repeticiones"
-                v-model="repetitions"
+                v-model="cycle_data.repetitions"
                 background-color="#E1E6EC"
                 color="secondary"
                 hide-details>
@@ -42,15 +42,15 @@
       </v-card-title>
       <v-card-text class="secondary--text grow">
         <v-list color="transparent">
-          <template v-for="e in exercises">
-            <v-list-item :key="e.id">
+          <template v-for="e in cycle_data.exercises">
+            <v-list-item :key="e.order">
               <v-list-item-content>
                 <v-list-item-title>
-                  {{ e.title }}
+                  {{ e.name }}
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-action>
-                <v-list-item-action-text v-if="!edit_cycle">{{ e.description }}</v-list-item-action-text>
+                <v-list-item-action-text v-if="!edit_cycle">{{ get_description(e) }}</v-list-item-action-text>
                 <v-dialog v-model="e.edit_dialog" width="500" v-else>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn rounded color="secondary" small v-bind="attrs" v-on="on">Editar Ejercicio</v-btn>
@@ -60,7 +60,7 @@
                       <v-text-field
                         filled
                         label="Nombre"
-                        v-model="e.title"
+                        v-model="e.name"
                         background-color="#E1E6EC"
                         color="secondary"
                         append-icon="search"
@@ -70,25 +70,6 @@
 
                     <v-card-text class="text--secondary text-h5">
                       <v-container>
-                        <v-row color="#001833" class="pt-4">
-                          <span class="myTitle">Peso</span>
-                          <v-spacer></v-spacer>
-                          <v-switch v-model="e.has_weight" inset color="secondary" class="ma-0 custom_toggle"></v-switch>
-                        </v-row>
-                        <v-row v-if="e.has_weight">
-                          <v-text-field
-                            filled
-                            label="Peso (kg)"
-                            v-model="e.weight"
-                            background-color="#E1E6EC"
-                            color="secondary"
-                            append-icon="fitness_center"
-                            hide-details>
-                          </v-text-field>
-                        </v-row>
-                        <v-row :class="e.has_weight ? 'py-4' : 'pb-4'">
-                          <v-divider></v-divider>
-                        </v-row>
                         <v-row>
                           <v-btn-toggle mandatory v-model="e.type" color="secondary" rounded class="flex-grow-1">
                             <v-btn class="flex-grow-1" >
@@ -108,7 +89,7 @@
                             :class="e.type === 0 ? '' : 'mr-2'"
                             filled
                             label="Repeticiones"
-                            v-model="e.reps"
+                            v-model="e.repetitions"
                             background-color="#E1E6EC"
                             color="secondary"
                             append-icon="replay"
@@ -118,7 +99,7 @@
                             v-if="e.type === 1 || e.type === 2"
                             filled
                             label="Tiempo (segundos)"
-                            v-model="e.time"
+                            v-model="e.duration"
                             background-color="#E1E6EC"
                             color="secondary"
                             append-icon="hourglass_bottom"
@@ -146,7 +127,7 @@
               <v-text-field
                 filled
                 label="Nombre"
-                v-model="new_exercise.title"
+                v-model="new_exercise.name"
                 background-color="#E1E6EC"
                 color="secondary"
                 append-icon="search"
@@ -156,25 +137,6 @@
 
             <v-card-text class="text--secondary text-h5">
               <v-container>
-                <v-row color="#001833" class="pt-4">
-                  <span class="myTitle">Peso</span>
-                  <v-spacer></v-spacer>
-                  <v-switch v-model="new_exercise.has_weight" inset color="secondary" class="ma-0 custom_toggle"></v-switch>
-                </v-row>
-                <v-row v-if="new_exercise.has_weight">
-                  <v-text-field
-                    filled
-                    label="Peso (kg)"
-                    v-model="new_exercise.weight"
-                    background-color="#E1E6EC"
-                    color="secondary"
-                    append-icon="fitness_center"
-                    hide-details>
-                  </v-text-field>
-                </v-row>
-                <v-row :class="new_exercise.has_weight ? 'py-4' : 'pb-4'">
-                  <v-divider></v-divider>
-                </v-row>
                 <v-row>
                   <v-btn-toggle mandatory v-model="new_exercise.type" color="secondary" rounded class="flex-grow-1">
                     <v-btn class="flex-grow-1" >
@@ -194,7 +156,7 @@
                     :class="new_exercise.type === 0 ? '' : 'mr-2'"
                     filled
                     label="Repeticiones"
-                    v-model="new_exercise.reps"
+                    v-model="new_exercise.repetitions"
                     background-color="#E1E6EC"
                     color="secondary"
                     append-icon="replay"
@@ -204,7 +166,7 @@
                     v-if="new_exercise.type === 1 || new_exercise.type === 2"
                     filled
                     label="Tiempo (segundos)"
-                    v-model="new_exercise.time"
+                    v-model="new_exercise.duration"
                     background-color="#E1E6EC"
                     color="secondary"
                     append-icon="hourglass_bottom"
@@ -227,6 +189,10 @@
 </template>
 
 <script>
+import { mapState } from "pinia";
+import { useRoutinesStore } from "@/store/RoutinesStore";
+import { DefaultCycleExercise } from "@/assets/default_data";
+
 export default {
   name: "ExercisesCard",
   props: {
@@ -234,44 +200,63 @@ export default {
       type: Boolean,
       default: false
     },
-    data: {
-      type: {}
+    idx: {
+      type: Number,
+      default: null
     }
   },
   data() {
     return {
-      // edit_cycle: this.edit,
-      card_title: "Ejercicio sin nombre",
-      repetitions: 0,
-      exercises: [
-        {title: "Abdominales", id: 1, edit_dialog: false, type: undefined, has_weight: true, weight: 8, reps: null, time: null},
-        {title: "Abdominales", id: 2, edit_dialog: false, type: undefined, has_weight: true, weight: 8, reps: null, time: null},
-      ],
       new_exercise_dialog: false,
-      new_exercise: {title: "", id: undefined, edit_dialog: false, type: undefined, has_weight: false, weight: undefined, reps: undefined, time: undefined}
+      new_exercise: JSON.parse(JSON.stringify(DefaultCycleExercise)),
+
+      last_order: 1
+    }
+  },
+  computed: {
+    ...mapState(useRoutinesStore, {
+      routine_data: state => state.routine_data
+    }),
+
+    cycle_data: function () {
+      return this.routine_data.cycles[this.idx];
     }
   },
   methods: {
     save_new_exercise() {
       this.new_exercise_dialog = false;
-      this.exercises.push(this.new_exercise);
-      this.new_exercise = {title: "", id: undefined, edit_dialog: false, type: undefined, has_weight: false, weight: undefined, reps: undefined, time: undefined}
+      this.new_exercise.order = this.last_order++;
+      this.cycle_data.exercises.push(this.new_exercise);
+      this.new_exercise = JSON.parse(JSON.stringify(DefaultCycleExercise));
     },
     discard_new_exercise() {
       this.new_exercise_dialog = false;
-      this.new_exercise = {title: "", description: "", id: null, edit_dialog: false, type: undefined, has_weight: false, weight: null, reps: null, time: null}
+      this.new_exercise = JSON.parse(JSON.stringify(DefaultCycleExercise));
     },
     delete_exercise(e) {
       let found = false;
       let i;
-      for (i = 0; !found && i < this.exercises.length;) {
-        if (this.exercises[i].id === e.id) {
+      for (i = 0; !found && i < this.cycle_data.exercises.length;) {
+        if (this.cycle_data.exercises[i] === e) {
           found = true;
         } else {
           i++;
         }
       }
-      this.exercises.splice(i, 1);
+      this.cycle_data.exercises.splice(i, 1);
+    },
+    get_description(e) {
+      let string = '';
+      let reps = `${e.repetitions} repeticiones`;
+      let time = `${e.duration} segundos`;
+      if (e.type === 0) {
+        string += reps
+      } else if (e.type === 1) {
+        string += time
+      } else {
+        string += `${reps} | ${time}`
+      }
+      return string
     }
   },
 };
