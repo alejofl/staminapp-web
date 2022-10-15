@@ -9,7 +9,9 @@
     </v-row>
     <v-row justify="start">
       <v-col v-for="n in current_routines" :key="n.id" cols="12" sm="12" md="6" lg="3">
-        <RoutineCard :id="n.id" :name="n.name" :rating="parseInt(n.score)" :base64-data="n.metadata"></RoutineCard>
+        <router-link :to="{name: 'routine', params: {id: n.id}}">
+          <RoutineCard :id="n.id" :name="n.name" :rating="parseInt(n.score)" :base64-data="n.metadata"></RoutineCard>
+        </router-link>
       </v-col>
     </v-row>
   </div>
@@ -72,5 +74,8 @@ export default {
 }
 .myChip{
   background: #E1E6EC !important;
+}
+a {
+  text-decoration: none;
 }
 </style>

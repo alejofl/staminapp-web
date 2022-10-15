@@ -14,6 +14,12 @@ export const useRoutinesStore = defineStore("routines", {
   getters: {
   },
   actions: {
+    async initialize() {
+      this.routine_data = JSON.parse(JSON.stringify(DefaultRoutine));
+      this.before_change_data = null;
+      this.deleted_cycles = [];
+    },
+
     async createRoutine() {
       let routine = new Routine(this.routine_data.name, this.routine_data.detail, Difficulty.for_api[this.routine_data.difficulty], {picture: this.routine_data.picture});
       let routine_result = await RoutinesApi.postRoutine(routine);

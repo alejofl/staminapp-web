@@ -112,8 +112,9 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const store = useSecurityStore();
+  await store.isLoggedIn;
   if (to.meta.requiresAuth && !store.isLoggedIn) {
     next({ name: "sign-in" });
   }

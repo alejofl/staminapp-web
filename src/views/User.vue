@@ -3,7 +3,9 @@
     <h1 class="cera-pro" style="color: #001833">{{ username }}</h1>
     <v-row justify="start" class="pt-6">
       <v-col v-for="n in routines" :key="n.id" cols="12" sm="12" md="6" lg="3">
-        <RoutineCard :id="n.id" :name="n.name" :rating="parseInt(n.score)"></RoutineCard>
+        <router-link :to="{name: 'routine', params: {id: n.id}}">
+          <RoutineCard :id="n.id" :name="n.name" :rating="parseInt(n.score)" :base64-data="n.metadata"></RoutineCard>
+        </router-link>
       </v-col>
     </v-row>
   </div>
@@ -54,5 +56,8 @@ export default {
   margin-top: 64px;
   background-color: #F5FAFF;
   height: 100%;
+}
+a {
+  text-decoration: none;
 }
 </style>
