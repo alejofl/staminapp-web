@@ -229,7 +229,8 @@ export default {
   },
   computed: {
     ...mapState(useRoutinesStore, {
-      routine_data: state => state.routine_data
+      routine_data: state => state.routine_data,
+      deleted_exercises: state => state.deleted_exercises,
     }),
 
     cycle_data: function () {
@@ -252,6 +253,21 @@ export default {
       this.new_exercise_dialog = false;
       this.new_exercise.order = this.last_order++;
       this.cycle_data.exercises.push(this.new_exercise);
+
+      // Si estaba en eliminados, lo saco de eliminados
+      let i;
+      let found = false;
+      for (i = 0; i < this.deleted_exercises.length;) {
+        if (this.deleted_exercises[i].exercise === this.new_exercise.data.id && this.deleted_exercises[i].cycle === this.cycle_data.id) {
+          found = true;
+        } else {
+          i++;
+        }
+      }
+      if (found) {
+        this.deleted_exercises.splice(i, 1);
+      }
+
       this.new_exercise = JSON.parse(JSON.stringify(DefaultCycleExercise));
     },
     discard_new_exercise() {
@@ -268,6 +284,7 @@ export default {
           i++;
         }
       }
+      this.deleted_exercises.push({cycle: this.cycle_data.id, exercise: this.cycle_data.exercises[i].data.id});
       this.cycle_data.exercises.splice(i, 1);
     },
     get_description(e) {

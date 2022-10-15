@@ -120,7 +120,8 @@ export default {
   },
   computed: {
     ...mapState(useRoutinesStore, {
-      routine_data: state => state.routine_data
+      routine_data: state => state.routine_data,
+      deleted_cycles: state => state.deleted_cycles,
     }),
     ...mapState(useSecurityStore, {
       loggedIn: state => state.isLoggedIn,
@@ -134,6 +135,7 @@ export default {
       $markFavourite: 'markFavourite',
       $unmarkFavourite: 'unmarkFavourite',
       $deleteRoutine: 'delete',
+      $updateRoutine: 'update',
     }),
     ...mapActions(useSecurityStore, {
       $getCurrentUser: 'getCurrentUser',
@@ -153,6 +155,7 @@ export default {
           i++;
         }
       }
+      this.deleted_cycles.push(this.routine_data.cycles[i].id);
       this.routine_data.cycles.splice(i, 1);
     },
     uploadImage(event) {
@@ -185,7 +188,7 @@ export default {
         val = val && c.exercises.length > 0;
 
         for (let j = 0; val && j < c.exercises.length; j++) {
-          let e = c.exercises[i];
+          let e = c.exercises[j];
           val = val && e.data.id > 0 && e.data.id !== null && e.data.id !== undefined;
           val = val && e.order > 0 && e.order < 100 && e.order !== null && e.order !== undefined;
           val = val && ((e.repetitions > 0 && e.repetitions < 1000 && e.repetitions !== null && e.repetitions !== undefined) || (e.duration > 0 && e.duration < 1000 && e.duration !== null && e.duration !== undefined));
@@ -204,45 +207,42 @@ export default {
           let result = await this.$createRoutine();
           await this.$router.push({ name: 'routine', params: { id: result.id } })
         } else {
-          // TODO FIXME IMPORTANT update
+          await this.$updateRoutine();
+          await this.$router.push({ name: 'routine', params: { id: this.routine_data.id } })
         }
       } catch (e) {
         console.log(e)
       }
-
-      this.edit = false;
     },
-    async getRoutine() {
+    async getData() {
       try {
         await this.$getRoutine(this.routine_id);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async isFavourite() {
-      try {
-        let result = await this.$getFavourites();
+
+        let favs = await this.$getFavourites();
         let favourites_ids = [];
-        for (let r of result.content) {
+        for (let r of favs.content) {
           favourites_ids.push(r.id);
         }
-        this.favourite = favourites_ids.includes(this.routine_id);
+        this.favourite = favourites_ids.includes(parseInt(this.routine_id));
+
+        let usr = await this.$getCurrentUser();
+        this.user_is_owner = this.routine_data.author.id === usr.id;
       } catch (e) {
         console.log(e);
       }
     },
     async faveRoutine() {
       try {
-        this.favourite = true;
         await this.$markFavourite(this.routine_id);
+        this.favourite = true;
       } catch (e) {
         console.log(e);
       }
     },
     async unfaveRoutine() {
       try {
-        this.favourite = false;
         await this.$unmarkFavourite(this.routine_id);
+        this.favourite = false;
       } catch (e) {
         console.log(e);
       }
@@ -274,19 +274,10 @@ export default {
       document.body.removeChild(el);
       this.copied_snackbar = true;
     },
-    async isOwner() {
-      let usr = await this.$getCurrentUser();
-      this.user_is_owner = this.routine_data.author.id === usr.id;
-      console.log("OWNER" + this.user_is_owner);
-    }
   },
   beforeMount() {
     if (!this.is_new_routine) {
-      this.getRoutine();
-      if (this.loggedIn) {
-        this.isOwner();
-        this.isFavourite();
-      }
+      this.getData();
     }
   }
 };

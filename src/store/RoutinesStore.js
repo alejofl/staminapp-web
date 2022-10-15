@@ -6,7 +6,9 @@ import { FavouritesApi } from "@/api/favourites";
 
 export const useRoutinesStore = defineStore("routines", {
   state: () => ({
-    routine_data: JSON.parse(JSON.stringify(DefaultRoutine))
+    routine_data: JSON.parse(JSON.stringify(DefaultRoutine)),
+    deleted_cycles: [],
+    deleted_exercises: [],
   }),
   getters: {
   },
@@ -76,14 +78,48 @@ export const useRoutinesStore = defineStore("routines", {
         response.cycles.push(cycle)
       }
       this.routine_data = response;
+      this.deleted_cycles = [];
+      this.deleted_exercises = [];
+      return {success: 1}
     },
 
     async getAll() {
       return await RoutinesApi.getAllRoutines();
     },
 
-    async update(id, routine) {
-      return await RoutinesApi.updateRoutine(id, routine);
+    async update() {
+      let routine = new Routine(this.routine_data.name, this.routine_data.detail, Difficulty.for_api[this.routine_data.difficulty], {picture: this.routine_data.picture});
+      let routine_result = await RoutinesApi.updateRoutine(this.routine_data.id, routine);
+      if (routine_result.code) {
+        throw routine_result;
+      }
+      for (let cycle_data of this.routine_data.cycles) {
+        let cycle = new Cycle(cycle_data.name, cycle_data.order, cycle_data.repetitions);
+        let cycle_result = await RoutinesApi.updateCycle(this.routine_data.id, cycle_data.id, cycle);
+        if (cycle_result.code) {
+          throw cycle_result;
+        }
+        for (let exercise_data of cycle_data.exercises) {
+          let ex = new CycleExercise(exercise_data.order, exercise_data.duration, exercise_data.repetitions);
+          let ex_result = CyclesApi.updateExercise(cycle_data.id, exercise_data.data.id, ex)
+          if (ex_result.code) {
+            throw ex_result;
+          }
+        }
+        for (let e of this.deleted_exercises) {
+          let result = await CyclesApi.deleteExercise(e.cycle, e.exercise);
+          if (result.code) {
+            throw result
+          }
+        }
+      }
+      for (let c of this.deleted_cycles) {
+        let result = await RoutinesApi.deleteCycle(this.routine_data.id, c)
+        if (result.code) {
+          throw result
+        }
+      }
+      return {success: 1}
     },
 
     async delete(id) {
