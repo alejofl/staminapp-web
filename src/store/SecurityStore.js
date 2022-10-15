@@ -8,7 +8,7 @@ export const useSecurityStore = defineStore("security", {
   state: () => ({
     token: null,
     user: null,
-    currentUser: { name: '', mail: '', gender: '', birthdate: 0, weight: '', height:'', base64Data: '' },
+    currentUser: { name: '', mail: '', gender: '', birthdate: 0, weight: '', height:'', base64Data: '' ,firstLogIn:false},
   }),
   getters: {
     isLoggedIn() {
@@ -78,6 +78,8 @@ export const useSecurityStore = defineStore("security", {
     
     async updateProfileInfo(userData){
       await UserApi.updateProfileInfo(userData);
+      this.user = null;
+      return
     },
 
     async getCurrentUserRoutines() {
@@ -93,7 +95,8 @@ export const useSecurityStore = defineStore("security", {
       this.currentUser.weight = result.metadata.weight;
       this.currentUser.height = result.metadata.height;
       this.currentUser.base64Data = result.metadata.profilePicture;
+      this.currentUser.firstLogIn = result.metadata.firstLogIn;
       return result
-    }
+    },
   },
 });

@@ -139,7 +139,7 @@ export default {
     async beforeLeaving() {
       try {
         this.$refs.form.saveProfileInfo();
-        let metadata = new MetaData(this.$currentUser.weight, this.$currentUser.height, this.$currentUser.base64Data);
+        let metadata = new MetaData(this.$currentUser.weight, this.$currentUser.height, this.$currentUser.base64Data,this.$currentUser.firstLogIn);
         let dataUpdated = new UpdatedUserData(this.$currentUser.name,"", this.$currentUser.gender, this.$currentUser.birthdate,"","",metadata);
         await UserApi.updateProfileInfo(dataUpdated);
       } catch(e) {

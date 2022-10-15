@@ -76,10 +76,11 @@ class UserData {
   }
 }
 class MetaData {
-  constructor(weight, height, profilePicture) {
+  constructor(weight, height, profilePicture, firstLogIn) {
     this.weight = weight;
     this.height = height;
     this.profilePicture = profilePicture;
+    this.firstLogIn = firstLogIn;
   }
 }
 
