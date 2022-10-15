@@ -3,6 +3,7 @@ import { Cycle, Routine, RoutinesApi } from "@/api/routines";
 import { DefaultCycle, DefaultCycleExercise, DefaultRoutine, Difficulty } from "@/assets/default_data";
 import { CyclesApi, CycleExercise } from "@/api/cycles";
 import { FavouritesApi } from "@/api/favourites";
+import { Review, ReviewsApi } from "@/api/reviews";
 
 export const useRoutinesStore = defineStore("routines", {
   state: () => ({
@@ -175,6 +176,10 @@ export const useRoutinesStore = defineStore("routines", {
 
     async unmarkFavourite(id) {
       return await FavouritesApi.deleteFavourite(id);
+    },
+
+    async rate(id, score) {
+      return await ReviewsApi.postReview(id, new Review(score));
     }
   },
 });

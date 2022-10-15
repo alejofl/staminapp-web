@@ -135,6 +135,7 @@ export default {
       $unmarkFavourite: 'unmarkFavourite',
       $deleteRoutine: 'delete',
       $updateRoutine: 'update',
+      $rateRoutine: 'rate'
     }),
     ...mapActions(useSecurityStore, {
       $getCurrentUser: 'getCurrentUser',
@@ -246,11 +247,12 @@ export default {
         console.log(e);
       }
     },
-    async rateRoutine() {
+    async rateRoutine(value) {
       try {
-
+        console.log(value);
+        await this.$rateRoutine(this.routine_id, value)
       } catch (e) {
-
+        console.log(e);
       }
     },
     async deleteRoutine() {
