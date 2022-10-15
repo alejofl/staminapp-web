@@ -26,6 +26,7 @@ const DefaultCycleExercise = {
   },
   edit_dialog: false,
   order: null,
+  // 0: reps | 1: time | 2: ambos
   type: null,
   duration: null,
   repetitions: null

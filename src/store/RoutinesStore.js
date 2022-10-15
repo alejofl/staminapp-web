@@ -78,6 +78,15 @@ export const useRoutinesStore = defineStore("routines", {
           ex.order = e_data.order;
           ex.duration = e_data.duration;
           ex.repetitions = e_data.repetitions;
+          if (ex.repetitions > 0) {
+            if (ex.duration > 0) {
+              ex.type = 2;
+            } else {
+              ex.type = 0;
+            }
+          } else {
+            ex.type = 1;
+          }
           cycle.exercises.push(ex);
         }
 
