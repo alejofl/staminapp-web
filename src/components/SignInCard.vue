@@ -19,7 +19,7 @@
       <v-card class="mailVerificationFailedCard" v-if="failedLogIn">
         <v-container>
           <p class="mailVerificationText mb-0" justify="center" align="center">
-            <v-icon color="white">warning</v-icon> Su E-mail o Contraseña son incorrectos.
+            <v-icon color="white">warning</v-icon> Su e-mail o contraseña son incorrectos.
           </p>
         </v-container>
       </v-card>
