@@ -80,6 +80,10 @@ export const useSecurityStore = defineStore("security", {
       await UserApi.updateProfileInfo(userData);
     },
 
+    async getCurrentUserRoutines() {
+      return await UserApi.getCurrentUserRoutines();
+    },
+    
     async getProfileInfo(){
       const result = await UserApi.getProfileInfo();
       this.currentUser.name = result.firstName;
