@@ -7,8 +7,8 @@ import { FavouritesApi } from "@/api/favourites";
 export const useRoutinesStore = defineStore("routines", {
   state: () => ({
     routine_data: JSON.parse(JSON.stringify(DefaultRoutine)),
+    before_change_data: null,
     deleted_cycles: [],
-    deleted_exercises: [],
   }),
   getters: {
   },
@@ -19,14 +19,20 @@ export const useRoutinesStore = defineStore("routines", {
       if (routine_result.code) {
         throw routine_result;
       }
-      for (let cycle_data of this.routine_data.cycles) {
-        let cycle = new Cycle(cycle_data.name, cycle_data.order, cycle_data.repetitions);
+
+      for (let i = 0; i < this.routine_data.cycles.length; i++) {
+        let cycle_data = this.routine_data.cycles[i];
+
+        let cycle = new Cycle(cycle_data.name, i+1, cycle_data.repetitions);
         let cycle_result = await RoutinesApi.postCycle(routine_result.id, cycle);
         if (cycle_result.code) {
           throw cycle_result;
         }
-        for (let exercise_data of cycle_data.exercises) {
-          let ex = new CycleExercise(exercise_data.order, exercise_data.duration, exercise_data.repetitions);
+
+        for (let j = 0; j < cycle_data.exercises.length; j++) {
+          let exercise_data = cycle_data.exercises[j];
+
+          let ex = new CycleExercise(j+1, exercise_data.duration, exercise_data.repetitions);
           let ex_result = CyclesApi.postExercise(cycle_result.id, exercise_data.data.id, ex)
           if (ex_result.code) {
             throw ex_result;
@@ -78,8 +84,8 @@ export const useRoutinesStore = defineStore("routines", {
         response.cycles.push(cycle)
       }
       this.routine_data = response;
+      this.before_change_data = JSON.parse(JSON.stringify(response));
       this.deleted_cycles = [];
-      this.deleted_exercises = [];
       return {success: 1}
     },
 
@@ -93,23 +99,13 @@ export const useRoutinesStore = defineStore("routines", {
       if (routine_result.code) {
         throw routine_result;
       }
-      for (let cycle_data of this.routine_data.cycles) {
-        let cycle = new Cycle(cycle_data.name, cycle_data.order, cycle_data.repetitions);
-        let cycle_result = await RoutinesApi.updateCycle(this.routine_data.id, cycle_data.id, cycle);
-        if (cycle_result.code) {
-          throw cycle_result;
-        }
-        for (let exercise_data of cycle_data.exercises) {
-          let ex = new CycleExercise(exercise_data.order, exercise_data.duration, exercise_data.repetitions);
-          let ex_result = CyclesApi.updateExercise(cycle_data.id, exercise_data.data.id, ex)
+
+      for (let c of this.before_change_data.cycles) {
+        for (let e of c.exercises) {
+          let ex_result = CyclesApi.deleteExercise(c.id, e.data.id)
+          console.log("Borre", e.data.id, "del ciclo", c.id);
           if (ex_result.code) {
             throw ex_result;
-          }
-        }
-        for (let e of this.deleted_exercises) {
-          let result = await CyclesApi.deleteExercise(e.cycle, e.exercise);
-          if (result.code) {
-            throw result
           }
         }
       }
@@ -119,6 +115,36 @@ export const useRoutinesStore = defineStore("routines", {
           throw result
         }
       }
+
+      for (let i = 0; i < this.routine_data.cycles.length; i++) {
+        let cycle_data = this.routine_data.cycles[i];
+
+        let cycle_id = cycle_data.id;
+        let cycle = new Cycle(cycle_data.name, i+1, cycle_data.repetitions);
+        if (cycle_id === null) {
+          let new_cycle_result = await RoutinesApi.postCycle(this.routine_data.id, cycle);
+          if (new_cycle_result.code) {
+            throw new_cycle_result;
+          }
+          cycle_id = new_cycle_result.id;
+        } else {
+          let cycle_result = await RoutinesApi.updateCycle(this.routine_data.id, cycle_id, cycle);
+          if (cycle_result.code) {
+            throw cycle_result;
+          }
+        }
+
+        for (let j = 0; j < cycle_data.exercises.length; j++) {
+          let exercise_data = cycle_data.exercises[j];
+
+          let ex = new CycleExercise(j+1, exercise_data.duration, exercise_data.repetitions);
+          let ex_result = CyclesApi.postExercise(cycle_id, exercise_data.data.id, ex)
+          if (ex_result.code) {
+            throw ex_result;
+          }
+        }
+      }
+
       return {success: 1}
     },
 
