@@ -55,11 +55,13 @@ export const useSecurityStore = defineStore("security", {
     },
 
     async getCurrentUser() {
-      if (this.user)
+      console.log("En el await")
+      if (this.user) {
         return this.user;
-
-      const result = await UserApi.get();
+      }
+      const result = await UserApi.getCurrent();
       this.setUser(result);
+      return result;
     },
 
     async resendEmailVerification(email) {

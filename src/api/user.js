@@ -16,7 +16,7 @@ class UserApi {
   }
 
   static async getCurrent(controller) {
-    return Api.get(UserApi.getUrl('current'), true, true, controller);
+    return Api.get(UserApi.getUrl('current'), true, false, controller);
   }
 
   static async postResendEmailVerification(email, controller) {
