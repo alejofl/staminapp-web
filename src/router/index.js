@@ -1,5 +1,4 @@
 import Vue from "vue";
-import { createPinia, PiniaVuePlugin } from 'pinia'
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Explore from "../views/Explore.vue";
@@ -22,6 +21,7 @@ const routes = [
     component: Home,
     meta: {
       requiresAuth: false,
+      title: 'Inicio'
     }
   },
   {
@@ -30,6 +30,7 @@ const routes = [
     component: Explore,
     meta: {
       requiresAuth: false,
+      title: 'Explorar'
     }
   },
   {
@@ -38,6 +39,7 @@ const routes = [
     component: Statistics,
     meta: {
       requiresAuth: true,
+      title: 'Estadísticas'
     }
   },
   {
@@ -46,6 +48,7 @@ const routes = [
     component: Profile,
     meta: {
       requiresAuth: true,
+      title: 'Mi perfil'
     }
   },
   {
@@ -54,6 +57,7 @@ const routes = [
     component: Library,
     meta: {
       requiresAuth: true,
+      title: 'Mi biblioteca'
     }
   },
   {
@@ -62,6 +66,7 @@ const routes = [
     component: SignIn,
     meta: {
       requiresAuth: false,
+      title: 'Iniciar sesión'
     }
   },
   {
@@ -70,6 +75,7 @@ const routes = [
     component: SignUp,
     meta: {
       requiresAuth: false,
+      title: 'Registrarse'
     }
   },
   {
@@ -78,6 +84,7 @@ const routes = [
     component: Routine,
     meta: {
       requiresAuth: true,
+      title: 'Nueva rutina'
     }
   },
   {
@@ -86,6 +93,7 @@ const routes = [
     component: Routine,
     meta: {
       requiresAuth: true,
+      title: 'Rutina'
     }
   },
   {
@@ -102,6 +110,7 @@ const routes = [
     component: ExternalUserView,
     meta: {
       requiresAuth: true,
+      title: 'Usuario'
     }
   }
 ];
@@ -119,6 +128,12 @@ router.beforeEach(async (to, from, next) => {
     next({ name: "sign-in" });
   }
   next();
+})
+
+router.afterEach((to) => {
+  if (to.meta.title) {
+    document.title = `${to.meta.title} | StaminApp`;
+  }
 })
 
 export default router;
