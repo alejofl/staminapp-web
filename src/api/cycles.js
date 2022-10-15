@@ -1,7 +1,7 @@
 import { Api } from "./api.js";
 
 export { CyclesApi }
-export { Exercise }
+export { CycleExercise }
 
 class CyclesApi {
   static getUrl(slug) {
@@ -29,10 +29,10 @@ class CyclesApi {
   }
 }
 
-class Exercise {
+class CycleExercise {
   constructor(order, duration, repetitions) {
     this.order = parseInt(order);
-    this.duration = parseInt(duration);
-    this.repetitions = parseInt(repetitions);
+    this.duration = duration === null ? 0 : parseInt(duration);
+    this.repetitions = repetitions === null ? 0 : parseInt(repetitions);
   }
 }

@@ -43,9 +43,6 @@ export default {
     })
   },
   methods: {
-    currentRouteName() {
-      return this.$route.name='/explore' ? true : false;
-    }
   }
 };
 </script>

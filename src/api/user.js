@@ -16,7 +16,7 @@ class UserApi {
   }
 
   static async getCurrent(controller) {
-    return Api.get(UserApi.getUrl('current'), true, true, controller);
+    return Api.get(UserApi.getUrl('current'), true, false, controller);
   }
 
   static async postResendEmailVerification(email, controller) {
@@ -37,6 +37,10 @@ class UserApi {
 
   static async updateProfileInfo(updatedUserData, controller) {
     return Api.put(UserApi.getUrl('current'),true, updatedUserData, controller)
+  }
+
+  static async getCurrentUserRoutines(controller) {
+    return Api.get(UserApi.getUrl('current/routines'), true, true, controller);
   }
 
   static async getProfileInfo(controller){
