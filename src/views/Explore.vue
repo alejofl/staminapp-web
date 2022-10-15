@@ -9,7 +9,7 @@
     </v-row>
     <v-row justify="start">
       <v-col v-for="n in current_routines" :key="n.id" cols="12" sm="12" md="6" lg="3">
-        <RoutineCard :id="n.id" :name="n.name" :rating="parseInt(n.score)"></RoutineCard>
+        <RoutineCard :id="n.id" :name="n.name" :rating="parseInt(n.score)" :base64-data="n.metadata"></RoutineCard>
       </v-col>
     </v-row>
   </div>
