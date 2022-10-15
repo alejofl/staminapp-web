@@ -44,8 +44,6 @@ class UserApi {
   }
 }
 
-
-
 class Credentials {
   constructor(username, password) {
     this.username = username;

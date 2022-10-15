@@ -4,9 +4,6 @@
       <v-row class="px-8 py-4" no-gutters justify="center">
         <h1 style="color: #001833;" >Dentro de rango saludable</h1>
       </v-row>
-<!--      <v-row class="px-8 py-4" no-gutters justify="start">-->
-<!--        <h3 style="color: #FD9900">EVOLUCIÓN DE IMC</h3>-->
-<!--      </v-row>-->
       <v-row class="px-8 py-4" no-gutters justify="center">
         <LineChartGenerator
           :chart-options="chartOptions"
