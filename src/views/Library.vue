@@ -1,15 +1,21 @@
 <template>
   <div class="myContainer pa-8">
     <h1 class="cera-pro">Recientes</h1>
-    <v-row>
-      <v-col v-for="n in recent_routines" :key="n.id" cols="12" sm="12" md="6" lg="4">
-        <RecentCard :id="n.id" :routineName="n.name" :difficulty="n.difficulty" :rating="parseInt(n.score)"></RecentCard>
+    <v-row >
+      <v-col v-for="n in recent_routines" :key="n.id" cols="12" sm="12" md="6" lg="4" v-if="routines.length !== 0">
+        <RecentCard :id="n.id" :routineName="n.name" :difficulty="n.difficulty" :rating="parseInt(n.score)" :base64-data="n.metadata"></RecentCard>
+      </v-col>
+      <v-col cols="12" sm="12" md="6" lg="4" v-if="routines.length === 0">
+        <h3 class="cera-pro">Todavía no tienes rutinas.</h3>
       </v-col>
     </v-row>
     <h1 class="pt-6 cera-pro">Mi Biblioteca</h1>
     <v-row justify="start">
-      <v-col v-for="n in current_routines" :key="n.id" cols="12" sm="12" md="6" lg="3">
-        <RoutineCard :id="n.id" :name="n.name" :rating="parseInt(n.score)"></RoutineCard>
+      <v-col v-for="n in current_routines" :key="n.id" cols="12" sm="12" md="6" lg="3" v-if="routines.length !== 0">
+        <RoutineCard :id="n.id" :name="n.name" :rating="parseInt(n.score)" :base64-data="n.metadata"></RoutineCard>
+      </v-col>
+      <v-col cols="12" sm="12" md="6" lg="4" v-if="routines.length === 0">
+        <h3 class="cera-pro">Todavía no tienes rutinas.</h3>
       </v-col>
     </v-row>
     <v-btn fab class="customFAB secondary--text ma-4" color="primary" fixed right bottom>
@@ -23,7 +29,7 @@ import RecentCard from "@/components/RecentCard";
 import RoutineCard from "@/components/RoutineCard";
 import { mapActions } from "pinia";
 import { useSecurityStore } from "@/store/SecurityStore";
-
+import { useRoutinesStore } from "@/store/RoutinesStore";
 export default {
   name: "Library",
   components: { RoutineCard, RecentCard},
@@ -38,11 +44,23 @@ export default {
     ...mapActions(useSecurityStore, {
       $getCurrentUserRoutines : 'getCurrentUserRoutines',
     }),
+    ...mapActions(useRoutinesStore, {
+      $getFavourites : 'getFavourites',
+    }),
     async getRoutines() {
       try {
-        const result = await this.$getCurrentUserRoutines();
-        // console.log(result.content[0].user.username)
-        this.routines = result.content;
+        let userRoutines = await this.$getCurrentUserRoutines();
+        let favouriteRoutines = await this.$getFavourites();
+        const result = userRoutines.content.concat(favouriteRoutines.content);
+
+        this.routines = result;
+        console.log(this.routines)
+        for(let i = 0; i < this.routines.length; i++) {
+          if(this.routines[i].metadata != null) {
+            console.log("Se cumple la condicion")
+            console.log(this.routines[i].metadata.picture)
+          }
+        }
         let aux = []
         for(let i = 0; i < this.routines.length; i++) {
           this.current_routines.push(this.routines[i]);
@@ -50,14 +68,11 @@ export default {
         }
         if(this.current_routines.length <= 3) {
           console.log("Entre al if")
-          this.recent_routines = this.current_routines;
           for(let i = 0; i < this.current_routines.length; i++) {
             this.recent_routines.push(this.current_routines[i]);
           }
         } else {
           this.recent_routines = [];
-          console.log(aux)
-          console.log(this.current_routines);
           let i = 0;
           let index = 0;
           let min = aux[i];
@@ -88,7 +103,7 @@ export default {
             }
           }
           this.recent_routines.push(aux[index]);
-         }
+        }
       } catch(e) {
         console.log("Tengo errores");
         console.log(e);
