@@ -32,6 +32,14 @@ class RoutinesApi {
     return await Api.post(RoutinesApi.getUrl(`${routineId}/cycles`), true, cycle, controller);
   }
 
+  static async updateCycle(routineId, cycleId, cycle, controller) {
+    return await Api.put(RoutinesApi.getUrl(`${routineId}/cycles/${cycleId}`), true, cycle, controller);
+  }
+
+  static async deleteCycle(routineId, cycleId, controller) {
+    return await Api.delete(RoutinesApi.getUrl(`${routineId}/cycles/${cycleId}`), true, controller);
+  }
+
   static async getCycles(routineId, controller) {
     return await Api.get(RoutinesApi.getUrl(`${routineId}/cycles`), true, true, controller);
   }

@@ -36,8 +36,6 @@ class UserApi {
   }
 
   static async updateProfileInfo(updatedUserData, controller) {
-    console.log("Entre al user api");
-    console.log(updatedUserData);
     return Api.put(UserApi.getUrl('current'),true, updatedUserData, controller)
   }
 
@@ -45,7 +43,12 @@ class UserApi {
     return Api.get(UserApi.getUrl('current/routines'), true, true, controller);
   }
 
+  static async getProfileInfo(controller){
+    return Api.get(UserApi.getUrl('current'), true, true, controller);
+  }
 }
+
+
 
 class Credentials {
   constructor(username, password) {
@@ -74,10 +77,8 @@ class UserData {
 }
 class MetaData {
   constructor(weight, height, profilePicture) {
-    this.weight = [];
-    this.weight.push(weight);
-    this.height = [];
-    this.height.push(height);
+    this.weight = weight;
+    this.height = height;
     this.profilePicture = profilePicture;
   }
 }

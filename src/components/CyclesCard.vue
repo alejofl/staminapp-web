@@ -42,8 +42,8 @@
       </v-card-title>
       <v-card-text class="secondary--text grow">
         <v-list color="transparent">
-          <template v-for="e in cycle_data.exercises">
-            <v-list-item :key="e.order">
+          <template v-for="(e, index) in cycle_data.exercises">
+            <v-list-item :key="index">
               <v-list-item-content>
                 <v-list-item-title>
                   {{ e.data.name }}
@@ -223,13 +223,11 @@ export default {
       new_exercise: JSON.parse(JSON.stringify(DefaultCycleExercise)),
 
       exercise_list: [],
-
-      last_order: 1
     }
   },
   computed: {
     ...mapState(useRoutinesStore, {
-      routine_data: state => state.routine_data
+      routine_data: state => state.routine_data,
     }),
 
     cycle_data: function () {
@@ -250,7 +248,6 @@ export default {
     }),
     save_new_exercise() {
       this.new_exercise_dialog = false;
-      this.new_exercise.order = this.last_order++;
       this.cycle_data.exercises.push(this.new_exercise);
       this.new_exercise = JSON.parse(JSON.stringify(DefaultCycleExercise));
     },

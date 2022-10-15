@@ -25,6 +25,7 @@ export const useExercisesStore = defineStore("exercise", {
     async getSavedExercises() {
       const result = await ExercisesApi.getSavedExercises();
       let i = 0;
+      this.exercises = []
       for(i; i < result.totalCount; i++) {
         this.exercises.push({ id: result.content[i].id, name: result.content[i].name, detail: result.content[i].detail,
           type: result.content[i].type, metadata: result.content[i].metadata})

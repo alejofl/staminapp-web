@@ -78,7 +78,7 @@
         </v-col>
         <v-col cols="8">
           <h1 class="cera-pro">Ciclos</h1>
-          <div v-for="(cycle, index) in routine_data.cycles" :key="cycle.order" class="pb-4">
+          <div v-for="(cycle, index) in routine_data.cycles" :key="index" class="pb-4">
             <CyclesCard :edit_cycle="edit" :idx="index"></CyclesCard>
             <v-btn v-if="edit" color="error" width="100%" @click="delete_cycle(cycle)">Borrar Ciclo</v-btn>
           </div>
@@ -111,7 +111,6 @@ export default {
       user_is_owner: false,
 
       difficulties: Object.values(Difficulty.for_web),
-      last_order: 1,
 
       error_snackbar: false,
       copied_snackbar: false,
@@ -120,7 +119,8 @@ export default {
   },
   computed: {
     ...mapState(useRoutinesStore, {
-      routine_data: state => state.routine_data
+      routine_data: state => state.routine_data,
+      deleted_cycles: state => state.deleted_cycles,
     }),
     ...mapState(useSecurityStore, {
       loggedIn: state => state.isLoggedIn,
@@ -133,13 +133,15 @@ export default {
       $getFavourites: 'getFavourites',
       $markFavourite: 'markFavourite',
       $unmarkFavourite: 'unmarkFavourite',
+      $deleteRoutine: 'delete',
+      $updateRoutine: 'update',
+      $rateRoutine: 'rate'
     }),
     ...mapActions(useSecurityStore, {
       $getCurrentUser: 'getCurrentUser',
     }),
     new_cycle() {
       let new_cycle = JSON.parse(JSON.stringify(DefaultCycle));
-      new_cycle.order = this.last_order++;
       this.routine_data.cycles.push(new_cycle);
     },
     delete_cycle(c) {
@@ -152,6 +154,7 @@ export default {
           i++;
         }
       }
+      this.deleted_cycles.push(this.routine_data.cycles[i].id);
       this.routine_data.cycles.splice(i, 1);
     },
     uploadImage(event) {
@@ -179,14 +182,14 @@ export default {
       for (let i = 0; val && i < r.cycles.length; i++) {
         let c = r.cycles[i];
         val = val && c.name !== '' && c.name !== null && c.name !== undefined;
-        val = val && c.order > 0 && c.order < 100 && c.order !== null && c.order !== undefined;
+        // val = val && c.order > 0 && c.order < 100 && c.order !== null && c.order !== undefined;
         val = val && c.repetitions > 0 && c.repetitions < 1000 && c.repetitions !== null && c.repetitions !== undefined;
         val = val && c.exercises.length > 0;
 
         for (let j = 0; val && j < c.exercises.length; j++) {
-          let e = c.exercises[i];
+          let e = c.exercises[j];
           val = val && e.data.id > 0 && e.data.id !== null && e.data.id !== undefined;
-          val = val && e.order > 0 && e.order < 100 && e.order !== null && e.order !== undefined;
+          // val = val && e.order > 0 && e.order < 100 && e.order !== null && e.order !== undefined;
           val = val && ((e.repetitions > 0 && e.repetitions < 1000 && e.repetitions !== null && e.repetitions !== undefined) || (e.duration > 0 && e.duration < 1000 && e.duration !== null && e.duration !== undefined));
         }
       }
@@ -202,62 +205,62 @@ export default {
         if (this.is_new_routine) {
           let result = await this.$createRoutine();
           await this.$router.push({ name: 'routine', params: { id: result.id } })
+          this.$router.go(0);
         } else {
-          // TODO FIXME IMPORTANT update
+          await this.$updateRoutine();
+          this.$router.go(0);
         }
       } catch (e) {
         console.log(e)
       }
-
-      this.edit = false;
     },
-    async getRoutine() {
+    async getData() {
       try {
         await this.$getRoutine(this.routine_id);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async isFavourite() {
-      try {
-        let result = await this.$getFavourites();
+
+        let favs = await this.$getFavourites();
         let favourites_ids = [];
-        for (let r of result.content) {
+        for (let r of favs.content) {
           favourites_ids.push(r.id);
         }
-        this.favourite = favourites_ids.includes(this.routine_id);
+        this.favourite = favourites_ids.includes(parseInt(this.routine_id));
+
+        let usr = await this.$getCurrentUser();
+        this.user_is_owner = this.routine_data.author.id === usr.id;
       } catch (e) {
         console.log(e);
       }
     },
     async faveRoutine() {
       try {
-        this.favourite = true;
         await this.$markFavourite(this.routine_id);
+        this.favourite = true;
       } catch (e) {
         console.log(e);
       }
     },
     async unfaveRoutine() {
       try {
-        this.favourite = false;
         await this.$unmarkFavourite(this.routine_id);
+        this.favourite = false;
       } catch (e) {
         console.log(e);
       }
     },
-    async rateRoutine() {
+    async rateRoutine(value) {
       try {
-
+        console.log(value);
+        await this.$rateRoutine(this.routine_id, value)
       } catch (e) {
-
+        console.log(e);
       }
     },
     async deleteRoutine() {
       try {
-
+        await this.$deleteRoutine(this.routine_id);
+        this.$router.push({name: 'library'});
       } catch (e) {
-
+        console.log(e);
       }
     },
     shareRoutine() {
@@ -272,19 +275,10 @@ export default {
       document.body.removeChild(el);
       this.copied_snackbar = true;
     },
-    async isOwner() {
-      let usr = await this.$getCurrentUser();
-      this.user_is_owner = this.routine_data.author.id === usr.id;
-      console.log("OWNER" + this.user_is_owner);
-    }
   },
   beforeMount() {
     if (!this.is_new_routine) {
-      this.getRoutine();
-      if (this.loggedIn) {
-        this.isOwner();
-        this.isFavourite();
-      }
+      this.getData();
     }
   }
 };

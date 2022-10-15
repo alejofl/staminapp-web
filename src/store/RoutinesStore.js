@@ -3,10 +3,13 @@ import { Cycle, Routine, RoutinesApi } from "@/api/routines";
 import { DefaultCycle, DefaultCycleExercise, DefaultRoutine, Difficulty } from "@/assets/default_data";
 import { CyclesApi, CycleExercise } from "@/api/cycles";
 import { FavouritesApi } from "@/api/favourites";
+import { Review, ReviewsApi } from "@/api/reviews";
 
 export const useRoutinesStore = defineStore("routines", {
   state: () => ({
-    routine_data: JSON.parse(JSON.stringify(DefaultRoutine))
+    routine_data: JSON.parse(JSON.stringify(DefaultRoutine)),
+    before_change_data: null,
+    deleted_cycles: [],
   }),
   getters: {
   },
@@ -17,14 +20,20 @@ export const useRoutinesStore = defineStore("routines", {
       if (routine_result.code) {
         throw routine_result;
       }
-      for (let cycle_data of this.routine_data.cycles) {
-        let cycle = new Cycle(cycle_data.name, cycle_data.order, cycle_data.repetitions);
+
+      for (let i = 0; i < this.routine_data.cycles.length; i++) {
+        let cycle_data = this.routine_data.cycles[i];
+
+        let cycle = new Cycle(cycle_data.name, i+1, cycle_data.repetitions);
         let cycle_result = await RoutinesApi.postCycle(routine_result.id, cycle);
         if (cycle_result.code) {
           throw cycle_result;
         }
-        for (let exercise_data of cycle_data.exercises) {
-          let ex = new CycleExercise(exercise_data.order, exercise_data.duration, exercise_data.repetitions);
+
+        for (let j = 0; j < cycle_data.exercises.length; j++) {
+          let exercise_data = cycle_data.exercises[j];
+
+          let ex = new CycleExercise(j+1, exercise_data.duration, exercise_data.repetitions);
           let ex_result = CyclesApi.postExercise(cycle_result.id, exercise_data.data.id, ex)
           if (ex_result.code) {
             throw ex_result;
@@ -70,20 +79,83 @@ export const useRoutinesStore = defineStore("routines", {
           ex.order = e_data.order;
           ex.duration = e_data.duration;
           ex.repetitions = e_data.repetitions;
+          if (ex.repetitions > 0) {
+            if (ex.duration > 0) {
+              ex.type = 2;
+            } else {
+              ex.type = 0;
+            }
+          } else {
+            ex.type = 1;
+          }
           cycle.exercises.push(ex);
         }
 
         response.cycles.push(cycle)
       }
       this.routine_data = response;
+      this.before_change_data = JSON.parse(JSON.stringify(response));
+      this.deleted_cycles = [];
+      return {success: 1}
     },
 
     async getAll() {
       return await RoutinesApi.getAllRoutines();
     },
 
-    async update(id, routine) {
-      return await RoutinesApi.updateRoutine(id, routine);
+    async update() {
+      let routine = new Routine(this.routine_data.name, this.routine_data.detail, Difficulty.for_api[this.routine_data.difficulty], {picture: this.routine_data.picture});
+      let routine_result = await RoutinesApi.updateRoutine(this.routine_data.id, routine);
+      if (routine_result.code) {
+        throw routine_result;
+      }
+
+      for (let c of this.before_change_data.cycles) {
+        for (let e of c.exercises) {
+          let ex_result = CyclesApi.deleteExercise(c.id, e.data.id)
+          console.log("Borre", e.data.id, "del ciclo", c.id);
+          if (ex_result.code) {
+            throw ex_result;
+          }
+        }
+      }
+      for (let c of this.deleted_cycles) {
+        let result = await RoutinesApi.deleteCycle(this.routine_data.id, c)
+        if (result.code) {
+          throw result
+        }
+      }
+
+      for (let i = 0; i < this.routine_data.cycles.length; i++) {
+        let cycle_data = this.routine_data.cycles[i];
+
+        let cycle_id = cycle_data.id;
+        let cycle = new Cycle(cycle_data.name, i+1, cycle_data.repetitions);
+        if (cycle_id === null) {
+          let new_cycle_result = await RoutinesApi.postCycle(this.routine_data.id, cycle);
+          if (new_cycle_result.code) {
+            throw new_cycle_result;
+          }
+          cycle_id = new_cycle_result.id;
+        } else {
+          let cycle_result = await RoutinesApi.updateCycle(this.routine_data.id, cycle_id, cycle);
+          if (cycle_result.code) {
+            throw cycle_result;
+          }
+        }
+
+        for (let j = 0; j < cycle_data.exercises.length; j++) {
+          let exercise_data = cycle_data.exercises[j];
+
+          let ex = new CycleExercise(j+1, exercise_data.duration, exercise_data.repetitions);
+          let ex_result = CyclesApi.postExercise(cycle_id, exercise_data.data.id, ex)
+          if (ex_result.code) {
+            throw ex_result;
+          }
+        }
+      }
+
+      return {success: 1}
     },
 
     async delete(id) {
@@ -104,6 +176,10 @@ export const useRoutinesStore = defineStore("routines", {
 
     async unmarkFavourite(id) {
       return await FavouritesApi.deleteFavourite(id);
+    },
+
+    async rate(id, score) {
+      return await ReviewsApi.postReview(id, new Review(score));
     }
   },
 });
