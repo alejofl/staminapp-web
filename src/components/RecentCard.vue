@@ -9,7 +9,7 @@
             <v-rating class="pl-4" empty-icon="star_outline" color="white" full-icon="star" half-icon="star_half"
                       half-increments hover length="5" :value=rating readonly dense size="20"/>
             <div></div>
-            <v-chip class="mr-2" color="#3ad6de" outlined>{{ difficulty }}</v-chip>
+            <v-chip class="mr-2" color="#3ad6de" outlined>{{ web_difficulty }}</v-chip>
           </div>
           <v-card-title class="text-h5">{{ routineName }}</v-card-title>
         </div>
@@ -21,9 +21,16 @@
 </template>
 
 <script>
+import { Difficulty } from "@/assets/default_data";
+
 export default {
   props: {id: Number, routineName: String, difficulty: String, userName: String, rating: Number, base64Data: Object},
-  name: "RecentCard"
+  name: "RecentCard",
+  data() {
+    return {
+      web_difficulty: Difficulty.for_web[this.difficulty],
+    }
+  }
 }
 </script>
 

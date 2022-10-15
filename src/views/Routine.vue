@@ -95,7 +95,7 @@
 import CyclesCard from "@/components/CyclesCard";
 import { useRoutinesStore } from "@/store/RoutinesStore";
 import { mapActions, mapState } from "pinia";
-import { DefaultCycle, Difficulty } from "@/assets/default_data";
+import { DefaultCycle, DefaultRoutine, Difficulty } from "@/assets/default_data";
 import { useSecurityStore } from "@/store/SecurityStore";
 
 export default {
@@ -121,6 +121,7 @@ export default {
     ...mapState(useRoutinesStore, {
       routine_data: state => state.routine_data,
       deleted_cycles: state => state.deleted_cycles,
+      before_change_data: state => state.before_change_data,
     }),
     ...mapState(useSecurityStore, {
       loggedIn: state => state.isLoggedIn,
@@ -135,7 +136,8 @@ export default {
       $unmarkFavourite: 'unmarkFavourite',
       $deleteRoutine: 'delete',
       $updateRoutine: 'update',
-      $rateRoutine: 'rate'
+      $rateRoutine: 'rate',
+      $initializeRoutineStore: 'initialize',
     }),
     ...mapActions(useSecurityStore, {
       $getCurrentUser: 'getCurrentUser',
@@ -280,6 +282,9 @@ export default {
     if (!this.is_new_routine) {
       this.getData();
     }
+  },
+  beforeDestroy() {
+    this.$initializeRoutineStore();
   }
 };
 </script>
