@@ -1,24 +1,24 @@
-.noscript-container {
+.custom-container {
     position: relative;
     height: 100vh;
     margin: -8px;
 }
 
-.noscript-container .noscript-centered {
+.custom-container .custom-centered {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
 }
 
-.noscript-centered {
-    max-width: 560px;
+.custom-centered {
+    max-width: 560px !important;
     width: 100%;
     padding-left: 160px;
     line-height: 1.1
 }
 
-.noscript-centered .graphics {
+.custom-centered .graphics {
     position: absolute;
     left: 0;
     top: 0;
@@ -29,7 +29,7 @@
     background-size: cover
 }
 
-.noscript-centered .graphics:before {
+.custom-centered .graphics:before {
     content: '';
     position: absolute;
     width: 100%;
@@ -40,7 +40,7 @@
     z-index: -1
 }
 
-.noscript-centered h1 {
+.custom-centered h1 {
     font-family: 'Cera Pro', sans-serif;
     font-size: 65px;
     font-weight: 900;
@@ -50,7 +50,7 @@
     text-transform: uppercase
 }
 
-.noscript-centered h2 {
+.custom-centered h2 {
     font-family: 'Cera Pro', sans-serif;
     font-size: 21px;
     font-weight: 600;
@@ -59,8 +59,14 @@
     color: #001833
 }
 
-.noscript-centered p {
+.custom-centered p {
     font-family: 'Cera Pro', sans-serif;
     color: #001833;
-    font-weight: 300
+    font-weight: 300;
+    margin: 16px 0;
+}
+
+#disconnected {
+    display: none;
+    box-sizing: unset;
 }

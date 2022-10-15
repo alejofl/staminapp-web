@@ -46,7 +46,7 @@
             <v-list-item :key="e.order">
               <v-list-item-content>
                 <v-list-item-title>
-                  {{ e.name }}
+                  {{ e.data.name }}
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-action>
@@ -56,16 +56,21 @@
                     <v-btn rounded color="secondary" small v-bind="attrs" v-on="on">Editar Ejercicio</v-btn>
                   </template>
                   <v-card class="mx-auto">
-                    <v-card-title>
-                      <v-text-field
+                    <v-card-title class="pb-4">
+                      <v-autocomplete
                         filled
                         label="Nombre"
-                        v-model="e.name"
+                        v-model="e.data"
+                        :items="exercise_list"
+                        item-text="name"
+                        item-value="name"
+                        :item-disabled="checkItemDisabled"
                         background-color="#E1E6EC"
                         color="secondary"
-                        append-icon="search"
-                        hide-details>
-                      </v-text-field>
+                        append-icon="arrow_drop_down"
+                        return-object
+                        hide-details
+                      ></v-autocomplete>
                     </v-card-title>
 
                     <v-card-text class="text--secondary text-h5">
@@ -102,6 +107,7 @@
                             v-model="e.duration"
                             background-color="#E1E6EC"
                             color="secondary"
+                            return-object
                             append-icon="hourglass_bottom"
                             hide-details>
                           </v-text-field>
@@ -124,15 +130,20 @@
           </template>
           <v-card class="mx-auto">
             <v-card-title>
-              <v-text-field
+              <v-autocomplete
                 filled
                 label="Nombre"
-                v-model="new_exercise.name"
+                v-model="new_exercise.data"
+                :items="exercise_list"
+                item-text="name"
+                item-value="name"
+                :item-disabled="checkItemDisabled"
                 background-color="#E1E6EC"
                 color="secondary"
-                append-icon="search"
-                hide-details>
-              </v-text-field>
+                append-icon="arrow_drop_down"
+                return-object
+                hide-details
+              ></v-autocomplete>
             </v-card-title>
 
             <v-card-text class="text--secondary text-h5">
@@ -189,9 +200,10 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { useRoutinesStore } from "@/store/RoutinesStore";
 import { DefaultCycleExercise } from "@/assets/default_data";
+import { useExercisesStore } from "@/store/ExercisesStore";
 
 export default {
   name: "ExercisesCard",
@@ -210,6 +222,8 @@ export default {
       new_exercise_dialog: false,
       new_exercise: JSON.parse(JSON.stringify(DefaultCycleExercise)),
 
+      exercise_list: [],
+
       last_order: 1
     }
   },
@@ -220,9 +234,20 @@ export default {
 
     cycle_data: function () {
       return this.routine_data.cycles[this.idx];
+    },
+
+    used_exercises: function () {
+      let u = [];
+      for (let x of this.cycle_data.exercises) {
+        u.push(x.data.id);
+      }
+      return u;
     }
   },
   methods: {
+    ...mapActions(useExercisesStore, {
+      $getSavedExercises: 'getSavedExercises'
+    }),
     save_new_exercise() {
       this.new_exercise_dialog = false;
       this.new_exercise.order = this.last_order++;
@@ -257,8 +282,24 @@ export default {
         string += `${reps} | ${time}`
       }
       return string
-    }
+    },
+    async get_all_exercises() {
+      try {
+        let result = await this.$getSavedExercises();
+        for (let ex of result.content) {
+          this.exercise_list.push({id: ex.id, name: ex.name})
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    checkItemDisabled(item) {
+      return this.used_exercises.includes(item.id);
+    },
   },
+  beforeMount() {
+    this.get_all_exercises();
+  }
 };
 </script>
 
