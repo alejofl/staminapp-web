@@ -5,7 +5,7 @@
         <v-row no-gutters justify="center" align="center">
           <v-col align="center">
             <v-hover v-slot="{ hover }">
-              <v-btn class="mx-2" @click="handle_image" plain fab large >
+              <v-btn class="mx-2" @click="handle_image" color="transparent" fab large >
                 <input ref="uploader" class="d-none" type="file" @change="uploadImage">
                 <v-fade-transition>
                   <v-overlay class="overlay-class" absolute opacity="0.5" v-if="hover">
