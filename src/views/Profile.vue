@@ -14,7 +14,7 @@
             <v-row class="mt-0">
               <template v-for="(n, index) in $exercises">
               <v-col class="pa-8" sm="12" md="4" lg="4">
-                <ExercisesCard :idx="index">
+                <ExercisesCard :idx="index" v-on:apiError="error_snackbar = true">
                 </ExercisesCard>
               </v-col>
               </template>
@@ -59,6 +59,7 @@
           </v-flex>
       </v-dialog>
     </v-row>
+    <v-snackbar v-model="error_snackbar" :timeout="timeout" color="error"><strong>Error.</strong> Ha ocurrido un error inesperado. Por favor, intentá de nuevo más tarde.</v-snackbar>
   </v-flex>
 </template>
 
@@ -92,7 +93,10 @@ export default {
       profile_weight:'',
       profile_height:'',
       is_editing:false,
-      Exercises: []
+      Exercises: [],
+
+      error_snackbar: false,
+      timeout: 2000,
     }
   },
   computed: {
@@ -123,7 +127,7 @@ export default {
         const exerciseInfo = await this.$create(exercise);
       }
       catch (e) {
-        console.log(e.code);
+        this.error_snackbar = true;
       }
     },
     async updateInfo() {
@@ -131,9 +135,7 @@ export default {
         const profileInfo = await this.$getProfileInfo();
         const saved_exercises = await this.$getSavedExercises();
         this.$refs.form.setProfileInfo()
-      }
-      catch (e) {
-        console.log(e.code)
+      } catch (e) {
       }
     },
     async beforeLeaving() {
@@ -143,7 +145,7 @@ export default {
         let dataUpdated = new UpdatedUserData(this.$currentUser.name,"", this.$currentUser.gender, this.$currentUser.birthdate,"","",metadata);
         await UserApi.updateProfileInfo(dataUpdated);
       } catch(e) {
-        console.log(e.code);
+
       }
     },
   },

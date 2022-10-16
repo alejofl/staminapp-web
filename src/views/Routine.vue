@@ -79,15 +79,16 @@
         <v-col cols="8">
           <h1 class="cera-pro">Ciclos</h1>
           <div v-for="(cycle, index) in routine_data.cycles" :key="index" class="pb-4">
-            <CyclesCard :edit_cycle="edit" :idx="index"></CyclesCard>
+            <CyclesCard :edit_cycle="edit" :idx="index" v-on:apiError="error_snackbar = true"></CyclesCard>
             <v-btn v-if="edit" color="error" width="100%" @click="delete_cycle(cycle)">Borrar Ciclo</v-btn>
           </div>
           <v-btn class="mt-4" text v-show="edit" color="secondary" block @click="new_cycle();"><v-icon class="pr-2">add_circle</v-icon>Añadir Ciclo</v-btn>
         </v-col>
       </v-row>
     </v-container>
-    <v-snackbar v-model="error_snackbar" :timeout="timeout" color="error"><strong>Error.</strong> Hay un error en tu rutina, revisala.</v-snackbar>
+    <v-snackbar v-model="validation_snackbar" :timeout="timeout" color="error"><strong>Error.</strong> Hay un error en tu rutina, revisala.</v-snackbar>
     <v-snackbar v-model="copied_snackbar" :timeout="timeout" color="success"><strong>Éxito.</strong> Enlace copiado al portapapeles.</v-snackbar>
+    <v-snackbar v-model="error_snackbar" :timeout="timeout" color="error"><strong>Error.</strong> Ha ocurrido un error inesperado. Por favor, intentá de nuevo más tarde.</v-snackbar>
   </div>
 </template>
 
@@ -112,8 +113,9 @@ export default {
 
       difficulties: Object.values(Difficulty.for_web),
 
-      error_snackbar: false,
+      validation_snackbar: false,
       copied_snackbar: false,
+      error_snackbar: false,
       timeout: 2000,
     }
   },
@@ -199,7 +201,7 @@ export default {
     },
     async saveChanges() {
       if (!this.validates()) {
-        this.error_snackbar = true;
+        this.validation_snackbar = true;
         return;
       }
 
@@ -213,7 +215,7 @@ export default {
           this.$router.go(0);
         }
       } catch (e) {
-        console.log(e)
+        this.error_snackbar = true;
       }
     },
     async getData() {
@@ -230,7 +232,7 @@ export default {
         let usr = await this.$getCurrentUser();
         this.user_is_owner = this.routine_data.author.id === usr.id;
       } catch (e) {
-        console.log(e);
+        this.$router.push({name: 'error'});
       }
     },
     async faveRoutine() {
@@ -238,7 +240,7 @@ export default {
         await this.$markFavourite(this.routine_id);
         this.favourite = true;
       } catch (e) {
-        console.log(e);
+        this.error_snackbar = true;
       }
     },
     async unfaveRoutine() {
@@ -246,7 +248,7 @@ export default {
         await this.$unmarkFavourite(this.routine_id);
         this.favourite = false;
       } catch (e) {
-        console.log(e);
+        this.error_snackbar = true;
       }
     },
     async rateRoutine(value) {
@@ -254,7 +256,7 @@ export default {
         console.log(value);
         await this.$rateRoutine(this.routine_id, value)
       } catch (e) {
-        console.log(e);
+        this.error_snackbar = true;
       }
     },
     async deleteRoutine() {
@@ -262,7 +264,7 @@ export default {
         await this.$deleteRoutine(this.routine_id);
         this.$router.push({name: 'library'});
       } catch (e) {
-        console.log(e);
+        this.error_snackbar = true;
       }
     },
     shareRoutine() {

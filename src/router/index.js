@@ -10,6 +10,7 @@ import SignUp from "../views/SignUp.vue";
 import Routine from "@/views/Routine";
 import EmailVerification from "@/views/EmailVerification";
 import ExternalUserView from "@/views/User";
+import Error from '@/views/Error'
 import { useSecurityStore } from "@/store/SecurityStore";
 
 Vue.use(VueRouter);
@@ -111,6 +112,24 @@ const routes = [
     meta: {
       requiresAuth: true,
       title: 'Usuario'
+    }
+  },
+  {
+    path: "/error",
+    name: "error",
+    component: Error,
+    meta: {
+      requiresAuth: false,
+      title: 'Error'
+    }
+  },
+  {
+    path: "*",
+    name: "error",
+    component: Error,
+    meta: {
+      requiresAuth: false,
+      title: 'Error'
     }
   }
 ];

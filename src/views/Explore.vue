@@ -45,7 +45,7 @@ export default {
         this.routines = result.content;
         this.current_routines = this.routines;
       } catch(e) {
-        console.log(e);
+        this.$router.push({name: 'error'});
       }
     },
     getRoutinesByDifficulty() {

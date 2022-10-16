@@ -1,7 +1,7 @@
 <template>
   <div class="myContainer pa-8">
     <h1 class="cera-pro">Recientes</h1>
-    <v-row >
+    <v-row>
       <v-col v-for="n in recent_routines" :key="n.id" cols="12" sm="12" md="6" lg="4" v-if="routines.length !== 0">
         <router-link :to="{name: 'routine', params: {id: n.id}}">
           <RecentCard :id="n.id" :routineName="n.name" :difficulty="n.difficulty" :rating="parseInt(n.score)" :base64-data="n.metadata"></RecentCard>
@@ -27,6 +27,7 @@
         <v-icon>add</v-icon> Añadir Rutina
       </v-btn>
     </router-link>
+    <v-snackbar v-model="error_snackbar" :timeout="timeout" color="error"><strong>Error.</strong> Ha ocurrido un error inesperado. Por favor, recargá la página.</v-snackbar>
   </div>
 </template>
 
@@ -47,6 +48,9 @@ export default {
       current_routines: [],
       routines: [],
       recent_routines: [],
+
+      error_snackbar: false,
+      timeout: 2000,
     }
   },
   
@@ -126,8 +130,7 @@ export default {
           this.recent_routines.push(aux[index]);
         }
       } catch(e) {
-        console.log("Tengo errores");
-        console.log(e);
+        this.$router.push({name: 'error'});
       }
     },
     
@@ -165,9 +168,8 @@ export default {
           let dataUpdated = new UpdatedUserData(this.$currentUser.name,"", this.$currentUser.gender, this.$currentUser.birthdate,"","",metadata);
           await this.$updateProfileInfo(dataUpdated);
         }
-      }
-      catch (e) {
-        console.log(e)
+      } catch (e) {
+        this.error_snackbar = true;
       }
     }
   },
