@@ -2,11 +2,9 @@
   <v-card color="#E1E6EC" dark>
     <v-container class="ma-0 pa-0">
       <v-row class="px-8 py-4" no-gutters justify="center">
-        <h1 style="color: #001833;" >Dentro de rango saludable</h1>
+        <h1 class="healthy" v-if="isHealthy">Dentro del rango saludable</h1>
+        <h1 class="healthy" v-else>Fuera del rango saludable</h1>
       </v-row>
-<!--      <v-row class="px-8 py-4" no-gutters justify="start">-->
-<!--        <h3 style="color: #FD9900">EVOLUCIÓN DE IMC</h3>-->
-<!--      </v-row>-->
       <v-row class="px-8 py-4" no-gutters justify="center">
         <LineChartGenerator
           :chart-options="chartOptions"
@@ -29,6 +27,8 @@
 import { Line as LineChartGenerator } from 'vue-chartjs/legacy'
 
 import {Chart as ChartJS,Title,Tooltip,Legend,LineElement,LinearScale,CategoryScale,PointElement} from 'chart.js'
+import { mapState } from "pinia";
+import { useSecurityStore } from "@/store/SecurityStore";
 
 ChartJS.register(Title,Tooltip,Legend,LineElement,LinearScale,CategoryScale,PointElement)
 
@@ -36,6 +36,34 @@ export default {
   name: 'IMCCard',
   components: {
     LineChartGenerator
+  },
+  computed: {
+    ...mapState(useSecurityStore, {
+      $currentUser: state => state.currentUser,
+    }),
+    chartData() {
+      let array = [];
+      let label = [];
+      for(let i = 0; i < this.$currentUser.weight.length; i++) {
+        array.push(parseInt(this.$currentUser.weight[i])/Math.pow(parseInt(this.$currentUser.height[i])/100, 2));
+        label.push(`Dato #${i}`);
+      }
+      return {
+        labels: label,
+        datasets: [
+          {
+            label: 'IMC en el tiempo',
+            borderColor: '#FD9900',
+            fill: true,
+            data: array,
+          }
+        ]
+      }
+    },
+    isHealthy() {
+      let currentIMC = parseInt(this.$currentUser.weight.at(-1))/Math.pow(parseInt(this.$currentUser.height.at(-1))/100, 2);
+      return currentIMC >= 18.5 && currentIMC <= 25;
+    }
   },
   props: {
     chartId: {
@@ -72,25 +100,6 @@ export default {
   },
   data() {
     return {
-      chartData: {
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July'
-        ],
-        datasets: [
-          {
-            label: 'IMC en el tiempo',
-            borderColor: '#FD9900',
-            fill: true,
-            data: [40, 36.2, 33.1, 30.8, 27.7, 26.5, 25],
-          }
-        ]
-      },
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,
@@ -134,5 +143,7 @@ export default {
 </script>
 
 <style scoped>
-
+.healthy {
+  color: #001833;
+}
 </style>

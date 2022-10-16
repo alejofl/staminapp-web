@@ -90,11 +90,8 @@ export default {
       profile_mail:'',
       profile_gender:'',
       profile_birthdate:0,
-      profile_weight:'',
-      profile_height:'',
       is_editing:false,
       Exercises: [],
-
       error_snackbar: false,
       timeout: 2000,
     }
