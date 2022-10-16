@@ -2,8 +2,7 @@
   <v-card color="#E1E6EC" dark>
     <v-container class="ma-0 pa-0">
       <v-row class="px-8 py-4" no-gutters justify="center">
-        <h1 class="healthy" v-if="isHealthy">Dentro del rango saludable</h1>
-        <h1 class="healthy" v-else>Fuera del rango saludable</h1>
+        <h1 class="healthy">{{ chartMessage }}</h1>
       </v-row>
       <v-row class="px-8 py-4" no-gutters justify="center">
         <LineChartGenerator
@@ -60,9 +59,12 @@ export default {
         ]
       }
     },
-    isHealthy() {
-      let currentIMC = parseInt(this.$currentUser.weight.at(-1))/Math.pow(parseInt(this.$currentUser.height.at(-1))/100, 2);
-      return currentIMC >= 18.5 && currentIMC <= 25;
+    chartMessage() {
+      if (this.$currentUser.weight.length === 0) {
+        return "No hay datos."
+      }
+      let currentIMC = parseInt(this.$currentUser.weight.at(-1)) / Math.pow(parseInt(this.$currentUser.height.at(-1)) / 100, 2);
+      return `${currentIMC >= 18.5 && currentIMC <= 25 ? "Dentro" : "Fuera"} del rango saludable`;
     }
   },
   props: {

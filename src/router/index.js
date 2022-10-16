@@ -125,7 +125,7 @@ const routes = [
   },
   {
     path: "*",
-    name: "error",
+    name: "not-found",
     component: Error,
     meta: {
       requiresAuth: false,
