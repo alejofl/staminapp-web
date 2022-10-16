@@ -177,9 +177,6 @@ export default {
     this.getRoutines();
     this.checkFirstTimeUser();
   },
-  beforeDestroy(){
-    this.beforeLeaving();
-  }
 };
 </script>
 
