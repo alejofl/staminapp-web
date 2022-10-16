@@ -307,7 +307,6 @@ export default {
         }
         this.$router.push({name : 'sign-in', query: {registered: null}});
       } catch (e) {
-        console.log(e.code);
         this.emailFormatIsIncorrect = false;
         this.emailAlreadyExists = false;
         this.genericError = false;

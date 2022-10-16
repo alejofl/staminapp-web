@@ -27,6 +27,7 @@
         <v-icon>add</v-icon> Añadir Rutina
       </v-btn>
     </router-link>
+    <v-snackbar v-model="error_snackbar" :timeout="timeout" color="error"><strong>Error.</strong> Ha ocurrido un error inesperado. Por favor, recargá la página.</v-snackbar>
   </div>
 </template>
 
@@ -47,6 +48,9 @@ export default {
       current_routines: [],
       routines: [],
       recent_routines: [],
+
+      error_snackbar: false,
+      timeout: 2000,
     }
   },
   
@@ -126,8 +130,7 @@ export default {
           this.recent_routines.push(aux[index]);
         }
       } catch(e) {
-        console.log("Tengo errores");
-        console.log(e);
+        this.$router.push({name: 'error'});
       }
     },
     
@@ -165,9 +168,8 @@ export default {
           let dataUpdated = new UpdatedUserData(this.$currentUser.name,"", this.$currentUser.gender, this.$currentUser.birthdate,"","",metadata);
           await this.$updateProfileInfo(dataUpdated);
         }
-      }
-      catch (e) {
-        console.log(e)
+      } catch (e) {
+        this.error_snackbar = true;
       }
     }
   },

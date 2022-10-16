@@ -93,7 +93,7 @@ export default {
         await this.$updateExercise(exerciseID, exercise);
       }
       catch (e) {
-        console.log(e.code);
+        this.$emit('apiError');
       }
     },
     async deleteExercise(exerciseID){
@@ -108,7 +108,7 @@ export default {
         this.$exercises.splice(i-1,1);
       }
       catch (e) {
-        console.log(e.code);
+        this.$emit('apiError');
       }
     }
 

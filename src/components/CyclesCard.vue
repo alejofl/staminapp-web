@@ -287,7 +287,7 @@ export default {
           this.exercise_list.push({id: ex.id, name: ex.name})
         }
       } catch (e) {
-        console.log(e);
+        this.$emit('apiError');
       }
     },
     checkItemDisabled(item) {

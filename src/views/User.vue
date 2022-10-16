@@ -41,7 +41,7 @@ export default {
         const routines_result = await this.$getRoutinesForOtherUser(id);
         this.routines = routines_result.content;
       } catch (e) {
-        console.log(e);
+        this.$router.push({name: 'error'});
       }
     }
   },

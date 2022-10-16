@@ -2,8 +2,7 @@
   <v-col class="pa-0">
     <v-card class="secondary white--text" max-height="125" rounded @click="">
       <div class="d-flex">
-        <v-img src="@/assets/recent_card.jpeg" max-height="125" max-width="125" aspect-ratio="1" v-if="base64Data === null"></v-img>
-        <v-img :src="base64Data.picture" max-height="125" max-width="125" aspect-ratio="1" v-if="base64Data != null"></v-img>
+        <v-img :src="base64Data.picture" max-height="125" max-width="125" aspect-ratio="1"></v-img>
         <div class="flex-grow-1">
           <div class="d-flex flex-no-wrap justify-space-between align-center pt-2">
             <v-rating class="pl-4" empty-icon="star_outline" color="white" full-icon="star" half-icon="star_half"
