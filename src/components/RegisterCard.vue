@@ -314,15 +314,27 @@ export default {
         } else if (button === 2) {
           this.loadingAvoidStep = true;
         }
+        let selectedGender = '';
         if (this.gender === 'Masculino') {
-          this.gender = 'male'
+          selectedGender = 'male'
         } else if (this.gender === 'Femenino') {
-          this.gender = 'female'
+          selectedGender = 'female'
         } else if (this.gender === 'Otro') {
-          this.gender = 'other'
+          selectedGender = 'other'
         }
+
+        let calculatedBirthdate = 0;
+        if (this.birthdate !== '') {
+          let dateParts = this.birthdate.split('/')
+          if (dateParts.length !== 3) {
+            throw {error: 'error'};
+          }
+          let date = new Date(parseInt(dateParts[2]), parseInt(dateParts[1])-1, parseInt(dateParts[0]));
+          calculatedBirthdate = date.getTime();
+        }
+
         const userMetaData = new MetaData(this.weight === '' ? [] : [this.weight], this.height === '' ? [] : [this.height], this.base64Data, this.firstLogIn);
-        const userData = new UserData(this.password, this.name, this.gender, this.birthdate, this.email, userMetaData);
+        const userData = new UserData(this.password, this.name, selectedGender, this.birthdate === '' ? null : calculatedBirthdate, this.email, userMetaData);
         await this.$createUser(userData);
         if (button === 1) {
           this.loadingRegister = false;

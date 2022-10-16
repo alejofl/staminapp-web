@@ -338,7 +338,4 @@ p {
 .square-overlay {
   border-radius: 0;
 }
-.transparent {
-  opacity: 0;
-}
 </style>

@@ -1,66 +1,58 @@
 <template>
-  <v-flex>
-    <v-container class="profile-style">
+  <div class="myContainer pa-8">
+    <v-container class="full-width">
       <v-row>
-        <v-col sm="3" md="3" lg="3">
-          <ProfileCard ref="form" v-on:apiError="error_snackbar = true"></ProfileCard>
+        <v-col cols="4">
+          <ProfileCard ref="form" v-on:apiError="error_snackbar = true" v-on:logging_out="loggedOut = true"></ProfileCard>
         </v-col>
-
-        <v-col sm="9" md="9" lg="9">
-          <v-container class="exercises-container-style">
-            <v-row class="mb-0">
-              <h1 class="cera-pro pa-6">MIS EJERCICIOS</h1>
+        <v-col cols="8">
+          <v-container class="full-width">
+            <v-row no-gutters>
+              <h1 class="cera-pro">Mis Ejercicios</h1>
             </v-row>
-            <v-row class="mt-0">
+            <v-row no-gutters class="pt-2 negative-margins-for-exercises">
               <template v-for="(n, index) in $exercises">
-              <v-col class="pa-8" sm="12" md="4" lg="4">
-                <ExercisesCard :idx="index" v-on:apiError="error_snackbar = true">
-                </ExercisesCard>
-              </v-col>
+                <v-col sm="12" md="4" lg="4">
+                  <ExercisesCard class="ma-2" :idx="index" v-on:apiError="error_snackbar = true">
+                  </ExercisesCard>
+                </v-col>
               </template>
             </v-row>
           </v-container>
         </v-col>
       </v-row>
     </v-container>
+    <v-dialog v-model="dialog" max-width="368px" transition="dialog-bottom-transition">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn fab class="customFAB secondary--text ma-4" color="primary" fixed right bottom @click="dialog=true;">
+          <v-icon>add</v-icon> Añadir Ejercicio
+        </v-btn>
+      </template>
 
-    <v-row justify="center">
-      <v-dialog v-model="dialog" max-width="368px" transition="dialog-bottom-transition">
-        <template v-slot:activator="{ on, attrs }">
-
-          <v-btn fab class="customFAB secondary--text ma-4" color="primary" fixed right bottom @click="dialog=true;
-            unsaved_exercise_name=default_exercise_name;unsaved_exercise_description=default_exercise_description">
-            <v-icon>add</v-icon> Añadir Ejercicio
-          </v-btn>
-
-        </template>
-          <v-flex align-self-center>
-            <v-card class="exercise-card" color=#E1E6EC outlined rounded="xl">
-              <v-container>
-                <v-card-title class="secondary--text font-weight-bold">
-                  <v-text-field v-model="unsaved_exercise_name" color="secondary"></v-text-field>
-                </v-card-title>
-                <v-card-text class="secondary--text grow">
-                  <v-textarea color="secondary" v-model="unsaved_exercise_description"></v-textarea>
-                </v-card-text>
-                <v-row justify="center" align="center">
-                  <v-col md="12" align="center">
-                    <v-btn width="100%" color="green" @click="addExercise();dialog=false">
-                      GUARDAR EJERCICIO</v-btn>
-                  </v-col>
-                </v-row>
-                <v-row justify="center" align="center">
-                  <v-col md="12" align="center">
-                    <v-btn color="error" @click="dialog=false" width="100%">ELIMINAR EJERCICIO</v-btn>
-                  </v-col>
+      <v-flex align-self-center>
+        <v-card class="exercise-card">
+          <v-container>
+            <v-row no-gutters>
+              <v-text-field class="py-2" filled label="Nombre" v-model="unsaved_exercise_name" background-color="#E1E6EC" color="secondary" hide-details></v-text-field>
+            </v-row>
+            <v-row no-gutters>
+              <v-textarea :rules="max_length" filled label="Descripción" background-color="#E1E6EC" counter auto-grow v-model="unsaved_exercise_description" color="secondary"></v-textarea>
+            </v-row>
+            <v-row no-gutters class="mt-4">
+              <v-container class="pa-0">
+                <v-row no-gutters class="pb-2">
+                  <v-btn width="100%" :disabled="disableSaved" color="success" @click="addExercise();dialog=false">
+                    Guardar Ejercicio
+                  </v-btn>
                 </v-row>
               </v-container>
-            </v-card>
-          </v-flex>
-      </v-dialog>
-    </v-row>
+            </v-row>
+          </v-container>
+        </v-card>
+      </v-flex>
+    </v-dialog>
     <v-snackbar v-model="error_snackbar" :timeout="timeout" color="error"><strong>Error.</strong> Ha ocurrido un error inesperado. Por favor, intentá de nuevo más tarde.</v-snackbar>
-  </v-flex>
+  </div>
 </template>
 
 <script>
@@ -78,13 +70,14 @@ export default {
 
   data() {
     return{
+      max_length: [v => v.length <= 200 || 'Hasta 200 caracteres'],
+      loggedOut: false,
+
       dialog:false,
-      default_exercise_name:'Ejercicio sin nombre',
-      default_exercise_description:"Inserte descripción...",
-      unsaved_exercise_name:'Ejercicio sin nombre',
-      unsaved_exercise_description:"Inserte descripción...",
-      saved_exercise_name:"Hola",
-      saved_exercise_description:"COMO",
+      unsaved_exercise_name:"",
+      unsaved_exercise_description:"",
+      saved_exercise_name:"",
+      saved_exercise_description:"",
       profile_picture:'',
       profile_fullname:'',
       profile_mail:'',
@@ -96,6 +89,14 @@ export default {
       timeout: 2000,
     }
   },
+  watch: {
+    dialog(newvalue, oldvalue) {
+      if (!newvalue && oldvalue) {
+        this.unsaved_exercise_name = '';
+        this.unsaved_exercise_description = '';
+      }
+    }
+  },
   computed: {
     ...mapState(useExercisesStore, {
       $exercises: state => state.exercises,
@@ -103,11 +104,13 @@ export default {
     ...mapState(useSecurityStore, {
       $currentUser: state => state.currentUser,
     }),
+    disableSaved() {
+      return this.unsaved_exercise_description.length > 200 || this.unsaved_exercise_description.length === 0 || this.unsaved_exercise_name.length === 0
+    }
   },
   methods:{
     ...mapActions(useExercisesStore, {
       $create: 'create',
-      // $getSavedExercises: 'getSavedExercises'
     }),
     ...mapActions(useExercisesStore, {
       $getSavedExercises: 'getSavedExercises'
@@ -121,7 +124,7 @@ export default {
       this.saved_exercise_name = this.unsaved_exercise_name;
       try {
         const exercise = new Exercise(this.saved_exercise_name, this.saved_exercise_description, 'exercise', null);
-        const exerciseInfo = await this.$create(exercise);
+        await this.$create(exercise);
       }
       catch (e) {
         this.error_snackbar = true;
@@ -133,16 +136,17 @@ export default {
         const saved_exercises = await this.$getSavedExercises();
         this.$refs.form.setProfileInfo()
       } catch (e) {
+        this.error_snackbar = true;
       }
     },
     async beforeLeaving() {
-      try {
-        this.$refs.form.saveProfileInfo();
-        let metadata = new MetaData(this.$currentUser.weight, this.$currentUser.height, this.$currentUser.base64Data,this.$currentUser.firstLogIn);
-        let dataUpdated = new UpdatedUserData(this.$currentUser.name,"", this.$currentUser.gender, this.$currentUser.birthdate,"","",metadata);
-        await UserApi.updateProfileInfo(dataUpdated);
-      } catch(e) {
-
+      if (!this.loggedOut) {
+        try {
+          this.$refs.form.saveProfileInfo();
+          let metadata = new MetaData(this.$currentUser.weight, this.$currentUser.height, this.$currentUser.base64Data,this.$currentUser.firstLogIn);
+          let dataUpdated = new UpdatedUserData(this.$currentUser.name,"", this.$currentUser.gender, this.$currentUser.birthdate,"","",metadata);
+          await UserApi.updateProfileInfo(dataUpdated);
+        } catch(e) {}
       }
     },
   },
@@ -157,27 +161,29 @@ export default {
 </script>
 
 <style scoped>
-  .profile-style{
-    width: 100%;
-    margin-top: 64px;
-    max-width: 100%;
-  }
-  .exercises-container-style{
-    width: 100%;
-    max-width: 100%;
-  }
+.myContainer {
+  margin-top: 64px;
+  background-color: #F5FAFF;
+  height: 100%;
+}
+.full-width {
+  width: 100%;
+  max-width: 100%;
+}
   .cera-pro {
     font-family: "Cera Pro", sans-serif;
     font-weight: 700;
     font-style: italic;
     color: #001833;
     text-transform: uppercase;
-    text-decoration: underline;
   }
   .customFAB {
     font-weight: 700;
     width: fit-content;
     border-radius: 25px;
     padding: 32px 24px 32px 24px;
+  }
+  .negative-margins-for-exercises {
+    margin: -8px;
   }
 </style>

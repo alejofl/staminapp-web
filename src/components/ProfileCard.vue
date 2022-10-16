@@ -1,9 +1,8 @@
 <template>
-  <!--<v-card elevation="2" color="#E1E6EC" v-show="show" width="368px" height="96px" max-height="100%" class="exercise-card">-->
   <v-flex align-self-center>
-    <v-card class="profile-card" elevation="5">
-      <v-container>
-        <v-row justify="center" align="center">
+    <v-card>
+      <v-container class="pt-4">
+        <v-row no-gutters justify="center" align="center">
           <v-col align="center">
             <v-hover v-slot="{ hover }">
               <v-btn class="mx-2" @click="handle_image" plain fab large >
@@ -20,49 +19,20 @@
             </v-hover>
           </v-col>
         </v-row>
-        <v-row >
-          <!--            v-model="name"-->
-          <v-col md="12">
-            <v-text-field
-            label="Nombre Completo"
-            v-model="unsavedName"
-            append-icon="person"
-            color="secondary">
-            </v-text-field>
-          </v-col>
+        <v-row no-gutters class="pt-4">
+          <v-text-field class="py-2" filled label="Nombre completo" v-model="unsavedName" background-color="#E1E6EC" color="secondary" hide-details append-icon="person"></v-text-field>
         </v-row>
-        <v-row >
-          <v-col md="12">
-            <v-text-field v-model="unsavedMail" label="E-Mail" append-icon="mail" color="secondary" readonly>
-            </v-text-field>
-          </v-col>
+        <v-row no-gutters>
+          <v-text-field class="py-2" filled label="E-Mail" v-model="unsavedMail" background-color="#E1E6EC" color="secondary" hide-details append-icon="mail" disabled></v-text-field>
         </v-row>
-        <v-row >
-          <v-col md="12">
-            <v-select
-              label="Género"
-              v-model="unsavedGender"
-              :items="gender_options"
-              append-icon="expand_more"
-              color="secondary">
-            </v-select>
-          </v-col>
+        <v-row no-gutters>
+          <v-select class="py-2" filled label="Género" v-model="unsavedGender" background-color="#E1E6EC" color="secondary" hide-details append-icon="expand_more" :items="gender_options"></v-select>
         </v-row>
-        <v-row >
-          <v-col  md="12">
-            <v-text-field
-              label="Fecha de Nacimiento DD/MM/YYYY"
-              v-model="unsavedBirthDate"
-              append-icon="calendar_today"
-              color="secondary">
-            </v-text-field>
-          </v-col>
+        <v-row no-gutters>
+          <v-text-field class="py-2" filled label="Fecha de nacimiento (DD/MM/YYYY)" v-model="unsavedBirthDate" background-color="#E1E6EC" color="secondary" hide-details append-icon="calendar_today"></v-text-field>
         </v-row>
-        <v-row align-content="center">
-          <v-col align-self="center" md="12">
-            <!--Ver qué hacer cuando se cierra sesión, volver a la pantalla de inicio y hacer un sign out a la API-->
-            <v-btn color="error" width="100%" @click="onLogOut()">CERRAR SESIÓN</v-btn>
-          </v-col>
+        <v-row no-gutters class="pt-4">
+          <v-btn color="error" width="100%" @click="onLogOut()">CERRAR SESIÓN</v-btn>
         </v-row>
       </v-container>
     </v-card>
@@ -142,6 +112,7 @@ export default {
       this.$refs.uploader.click();
     },
     async onLogOut(){
+      this.$emit('logging_out');
       await this.$logout();
       this.$router.push({name:'home'});
     },
@@ -153,7 +124,14 @@ export default {
         this.unsavedGender = "Femenino"
       else if(this.currentUser.gender === "other")
         this.unsavedGender = "Otro"
-      this.unsavedBirthDate = JSON.stringify(this.currentUser.birthdate)
+
+      if (this.currentUser.birthdate === '' || this.currentUser.birthdate === null) {
+        this.unsavedBirthDate = '';
+      } else {
+        let date = new Date(this.currentUser.birthdate);
+        this.unsavedBirthDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+      }
+
       this.unsavedMail = this.currentUser.mail
       this.unsavedBase64Data = this.currentUser.base64Data
     },
@@ -165,7 +143,20 @@ export default {
         this.currentUser.gender = "female"
       else if(this.unsavedGender === "Otro")
         this.currentUser.gender = "other"
-      this.currentUser.birthdate = parseInt(this.unsavedBirthDate)
+      else
+        this.currentUser.gender = null
+
+      let calculatedBirthdate = 0;
+      if (this.unsavedBirthDate !== '') {
+        let dateParts = this.unsavedBirthDate.split('/')
+        if (dateParts.length !== 3) {
+          throw {error: 'error'};
+        }
+        let date = new Date(parseInt(dateParts[2]), parseInt(dateParts[1])-1, parseInt(dateParts[0]));
+        calculatedBirthdate = date.getTime();
+      }
+
+      this.currentUser.birthdate = this.unsavedBirthDate === '' ? null : calculatedBirthdate
       this.currentUser.base64Data = this.unsavedBase64Data
     }
   },
@@ -173,12 +164,7 @@ export default {
 </script>
 
 <style>
-.profile-card{
-  /*width:328px;*/
-  height: 85%;
-}
 .overlay-class{
   border-radius: 50%;
 }
-
 </style>
