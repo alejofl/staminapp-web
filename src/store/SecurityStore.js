@@ -8,7 +8,7 @@ export const useSecurityStore = defineStore("security", {
   state: () => ({
     token: null,
     user: null,
-    currentUser: { name: '', mail: '', gender: '', birthdate: 0, weight: '', height:'', base64Data: '' ,firstLogIn:false},
+    currentUser: { name: '', mail: '', gender: '', birthdate: 0, weight: [], height: [], base64Data: '' ,firstLogIn:false},
   }),
   getters: {
     isLoggedIn() {
@@ -50,6 +50,8 @@ export const useSecurityStore = defineStore("security", {
     },
 
     async logout() {
+      this.currentUser.weight = [];
+      this.currentUser.height = [];
       await UserApi.logout();
       this.removeToken();
     },
