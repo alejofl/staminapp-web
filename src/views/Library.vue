@@ -1,7 +1,7 @@
 <template>
   <div class="myContainer pa-8">
     <h1 class="cera-pro">Recientes</h1>
-    <v-row >
+    <v-row>
       <v-col v-for="n in recent_routines" :key="n.id" cols="12" sm="12" md="6" lg="4" v-if="routines.length !== 0">
         <router-link :to="{name: 'routine', params: {id: n.id}}">
           <RecentCard :id="n.id" :routineName="n.name" :difficulty="n.difficulty" :rating="parseInt(n.score)" :base64-data="n.metadata"></RecentCard>
