@@ -7,7 +7,7 @@
       <p class="ma-0">
         Por
         <a href="https://github.com/alejofl" target="_blank">Alejo Flores Lucey</a>,
-        <a href="https://github.com/bcanevaro" target="_blank">Bautista Ignacio Canevaro</a>, &
+        <a href="https://github.com/bcanevaro" target="_blank">Bautista Ignacio Canevaro</a> &
         <a href="https://github.com/NehuenLlanos" target="_blank">Nehuén Gabriel Llanos</a>
       </p>
     </div>
