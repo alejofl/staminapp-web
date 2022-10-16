@@ -272,7 +272,31 @@ export default {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
-        this.base64Data = fileReader.result
+        let img = new Image()
+        img.src = fileReader.result
+        img.onload = () => {
+          let canvas = document.createElement('canvas')
+          let width = img.width
+          let height = img.height
+
+          if (width > height) {
+            if (width > 200) {
+              height *= 200 / width
+              width = 200
+            }
+          } else {
+            if (height > 200) {
+              width *= 200 / height
+              height = 200
+            }
+          }
+
+          canvas.width = width
+          canvas.height = height
+          let ctx = canvas.getContext('2d')
+          ctx.drawImage(img, 0, 0, width, height)
+          this.base64Data = canvas.toDataURL('image/png', 0.2);
+        }
       };
       fileReader.onerror = (error) => {
         console.log(error)

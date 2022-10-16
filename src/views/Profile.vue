@@ -3,7 +3,7 @@
     <v-container class="profile-style">
       <v-row>
         <v-col sm="3" md="3" lg="3">
-          <ProfileCard ref="form"></ProfileCard>
+          <ProfileCard ref="form" v-on:apiError="error_snackbar = true"></ProfileCard>
         </v-col>
 
         <v-col sm="9" md="9" lg="9">
