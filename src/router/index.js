@@ -144,7 +144,7 @@ router.beforeEach(async (to, from, next) => {
   const store = useSecurityStore();
   await store.isLoggedIn;
   if (to.meta.requiresAuth && !store.isLoggedIn) {
-    next({ name: "sign-in" });
+    next({ name: "sign-in", query: {redirect: to.fullPath}});
   }
   next();
 })

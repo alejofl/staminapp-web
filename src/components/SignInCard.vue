@@ -107,7 +107,11 @@ export default {
       try {
         const credentials = new Credentials(this.email, this.password)
         await this.$login(credentials, true)
-        this.$router.push({name: 'library'})
+        if (this.$route.query.redirect) {
+          this.$router.push(this.$route.query.redirect);
+        } else {
+          this.$router.push({name: 'library'})
+        }
       } catch (e) {
         if(e.code === 4) {
           this.failedLogIn = true
