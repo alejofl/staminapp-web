@@ -26,8 +26,8 @@
                   <v-col md="8">
                     <v-container class="py-0">
                       <v-row no-gutters class="justify-end align-center">
-                        <v-icon size="48" color="error" :disabled="edit" v-if="!favourite" @click="faveRoutine();">favorite_border</v-icon>
-                        <v-icon size="48" color="error" :disabled="edit" v-else @click="unfaveRoutine();">favorite</v-icon>
+                        <v-icon size="48" color="error" :disabled="user_is_owner || edit" v-if="!favourite" @click="faveRoutine();">favorite_border</v-icon>
+                        <v-icon size="48" color="error" :disabled="user_is_owner || edit" v-else @click="unfaveRoutine();">favorite</v-icon>
                       </v-row>
                       <v-row no-gutters class="pl-3 py-2">
                         <v-select label="Dificultad" v-model="routine_data.difficulty" :items="difficulties" append-icon="expand_more" color="secondary" filled background-color="#E1E6EC" hide-details v-if="edit">
