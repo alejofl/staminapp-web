@@ -119,7 +119,6 @@ export const useRoutinesStore = defineStore("routines", {
       for (let c of this.before_change_data.cycles) {
         for (let e of c.exercises) {
           let ex_result = CyclesApi.deleteExercise(c.id, e.data.id)
-          console.log("Borre", e.data.id, "del ciclo", c.id);
           if (ex_result.code) {
             throw ex_result;
           }

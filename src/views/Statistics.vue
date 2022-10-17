@@ -70,7 +70,6 @@ export default {
       }
     },
     async saveData() {
-      console.log(this.$currentUser)
       if (this.$currentUser.weight.length === 10) {
         this.$currentUser.weight.splice(0, 1);
         this.$currentUser.height.splice(0, 1);

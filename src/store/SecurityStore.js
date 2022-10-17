@@ -57,7 +57,6 @@ export const useSecurityStore = defineStore("security", {
     },
 
     async getCurrentUser() {
-      console.log("En el await")
       if (this.user) {
         return this.user;
       }

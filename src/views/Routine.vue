@@ -277,7 +277,6 @@ export default {
     },
     async rateRoutine(value) {
       try {
-        console.log(value);
         await this.$rateRoutine(this.routine_id, value)
       } catch (e) {
         this.error_snackbar = true;

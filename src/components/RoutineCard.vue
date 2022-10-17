@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded @click="printId(id)">
+  <v-card rounded @click="">
     <v-responsive aspect-ratio="1" max-height="400px">
       <v-img class="white--text align-end" min-height="400px" max-height="400px" :src="base64Data.picture" v-if="base64Data != null">
         <div class="fill-height bottom-gradient">
@@ -21,9 +21,6 @@ export default {
   props: {id: Number, name: String, rating: Number, base64Data: Object},
   name: "RoutineCard",
   methods: {
-    printId(id) {
-      console.log(id);
-    }
   }
 };
 </script>

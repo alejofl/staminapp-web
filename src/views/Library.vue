@@ -79,20 +79,12 @@ export default {
         const result = userRoutines.content.concat(favouriteRoutines.content);
 
         this.routines = result;
-        console.log(this.routines)
-        for(let i = 0; i < this.routines.length; i++) {
-          if(this.routines[i].metadata != null) {
-            console.log("Se cumple la condicion")
-            console.log(this.routines[i].metadata.picture)
-          }
-        }
         let aux = []
         for(let i = 0; i < this.routines.length; i++) {
           this.current_routines.push(this.routines[i]);
           aux.push(this.routines[i])
         }
         if(this.current_routines.length <= 3) {
-          console.log("Entre al if")
           for(let i = 0; i < this.current_routines.length; i++) {
             this.recent_routines.push(this.current_routines[i]);
           }

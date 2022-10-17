@@ -297,7 +297,6 @@ export default {
         }
       };
       fileReader.onerror = (error) => {
-        console.log(error)
       };
     },
     handle_image(){
